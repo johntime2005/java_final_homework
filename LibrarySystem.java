@@ -1,3 +1,11 @@
+/*
+一个写用户功能的类
+1：开户，申请开设个人账号；
+2：销户，对于已毕业学生强制销户，或者因故离校的人员，经申请可以销户处理。
+3：修改信息，但注意只能修改id，姓名，密码，性别，生日，手机号，专业，班级等。
+4：借书
+5：还书
+*/
 import java.util.Map;
 import java.util.HashMap;
 public class LibrarySystem {
@@ -10,16 +18,7 @@ public class LibrarySystem {
         this.counterUsername="Username";
         this.counterPassword="123456789";
     }
-    /*
-1.	开户，年满18岁的飞马人可以申请开设个人账号，飞马银行会存入2000飞马币作为星球福利赠送给每个新用户；
-2.	销户，对于年满70岁的老人强制销户，或者因故离世的人员，经申请可以销户处理。
-3.	查询余额，用户可以自由查询自己账户中的余额。
-4.	取钱，用户可以支取账户上的余额，但支取后要保证账户余额必须大于等于0.
-5.	存钱，用户可以往账号中存钱。
-6.	转账，用户可以给另一个存在账号转钱，同样，要保证账户余额大于等于0的要求。
-7.	修改账户信息，但账户id，身份id，账户余额等信息不允许修改。
 
-     */
     //开户操作
     public void openAccount(BankAccount account){
         if(accounts.containsKey(account.getAccountId())){
@@ -36,8 +35,28 @@ public class LibrarySystem {
             System.out.println("销户失败，账户未找到");
         }else {
             accounts.remove(accountid);
-            System.out.println("销户成功");`
+            System.out.println("销户成功");
         }
     }
-    //
+    //查询余额
+    public void queryBalance(String accountid){
+        if(!accounts.containsKey(accountid)){
+            System.out.println("查询失败，账户未找到");
+        }else{
+            System.out.println("账户余额为"+accounts.get(accountid).getBalance());
+        }
+    }
+    //修改信息
+    public void modifyInfo(String accountid,String name,String password,char gender,String birthday,String phoneNumber,String major,int class){
+        if(!accounts.containsKey(accountid)){
+            System.out.println("修改失败，账户未找到");
+        }else{
+            accounts.get(accountid).setName(name);
+            accounts.get(accountid).setPassword(password);
+            accounts.get(accountid).setGender(gender);
+            accounts.get(accountid).setBirthday(birthday);
+        }
+    }
+    //取书
+
 }
