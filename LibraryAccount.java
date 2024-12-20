@@ -2,36 +2,38 @@
 图书馆内用户Id：10位数字组成
 用户名：填姓名（10个汉字长度）
 密码：不少于4位
-身份ID：填学号（12位数字）
+学号：填学号（12位数字）
 手机号：正常手机号
 性别：用一位字符（M:男，F:女）
 专业：十位以内
 班级：int类型即可
 出生日期：YYYY-MM-DD
-账户余额：双精度范围即可
- */
+可借书余额：起始量为10
+*/
 public class LibraryAccount {
     private String accountid;
     private String name;
     private String password;//密码
-    private String identifyid;//身份ID
-    private String phonenumber;
+    private String studentId;//学号
+    private String phonenumber;//电话号码
     private char gender;
     private String birthday;
     private int balance;
     private String major;
     private int class;
-    public LibraryAccount(String accountid,String name,String password,String identifyid,
-                       String phonenumber,char gender,String birthday)
+    public LibraryAccount(String accountid,String name,String password,String studentId,
+                       String phonenumber,char gender,String birthday,int balance,String major,int class)
     {
         this.accountid=accountid;
         this.name=name;
         this.password=password;
-        this.identifyid=identifyid;
+        this.studentId=studentId;
         this.phonenumber = phonenumber;
         this.gender=gender;
         this.birthday=birthday;
-        this.balance=10;//
+        this.balance = balance;
+        this.major=major;
+        this.class=class;
     }
     //Getters
     public String getAccountId() {
@@ -46,8 +48,8 @@ public class LibraryAccount {
         return password;
     }
 
-    public String getIdentityId() {
-        return identityId;
+    public String getstudentId() {
+        return studentId;
     }
 
     public String getPhoneNumber() {
@@ -61,8 +63,7 @@ public class LibraryAccount {
     public String getBirthday() {
         return birthday;
     }
-
-    public double getBalance() {
+    public int getBalance(){
         return balance;
     }
     public String getMajor(){
@@ -83,9 +84,8 @@ public class LibraryAccount {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public void setIdentityId(String identityId) {
-        this.identityId = identityId;
+    public void setstudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -99,10 +99,11 @@ public class LibraryAccount {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
-
-    public void setBalance(double balance) {
+    public void setBalance(int balance)
+        {
         this.balance = balance;
     }
+
     public void setMajor(String major)
     {
         this.major = major;
@@ -113,6 +114,6 @@ public class LibraryAccount {
     @Override
     public String toString()
     {
-        return accountid+" "+name+" "+password+" "+identifyid+" "+phonenumber+" "+gender+" "+birthday+" "+balance+" ";
+        return accountid+" "+name+" "+password+" "+studentId+" "+phonenumber+" "+gender+" "+birthday+" "+major+" "+class;
     }
 }
