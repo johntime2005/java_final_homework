@@ -12,8 +12,8 @@ public class LibrarySystem {
     private final Map<String, LibraryAccount> accounts = new HashMap<>();
     private final Map<String, BookAccount> bookAccounts = new HashMap<>();
 
-    private final String counterUsername= "Username";
-    private final String counterPassword="123456789";
+    private final String counterUsername = "Username";
+    private final String counterPassword = "123456789";
 
     public LibrarySystem()
     //图书管理人员的用户名和密码可以在系统初始化时单独设定
@@ -66,16 +66,29 @@ public class LibrarySystem {
                 System.out.println("取书失败，图书未找到");
             } else {
                 LibraryAccount account = accounts.get(studentId);
+                BookAccount bookAccount = bookAccounts.get(bookId);
                 if (account.getBalance() > 0) {
-                    bookAccounts.put(bookId).setIsBorrowed(true);
-                    accounts.put(studentId).setBalance(accounts.put(studentId).getBalance() - 1);
-                    bookAccounts.put(bookId).setBorrower(accounts.put(studentId).getstudentId());
+                    bookAccounts.get(bookId).setIsBorrowed(true);
+                    accounts.get(studentId).setBalance(accounts.get(studentId).getBalance() - 1);
+                    bookAccounts.get(bookId).setBorrower(studentId);
                 }
             }
         }
     }
 
-
-}
     //还书
-
+    public void returnBook(String bookId, String studentId) {
+        if (!bookAccounts.containsKey(bookId)) {
+            System.out.println("还书失败，图书未找到");
+        } else {
+            if (bookAccounts.get(bookId).getBorrower().equals(studentId)) {
+                LibraryAccount account = accounts.get(studentId);
+                BookAccount bookAccount = bookAccounts.get(bookId);
+                bookAccount.setIsBorrowed(false);
+                bookAccount.setBorrower("0");
+                account.setBalance(account.getBalance() + 1);
+            }
+        }
+    }
+    //查询图书信息
+}
