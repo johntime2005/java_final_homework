@@ -1,41 +1,30 @@
-/*
-图书馆内用户Id：10位数字组成
-用户名：填姓名（10个汉字长度）
-密码：不少于4位
-学号：填学号（12位数字）
-手机号：正常手机号
-性别：用一位字符（M:男，F:女）
-专业：十位以内
-班级：int类型即可
-出生日期：YYYY-MM-DD
-可借书余额：起始量为10
-*/
 public class LibraryAccount {
-    private String accountid;
+    private String accountId;
     private String name;
-    private String password;//密码
-    private String studentId;//学号
-    private String phonenumber;//电话号码
+    private String password; // 密码
+    private String studentId; // 学号
+    private String phoneNumber; // 电话号码
     private char gender;
     private String birthday;
     private int balance;
     private String major;
-    private int class;
-    public LibraryAccount(String accountid,String name,String password,String studentId,
-                       String phonenumber,char gender,String birthday,int balance,String major,int class)
-    {
-        this.accountid=accountid;
-        this.name=name;
-        this.password=password;
-        this.studentId=studentId;
-        this.phonenumber = phonenumber;
-        this.gender=gender;
-        this.birthday=birthday;
+    private int classroom;
+
+    public LibraryAccount(String accountId, String name, String password, String studentId,
+                          String phoneNumber, char gender, String birthday, int balance, String major, int classroom) {
+        this.accountId = accountId;
+        this.name = name;
+        this.password = password;
+        this.studentId = studentId;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.birthday = birthday;
         this.balance = balance;
-        this.major=major;
-        this.class=class;
+        this.major = major;
+        this.classroom = classroom;
     }
-    //Getters
+
+    // Getters
     public String getAccountId() {
         return accountId;
     }
@@ -48,7 +37,7 @@ public class LibraryAccount {
         return password;
     }
 
-    public String getstudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
@@ -63,15 +52,19 @@ public class LibraryAccount {
     public String getBirthday() {
         return birthday;
     }
-    public int getBalance(){
+
+    public int getBalance() {
         return balance;
     }
-    public String getMajor(){
+
+    public String getMajor() {
         return major;
     }
-    public int getClass(){
-        return class;
+
+    public int getClassroom() {
+        return classroom;
     }
+
     // Setters
     public void setAccountId(String accountId) {
         this.accountId = accountId;
@@ -84,7 +77,8 @@ public class LibraryAccount {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setstudentId(String studentId) {
+
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
@@ -99,21 +93,21 @@ public class LibraryAccount {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
-    public void setBalance(int balance)
-        {
+
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 
-    public void setMajor(String major)
-    {
+    public void setMajor(String major) {
         this.major = major;
     }
-    public void setClass(int class){
-        this.class = class;
+
+    public void setClassroom(int classroom) {
+        this.classroom = classroom;
     }
+
     @Override
-    public String toString()
-    {
-        return accountid+" "+name+" "+password+" "+studentId+" "+phonenumber+" "+gender+" "+birthday+" "+major+" "+class;
+    public String toString() {
+        return accountId + " " + name + " " + password + " " + studentId + " " + phoneNumber + " " + gender + " " + birthday + " " + major + " " + classroom;
     }
 }
