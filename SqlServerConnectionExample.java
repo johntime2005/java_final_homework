@@ -7,9 +7,12 @@ import java.sql.Statement;
 public class SqlServerConnectionExample {
 
     // 数据库URL、用户名和密码
-    private static final String DB_URL = "jdbc:sqlserver://<116.205.125.206>:1433;databaseName=<wangzhangzhuo>";
-    private static final String USER = "<sa>";
-    private static final String PASS = "<952891332wW!>";
+    private static final String DB_URL = "jdbc:sqlserver://116.205.125.206:1433;"
+            + "databaseName=wangzhangzhuo;"
+            + "encrypt=true;"
+            + "trustServerCertificate=true;"; // 添加信任服务器证书
+    private static final String USER = "sa";
+    private static final String PASS = "952891332wW!";
 
     public static void main(String[] args) {
         Connection conn = null;
@@ -25,41 +28,39 @@ public class SqlServerConnectionExample {
             // 执行查询
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
-            String sql = "SELECT id, name FROM YourTable";
+            // 只查询用户表，不包含系统表
+            String sql = "SELECT TABLE_NAME FROM wangzhangzhuo.INFORMATION_SCHEMA.TABLES " +
+                    "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE 'sys%'";
             ResultSet rs = stmt.executeQuery(sql);
 
-            // 展开结果集数据库
+            System.out.println("用户表列表：");
             while (rs.next()) {
-                // 通过字段检索
-                int id  = rs.getInt("id");
-                String name = rs.getString("name");
-
-                // 输出数据
-                System.out.print("ID: " + id);
-                System.out.println(", Name: " + name);
+                System.out.println("表名: " + rs.getString("TABLE_NAME"));
             }
             // 完成后关闭
             rs.close();
             stmt.close();
             conn.close();
-        } catch(SQLException se) {
+        } catch (SQLException se) {
             // 处理JDBC错误
             se.printStackTrace();
-        } catch(Exception e) {
+        } catch (Exception e) {
             // 处理Class.forName错误
             e.printStackTrace();
         } finally {
             // 关闭资源
             try {
-                if(stmt!=null) stmt.close();
-            } catch(SQLException se2) {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
             } // 什么都不做
             try {
-                if(conn!=null) conn.close();
-            } catch(SQLException se) {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
+        System.out.println("查询完成");
     }
 }
