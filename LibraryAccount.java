@@ -11,7 +11,7 @@ public class LibraryAccount {
     private int classroom;
 
     public LibraryAccount(String accountId, String name, String password, String studentId,
-                          String phoneNumber, char gender, String birthday, int balance, String major, int classroom) {
+            String phoneNumber, char gender, String birthday, int balance, String major, int classroom) {
         this.accountId = accountId;
         this.name = name;
         this.password = password;
@@ -108,6 +108,7 @@ public class LibraryAccount {
 
     @Override
     public String toString() {
-        return accountId + " " + name + " " + password + " " + studentId + " " + phoneNumber + " " + gender + " " + birthday + " " + major + " " + classroom;
+        return accountId + " " + name + " " + password + " " + studentId + " " + phoneNumber + " " + gender + " "
+                + birthday + " " + major + " " + classroom;
     }
 }
