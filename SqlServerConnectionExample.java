@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 public class SqlServerConnectionExample {
 
@@ -13,6 +14,45 @@ public class SqlServerConnectionExample {
             + "trustServerCertificate=true;"; // 添加信任服务器证书
     private static final String USER = "sa";
     private static final String PASS = "952891332wW!";
+
+    private static void add(String name, int age) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement pstmt = conn.prepareStatement(
+                 "INSERT INTO [wangzhangzhuo].[dbo].[user] (name, age) VALUES (?, ?)")) {  // 修改这里，给表名加上方括号
+            
+            pstmt.setString(1, name);
+            pstmt.setInt(2, age);
+            
+            int rows = pstmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("添加成功！");
+            }
+            
+        } catch (SQLException se) {
+            System.out.println("数据库错误: " + se.getMessage());
+        } catch (Exception e) {
+            System.out.println("程序错误: " + e.getMessage());
+        }
+    }
+
+    private static void createTable() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement()) {
+            
+            String sql = "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'user') " +
+                        "CREATE TABLE [user] (" +
+                        "id INT IDENTITY(1,1) PRIMARY KEY," +
+                        "name NVARCHAR(50)," +
+                        "age INT" +
+                        ")";
+            
+            stmt.executeUpdate(sql);
+            System.out.println("表创建成功或已存在！");
+            
+        } catch (SQLException se) {
+            System.out.println("创建表时发生错误: " + se.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         Connection conn = null;
@@ -62,5 +102,7 @@ public class SqlServerConnectionExample {
             }
         }
         System.out.println("查询完成");
+        createTable();  // 先创建表
+        add("张三", 20);  // 再添加数据
     }
 }
