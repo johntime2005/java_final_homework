@@ -59,7 +59,35 @@ public class userMegement {
             e.printStackTrace();
         }
     }
-    //TODO: 1.增加用户 2.删除用户
+
+    // TODO: 1.增加用户 2.删除用户
+    public void create() {
+        try {
+            // 在SQL Server中，可以使用IF语句检测表是否存在
+            String createTableSQL = "IF OBJECT_ID('dbo.[user]', 'U') IS NULL " + // 检测[dbo].[user]表是否存在
+                    "BEGIN " +
+                    "    CREATE TABLE [dbo].[user] (" +
+                    "        [id] INT PRIMARY KEY," +
+                    "        [name] VARCHAR(255) NOT NULL," +
+                    "        [age] INT NOT NULL" +
+                    "    )" +
+                    "END";
+
+            stmt.executeUpdate(createTableSQL);
+            System.out.println("表创建成功或已存在！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {//按照id删除用户
+        try {
+            String deleteTableSQL = "DELETE FROM user WHERE id = " + id;
+            stmt.executeUpdate(deleteTableSQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     // public static void main(String[] args) {
     //     userMegement con = new userMegement();
@@ -68,4 +96,5 @@ public class userMegement {
     //     con.close();
     //     System.out.println("关闭成功");
     // }
+
 }
