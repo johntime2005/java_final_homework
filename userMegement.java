@@ -70,8 +70,9 @@ public class userMegement {
                     "        [id] INT PRIMARY KEY," +
                     "        [name] VARCHAR(255) NOT NULL," +
                     "        [age] INT NOT NULL" +
+                    "        [balance] INT NOT NULL" +
                     "    )" +
-                    "END";
+                    "END";// 用户具有id，姓名，年龄，余额四个属性
 
             stmt.executeUpdate(createTableSQL);
             System.out.println("表创建成功或已存在！");
@@ -80,7 +81,7 @@ public class userMegement {
         }
     }
 
-    public void delete(int id) {//按照id删除用户
+    public void delete(int id) {// 按照id删除用户
         try {
             String deleteTableSQL = "DELETE FROM user WHERE id = " + id;
             stmt.executeUpdate(deleteTableSQL);
@@ -88,13 +89,14 @@ public class userMegement {
             e.printStackTrace();
         }
     }
-
+    
+    //test
     // public static void main(String[] args) {
-    //     userMegement con = new userMegement();
-    //     System.out.println("连接成功");
-    //     con.create();
-    //     con.close();
-    //     System.out.println("关闭成功");
+    // userMegement con = new userMegement();
+    // System.out.println("连接成功");
+    // con.create();
+    // con.close();
+    // System.out.println("关闭成功");
     // }
 
 }
