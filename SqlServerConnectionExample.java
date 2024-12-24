@@ -9,7 +9,7 @@ public class SqlServerConnectionExample {
 
     // 数据库URL、用户名和密码
     private static final String DB_URL = "jdbc:sqlserver://116.205.125.206:1433;"
-            + "databaseName=wangzhangzhuo;"
+            + "databaseName=library;"
             + "encrypt=true;"
             + "trustServerCertificate=true;"; // 添加信任服务器证书
     private static final String USER = "sa";
@@ -69,7 +69,7 @@ public class SqlServerConnectionExample {
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             // 只查询用户表，不包含系统表
-            String sql = "SELECT TABLE_NAME FROM wangzhangzhuo.INFORMATION_SCHEMA.TABLES " +
+            String sql = "SELECT TABLE_NAME FROM library.INFORMATION_SCHEMA.TABLES " +
                     "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE 'sys%'";
             ResultSet rs = stmt.executeQuery(sql);
 
