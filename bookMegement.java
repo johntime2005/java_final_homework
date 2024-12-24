@@ -1,6 +1,6 @@
 import java.sql.*;
 
-public class bookMegement {
+public class bookMegement implements BookDao {
     private final String IP = "116.205.125.206";
     private final String PORT = "1433";
     private final String DB_NAME = "library";
@@ -73,7 +73,7 @@ public class bookMegement {
             e.printStackTrace();
         }
     }
-
+@Override
     public void addBook(String bookName, String author, String publisher, String publishDate, String ISBN) {
         try {
             // 先查询是否存在相同的图书
@@ -110,7 +110,7 @@ public class bookMegement {
             e.printStackTrace();
         }
     }
-
+@Override
     public void deleteBook(String bookName) {
         try {
             String sql = "DELETE FROM book WHERE bookName = '" + bookName + "'";
@@ -119,7 +119,7 @@ public class bookMegement {
             e.printStackTrace();
         }
     }
-
+@Override
     public void updateBook(String bookName, String author, String publisher, String publishDate, String ISBN) {
         try {
             String sql = "UPDATE book SET author = ?, publisher = ?, publishDate = ?, ISBN = ? WHERE bookName = ?";
@@ -135,7 +135,7 @@ public class bookMegement {
             e.printStackTrace();
         }
     }
-
+@Override
     public void queryBook(String bookName) {
         try {
             String sql = "SELECT * FROM book WHERE bookName = ?";
@@ -156,7 +156,7 @@ public class bookMegement {
             e.printStackTrace();
         }
     }
-
+@Override
     public void queryAllBook() {
         try {
             String sql = "SELECT * FROM book";
@@ -179,6 +179,7 @@ public class bookMegement {
     }
 
     // 新增：获取库存统计信息
+    @Override
     public void getInventoryStats() {
         try {
             String sql = "SELECT COUNT(DISTINCT bookName) as uniqueBooks, " +
