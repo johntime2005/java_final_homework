@@ -1,27 +1,18 @@
-/*
-一个写用户功能的类
-1：开户，申请开设个人账号；
-2：销户，对于已毕业学生强制销户，或者因故离校的人员，经申请可以销户处理。
-3：修改简单信息，但注意只能修改id，性别，生日，手机号，专业，班级等。
-4：借书:用户只能根据编号借书,先在后台查询isBorrowed，如为未借出，则借出，同时余额减少，同时isBorrowed设为true，同时借阅人设为当前用户。
-5：还书：用户只能根据编号还书，还书后isBorrowed设为false，借阅人设为null，同时余额增加。
-*/
 import java.util.Map;
 import java.util.HashMap;
+
 public class LibrarySystem {
-    private final Map<String, LibraryAccount> accounts = new HashMap<>();
-    private final Map<String, BookAccount> bookAccounts = new HashMap<>();
+    private final Map<String, LibraryAccount> accounts = new HashMap<>();  // 存储账户信息
+    private final Map<String, BookAccount> bookAccounts = new HashMap<>();  // 存储图书信息
 
-    private final String counterUsername= "Username";
-    private final String counterPassword="123456789";
+    private final String counterUsername = "Username";  // 管理员用户名
+    private final String counterPassword = "123456789";  // 管理员密码
 
-    public LibrarySystem()
-    //图书管理人员的用户名和密码可以在系统初始化时单独设定
-    {
-
+    public LibrarySystem() {
+        // 图书管理人员的用户名和密码可以在系统初始化时单独设定
     }
 
-    //开户操作
+    // 开户操作
     public void openAccount(LibraryAccount account) {
         if (accounts.containsKey(account.getAccountId())) {
             System.out.println("开户失败，账户已存在。");
@@ -31,7 +22,7 @@ public class LibrarySystem {
         }
     }
 
-    //销户操作
+    // 销户操作
     public void removeAccount(String accountId) {
         if (!accounts.containsKey(accountId)) {
             System.out.println("销户失败，账户未找到");
@@ -41,9 +32,8 @@ public class LibrarySystem {
         }
     }
 
-    //修改信息
-    public void modifyInfo(String studentId, String accountId, char gender, String birthday,
-                           String phoneNumber, String major, int classroom) {
+    // 修改信息操作
+    public void modifyInfo(String studentId, String accountId, char gender, String birthday, String phoneNumber, String major, int classroom) {
         if (!accounts.containsKey(studentId)) {
             System.out.println("修改失败，账户未找到");
         } else {
@@ -59,31 +49,26 @@ public class LibrarySystem {
         }
     }
 
-    //借书操作
+    // 借书操作
     public void borrowBook(String bookId, String studentId) {
         if (!accounts.containsKey(studentId)) {
             System.out.println("借书失败，用户不存在");
             return;
         }
-        
         if (!bookAccounts.containsKey(bookId)) {
             System.out.println("借书失败，图书不存在");
             return;
         }
-        
         BookAccount book = bookAccounts.get(bookId);
         LibraryAccount account = accounts.get(studentId);
-        
         if (book.getIsBorrowed()) {
             System.out.println("借书失败，图书已被借出");
             return;
         }
-        
         if (account.getBalance() <= 0) {
             System.out.println("借书失败，账户余额不足");
             return;
         }
-        
         // 更新图书状态
         book.setIsBorrowed(true);
         book.setBorrower(studentId);
@@ -92,31 +77,26 @@ public class LibrarySystem {
         System.out.println("借书成功");
     }
 
-    //还书操作
+    // 还书操作
     public void returnBook(String bookId, String studentId) {
         if (!accounts.containsKey(studentId)) {
             System.out.println("还书失败，用户不存在");
             return;
         }
-        
         if (!bookAccounts.containsKey(bookId)) {
             System.out.println("还书失败，图书不存在");
             return;
         }
-        
         BookAccount book = bookAccounts.get(bookId);
         LibraryAccount account = accounts.get(studentId);
-        
         if (!book.getIsBorrowed()) {
             System.out.println("还书失败，图书未被借出");
             return;
         }
-        
         if (!studentId.equals(book.getBorrower())) {
             System.out.println("还书失败，这本书不是你借的");
             return;
         }
-        
         // 更新图书状态
         book.setIsBorrowed(false);
         book.setBorrower(null);
@@ -124,5 +104,44 @@ public class LibrarySystem {
         account.setBalance(account.getBalance() + 1);
         System.out.println("还书成功");
     }
-}
 
+    // 查询账户信息（通过账户ID）
+    public LibraryAccount queryAccountById(String accountId) {
+        return accounts.get(accountId);  // 返回账户ID对应的账户信息
+    }
+
+    // 查询账户信息（通过学号）
+    public LibraryAccount queryAccountByStudentId(String studentId) {
+        for (LibraryAccount account : accounts.values()) {
+            if (account.getStudentId().equals(studentId)) {
+                return account;  // 找到匹配的账户
+            }
+        }
+        return null;  // 如果没有找到匹配的账户，返回 null
+    }
+
+    // 查询图书信息（通过图书ID）
+    public BookAccount queryBookById(String bookId) {
+        return bookAccounts.get(bookId);  // 返回图书ID对应的图书信息
+    }
+
+    // 查询图书信息（通过书名）
+    public BookAccount queryBookByName(String bookName) {
+        for (BookAccount book : bookAccounts.values()) {
+            if (book.getBookName().equals(bookName)) {
+                return book;  // 找到匹配的图书
+            }
+        }
+        return null;  // 如果没有找到匹配的图书，返回 null
+    }
+
+    // 添加图书信息（用于初始化或增加图书）
+    public void addBook(BookAccount book) {
+        if (bookAccounts.containsKey(book.getBookId())) {
+            System.out.println("图书已存在，无法添加。");
+        } else {
+            bookAccounts.put(book.getBookId(), book);
+            System.out.println("图书添加成功");
+        }
+    }
+}
