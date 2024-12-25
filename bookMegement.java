@@ -1,6 +1,8 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class bookMegement implements BookDao {
+public class bookMegement implements bookMegementDao {
     private final String IP = "116.205.125.206";
     private final String PORT = "1433";
     private final String DB_NAME = "library";
@@ -39,17 +41,17 @@ public class bookMegement implements BookDao {
             stmt = conn.createStatement();
 
             // 创建book表
-            String createTableSQL = 
-                "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'book') " +
-                "CREATE TABLE book (" +
-                "    id INT IDENTITY(1,1) PRIMARY KEY," +
-                "    bookName NVARCHAR(100)," +
-                "    author NVARCHAR(100)," +
-                "    publisher NVARCHAR(100)," +
-                "    publishDate NVARCHAR(20)," +
-                "    ISBN NVARCHAR(20)," +
-                "    quantity INT DEFAULT 1" +
-                ")";
+            String createTableSQL =
+                    "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'book') " +
+                            "CREATE TABLE book (" +
+                            "    id INT IDENTITY(1,1) PRIMARY KEY," +
+                            "    bookName NVARCHAR(100)," +
+                            "    author NVARCHAR(100)," +
+                            "    publisher NVARCHAR(100)," +
+                            "    publishDate NVARCHAR(20)," +
+                            "    ISBN NVARCHAR(20)," +
+                            "    quantity INT DEFAULT 1" +
+                            ")";
             stmt.executeUpdate(createTableSQL);
 
         } catch (SQLException e) {
@@ -73,8 +75,9 @@ public class bookMegement implements BookDao {
             e.printStackTrace();
         }
     }
-@Override
-    public void addBook(String bookName, String author, String publisher, String publishDate, String ISBN) {
+
+    @Override
+    public void addBook(String bookName, String author, String publisher, String publishDate, String ISBN) throws SQLException {
         try {
             // 先查询是否存在相同的图书
             String checkSQL = "SELECT quantity FROM book WHERE bookName = ? AND author = ? AND publisher = ?";
@@ -107,20 +110,25 @@ public class bookMegement implements BookDao {
             }
             checkStmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
-@Override
-    public void deleteBook(String bookName) {
+
+    @Override
+    public void deleteBook(String bookName) throws SQLException {
         try {
-            String sql = "DELETE FROM book WHERE bookName = '" + bookName + "'";
-            stmt.executeUpdate(sql);
+            String sql = "DELETE FROM book WHERE bookName = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, bookName);
+            pstmt.executeUpdate();
+            pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
-@Override
-    public void updateBook(String bookName, String author, String publisher, String publishDate, String ISBN) {
+
+    @Override
+    public void updateBook(String bookName, String author, String publisher, String publishDate, String ISBN) throws SQLException {
         try {
             String sql = "UPDATE book SET author = ?, publisher = ?, publishDate = ?, ISBN = ? WHERE bookName = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -132,89 +140,99 @@ public class bookMegement implements BookDao {
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
-@Override
-    public void queryBook(String bookName) {
+
+    @Override
+    public List<Book> queryBook(String bookName) throws SQLException {
+        List<Book> books = new ArrayList<>();
         try {
             String sql = "SELECT * FROM book WHERE bookName = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, bookName);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                System.out.println("书名: " + rs.getString("bookName"));
-                System.out.println("作者: " + rs.getString("author"));
-                System.out.println("出版社: " + rs.getString("publisher"));
-                System.out.println("出版日期: " + rs.getString("publishDate"));
-                System.out.println("ISBN: " + rs.getString("ISBN"));
-                System.out.println("库存数量: " + rs.getInt("quantity"));
-                System.out.println("------------------------");
+                Book book = new Book(rs.getInt("id"), rs.getString("bookName"), rs.getString("author"), rs.getString("publisher"), rs.getString("publishDate"), rs.getString("ISBN"), rs.getInt("quantity"));
+                books.add(book);
             }
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
+        return books;
     }
-@Override
-    public void queryAllBook() {
+
+    @Override
+    public List<Book> queryAllBooks() throws SQLException {
+        List<Book> books = new ArrayList<>();
         try {
             String sql = "SELECT * FROM book";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
-            System.out.println("=== 图书库存信息 ===");
             while (rs.next()) {
-                System.out.println("书名: " + rs.getString("bookName"));
-                System.out.println("作者: " + rs.getString("author"));
-                System.out.println("出版社: " + rs.getString("publisher"));
-                System.out.println("出版日期: " + rs.getString("publishDate"));
-                System.out.println("ISBN: " + rs.getString("ISBN"));
-                System.out.println("库存数量: " + rs.getInt("quantity"));
-                System.out.println("------------------------");
+                Book book = new Book(rs.getInt("id"), rs.getString("bookName"), rs.getString("author"), rs.getString("publisher"), rs.getString("publishDate"), rs.getString("ISBN"), rs.getInt("quantity"));
+                books.add(book);
             }
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
+        return books;
     }
 
-    // 新增：获取库存统计信息
     @Override
-    public void getInventoryStats() {
+    public InventoryStats getInventoryStats() throws SQLException {
+        InventoryStats stats = new InventoryStats();
         try {
             String sql = "SELECT COUNT(DISTINCT bookName) as uniqueBooks, " +
-                        "SUM(quantity) as totalBooks " +
-                        "FROM book";
+                    "SUM(quantity) as totalBooks " +
+                    "FROM book";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
-            
+
             if (rs.next()) {
-                System.out.println("=== 库存统计信息 ===");
-                System.out.println("不同书籍总数: " + rs.getInt("uniqueBooks"));
-                System.out.println("书籍总库存量: " + rs.getInt("totalBooks"));
-                System.out.println("------------------------");
+                stats.setUniqueBooks(rs.getInt("uniqueBooks"));
+                stats.setTotalBooks(rs.getInt("totalBooks"));
             }
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
+        return stats;
     }
 
     public static void main(String[] args) {
         bookMegement con = new bookMegement();
         System.out.println("连接成功");
-        
+
         // 测试添加重复图书
-        con.addBook("Java编程", "作者A", "出版社X", "2023-01-01", "ISBN001");
-        con.addBook("Java编程", "作者A", "出版社X", "2023-01-01", "ISBN001");
-        con.addBook("C++", "作者B", "出版社Y", "2023-01-01", "ISBN002");
-        
+        try {
+            con.addBook("Java编程", "作者A", "出版社X", "2023-01-01", "ISBN001");
+            con.addBook("Java编程", "作者A", "出版社X", "2023-01-01", "ISBN001");
+            con.addBook("C++", "作者B", "出版社Y", "2023-01-01", "ISBN002");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         // 显示所有图书信息
-        con.queryAllBook();
-        
+        try {
+            List<Book> books = con.queryAllBooks();
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         // 显示库存统计
-        con.getInventoryStats();
-        
+        try {
+            InventoryStats stats = con.getInventoryStats();
+            System.out.println(stats);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         con.close();
         System.out.println("关闭成功");
     }
