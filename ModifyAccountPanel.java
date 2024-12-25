@@ -3,13 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class ModifyAccountPanel extends JPanel {
-    private JTextField accountIdField, nameField, passwordField, studentIdField, phoneField, birthdayField, majorField, classroomField;
+    private JTextField accountIdField, nameField, studentIdField, phoneField, birthdayField, majorField, classroomField;
     private JComboBox<String> genderComboBox;
-    private JTextField balanceField;
     private JButton modifyButton;
+    private LibrarySystem librarySystem;
 
-    public ModifyAccountPanel() {
-        setLayout(new GridLayout(11, 2));
+    public ModifyAccountPanel(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
+        setLayout(new GridLayout(9, 2));
 
         // 账户ID
         add(new JLabel("账户ID:"));
@@ -20,11 +21,6 @@ public class ModifyAccountPanel extends JPanel {
         add(new JLabel("姓名:"));
         nameField = new JTextField();
         add(nameField);
-
-        // 密码
-        add(new JLabel("密码:"));
-        passwordField = new JPasswordField();
-        add(passwordField);
 
         // 学号
         add(new JLabel("学号:"));
@@ -46,11 +42,6 @@ public class ModifyAccountPanel extends JPanel {
         birthdayField = new JTextField();
         add(birthdayField);
 
-        // 余额
-        add(new JLabel("余额:"));
-        balanceField = new JTextField();
-        add(balanceField);
-
         // 专业
         add(new JLabel("专业:"));
         majorField = new JTextField();
@@ -68,23 +59,19 @@ public class ModifyAccountPanel extends JPanel {
         add(modifyButton);
     }
 
-    // 执行修改操作
     private void modifyAccount(ActionEvent e) {
         String accountId = accountIdField.getText();
         String name = nameField.getText();
-        String password = passwordField.getText();
         String studentId = studentIdField.getText();
         String phone = phoneField.getText();
         char gender = genderComboBox.getSelectedItem().equals("男") ? 'M' : 'F';
         String birthday = birthdayField.getText();
-        int balance = Integer.parseInt(balanceField.getText());
         String major = majorField.getText();
         int classroom = Integer.parseInt(classroomField.getText());
 
-        // 假设你有一个 LibrarySystem 实例来处理修改信息
-        // librarySystem.modifyInfo(studentId, accountId, gender, birthday, phone, major, classroom);
+        // 调用 LibrarySystem 的方法来修改信息
+        librarySystem.modifyAccount(accountId, name, studentId, phone, birthday, major, classroom);
 
-        // 修改成功提示
         JOptionPane.showMessageDialog(this, "修改信息成功");
     }
 }

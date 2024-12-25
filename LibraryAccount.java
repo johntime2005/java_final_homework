@@ -1,22 +1,22 @@
 public class LibraryAccount {
-    private String accountId;
-    private String name;
-    private String password; // 密码
-    private String studentId; // 学号
-    private String phoneNumber; // 电话号码
-    private char gender;
-    private String birthday;
-    private int balance;
-    private String major;
-    private int classroom;
+    private String accountId;   // 账户ID
+    private String name;        // 姓名
+    private String password;    // 密码
+    private String studentId;   // 学号
+    private String phone;       // 电话
+    private char gender;        // 性别
+    private String birthday;    // 生日
+    private int balance;        // 余额
+    private String major;       // 专业
+    private int classroom;      // 班级
 
-    public LibraryAccount(String accountId, String name, String password, String studentId,
-            String phoneNumber, char gender, String birthday, int balance, String major, int classroom) {
+    // 构造方法
+    public LibraryAccount(String accountId, String name, String password, String studentId, String phone, char gender, String birthday, int balance, String major, int classroom) {
         this.accountId = accountId;
         this.name = name;
         this.password = password;
         this.studentId = studentId;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.gender = gender;
         this.birthday = birthday;
         this.balance = balance;
@@ -24,7 +24,7 @@ public class LibraryAccount {
         this.classroom = classroom;
     }
 
-    // Getters
+    // Getter 方法
     public String getAccountId() {
         return accountId;
     }
@@ -41,8 +41,8 @@ public class LibraryAccount {
         return studentId;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
     public char getGender() {
@@ -65,50 +65,17 @@ public class LibraryAccount {
         return classroom;
     }
 
-    // Setters
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public void setClassroom(int classroom) {
-        this.classroom = classroom;
-    }
-
+    // toString 方法，便于打印账户信息
     @Override
     public String toString() {
-        return accountId + " " + name + " " + password + " " + studentId + " " + phoneNumber + " " + gender + " "
-                + birthday + " " + major + " " + classroom;
+        return "账户ID: " + accountId + "\n" +
+                "姓名: " + name + "\n" +
+                "学号: " + studentId + "\n" +
+                "电话: " + phone + "\n" +
+                "性别: " + (gender == 'M' ? "男" : "女") + "\n" +
+                "生日: " + birthday + "\n" +
+                "余额: " + balance + "\n" +
+                "专业: " + major + "\n" +
+                "班级: " + classroom;
     }
 }

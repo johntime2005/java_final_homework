@@ -3,20 +3,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class BorrowBookPanel extends JPanel {
-    private JTextField studentIdField, bookIdField;
+    private JTextField accountIdField, bookIdField;
     private JButton borrowButton;
+    private LibrarySystem librarySystem;
 
-    public BorrowBookPanel() {
+    public BorrowBookPanel(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
         setLayout(new GridLayout(3, 2));
 
-        add(new JLabel("学号:"));
-        studentIdField = new JTextField();
-        add(studentIdField);
+        // 账户ID输入框
+        add(new JLabel("请输入账户ID:"));
+        accountIdField = new JTextField();
+        add(accountIdField);
 
-        add(new JLabel("书籍编号:"));
+        // 书籍编号输入框
+        add(new JLabel("请输入书籍编号:"));
         bookIdField = new JTextField();
         add(bookIdField);
 
+        // 借书按钮
         borrowButton = new JButton("借书");
         borrowButton.addActionListener(this::borrowBook);
         add(new JLabel()); // Empty cell for spacing
@@ -24,11 +29,11 @@ public class BorrowBookPanel extends JPanel {
     }
 
     private void borrowBook(ActionEvent e) {
-        String studentId = studentIdField.getText();
+        String accountId = accountIdField.getText();
         String bookId = bookIdField.getText();
 
-        // 调用图书馆系统借书的方法
-        // librarySystem.borrowBook(bookId, studentId);
+        librarySystem.borrowBook(accountId, bookId);
+
         JOptionPane.showMessageDialog(this, "借书成功");
     }
 }

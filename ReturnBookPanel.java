@@ -3,16 +3,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class ReturnBookPanel extends JPanel {
-    private JTextField studentIdField, bookIdField;
-    private JButton returnBookButton;
+    private JTextField accountIdField, bookIdField;
+    private JButton returnButton;
+    private LibrarySystem librarySystem;
 
-    public ReturnBookPanel() {
+    public ReturnBookPanel(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
         setLayout(new GridLayout(3, 2));
 
-        // 学号输入框
-        add(new JLabel("请输入学号:"));
-        studentIdField = new JTextField();
-        add(studentIdField);
+        // 账户ID输入框
+        add(new JLabel("请输入账户ID:"));
+        accountIdField = new JTextField();
+        add(accountIdField);
 
         // 书籍编号输入框
         add(new JLabel("请输入书籍编号:"));
@@ -20,21 +22,18 @@ public class ReturnBookPanel extends JPanel {
         add(bookIdField);
 
         // 还书按钮
-        returnBookButton = new JButton("还书");
-        returnBookButton.addActionListener(this::returnBook);
+        returnButton = new JButton("还书");
+        returnButton.addActionListener(this::returnBook);
         add(new JLabel()); // Empty cell for spacing
-        add(returnBookButton);
+        add(returnButton);
     }
 
-    // 执行还书操作
     private void returnBook(ActionEvent e) {
-        String studentId = studentIdField.getText();
+        String accountId = accountIdField.getText();
         String bookId = bookIdField.getText();
 
-        // 假设你有一个 LibrarySystem 实例来处理还书
-        // librarySystem.returnBook(bookId, studentId);
+        librarySystem.returnBook(accountId, bookId);
 
-        // 还书成功提示
         JOptionPane.showMessageDialog(this, "还书成功");
     }
 }

@@ -5,10 +5,12 @@ import java.awt.event.*;
 public class LibrarySystemGUI extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
+    private LibrarySystem librarySystem;
 
-    public LibrarySystemGUI() {
+    public LibrarySystemGUI(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
         setTitle("图书馆管理系统");
-        setSize(400, 300);
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -25,6 +27,7 @@ public class LibrarySystemGUI extends JFrame {
         JButton modifyAccountButton = new JButton("修改信息");
         JButton borrowBookButton = new JButton("借书");
         JButton returnBookButton = new JButton("还书");
+        JButton queryAccountButton = new JButton("查询账户");
 
         // 按钮动作
         openAccountButton.addActionListener(e -> cardLayout.show(cardPanel, "openAccountPanel"));
@@ -32,6 +35,7 @@ public class LibrarySystemGUI extends JFrame {
         modifyAccountButton.addActionListener(e -> cardLayout.show(cardPanel, "modifyAccountPanel"));
         borrowBookButton.addActionListener(e -> cardLayout.show(cardPanel, "borrowBookPanel"));
         returnBookButton.addActionListener(e -> cardLayout.show(cardPanel, "returnBookPanel"));
+        queryAccountButton.addActionListener(e -> cardLayout.show(cardPanel, "queryAccountPanel"));
 
         // 添加按钮到主面板
         mainPanel.add(openAccountButton);
@@ -39,29 +43,31 @@ public class LibrarySystemGUI extends JFrame {
         mainPanel.add(modifyAccountButton);
         mainPanel.add(borrowBookButton);
         mainPanel.add(returnBookButton);
+        mainPanel.add(queryAccountButton);
 
         // 各个功能面板
-        JPanel openAccountPanel = new OpenAccountPanel();
-        JPanel removeAccountPanel = new RemoveAccountPanel();
-        JPanel modifyAccountPanel = new ModifyAccountPanel();
-        JPanel borrowBookPanel = new BorrowBookPanel();
-        JPanel returnBookPanel = new ReturnBookPanel();
+        JPanel openAccountPanel = new OpenAccountPanel(librarySystem);
+        JPanel removeAccountPanel = new RemoveAccountPanel(librarySystem);
+        JPanel modifyAccountPanel = new ModifyAccountPanel(librarySystem);
+        JPanel borrowBookPanel = new BorrowBookPanel(librarySystem);
+        JPanel returnBookPanel = new ReturnBookPanel(librarySystem);
+        JPanel queryAccountPanel = new QueryAccountPanel(librarySystem);
 
-        // 添加到CardLayout面板
+        // 添加面板到cardPanel
         cardPanel.add(mainPanel, "mainPanel");
         cardPanel.add(openAccountPanel, "openAccountPanel");
         cardPanel.add(removeAccountPanel, "removeAccountPanel");
         cardPanel.add(modifyAccountPanel, "modifyAccountPanel");
         cardPanel.add(borrowBookPanel, "borrowBookPanel");
         cardPanel.add(returnBookPanel, "returnBookPanel");
+        cardPanel.add(queryAccountPanel, "queryAccountPanel");
 
         add(cardPanel);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LibrarySystemGUI frame = new LibrarySystemGUI();
-            frame.setVisible(true);
-        });
+        LibrarySystem librarySystem = new LibrarySystem();
+        LibrarySystemGUI gui = new LibrarySystemGUI(librarySystem);
+        gui.setVisible(true);
     }
 }

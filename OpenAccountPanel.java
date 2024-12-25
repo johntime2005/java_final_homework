@@ -7,8 +7,10 @@ public class OpenAccountPanel extends JPanel {
     private JComboBox<String> genderComboBox;
     private JTextField balanceField;
     private JButton openAccountButton;
+    private LibrarySystem librarySystem;
 
-    public OpenAccountPanel() {
+    public OpenAccountPanel(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
         setLayout(new GridLayout(11, 2));
 
         // 账户ID
@@ -68,7 +70,6 @@ public class OpenAccountPanel extends JPanel {
         add(openAccountButton);
     }
 
-    // 执行开户操作
     private void openAccount(ActionEvent e) {
         String accountId = accountIdField.getText();
         String name = nameField.getText();
@@ -84,8 +85,8 @@ public class OpenAccountPanel extends JPanel {
         // 创建 LibraryAccount 实例
         LibraryAccount newAccount = new LibraryAccount(accountId, name, password, studentId, phone, gender, birthday, balance, major, classroom);
 
-        // 假设你有一个 LibrarySystem 实例来处理开户
-        // librarySystem.openAccount(newAccount);
+        // 使用 LibrarySystem 来进行开户
+        librarySystem.openAccount(newAccount);
 
         // 开户成功提示
         JOptionPane.showMessageDialog(this, "开户成功");
