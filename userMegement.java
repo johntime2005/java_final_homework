@@ -35,7 +35,9 @@ public class userMegement {
             String dbUrl = "jdbc:sqlserver://" + IP + ":" + PORT + ";"
                     + "encrypt=true;"
                     + "trustServerCertificate=true;"
-                    + "database=" + DB_NAME + ";";
+                    + "database=" + DB_NAME + ";"
+                    + "sendStringParametersAsUnicode=true;"
+                    + "characterEncoding=UTF-8;";
             conn = DriverManager.getConnection(dbUrl, USER, PASSWORD);
             stmt = conn.createStatement();
 
@@ -71,13 +73,13 @@ public class userMegement {
                 + "BEGIN "
                 + "CREATE TABLE library_user ("
                 + "id INT IDENTITY(1,1) PRIMARY KEY, "
-                + "name VARCHAR(255) NOT NULL, "
+                + "name NVARCHAR(255) NOT NULL, "
                 + "age INT NOT NULL, "
-                + "balance INT NOT NULL); "
+                + "balance INT NOT NULL)"
                 + "END";
         try {
             stmt.executeUpdate(createTableSQL);
-            System.out.println("表创建成功或已存在！");
+            System.out.println("表创建成功！");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,6 +97,7 @@ public class userMegement {
             pstmt.close();
             System.out.println("用户添加成功！");
         } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -127,7 +130,7 @@ public class userMegement {
             System.out.println("用户信息：");
             while (rs.next()) {
                 System.out.println("ID: " + rs.getInt("id"));
-                System.out.println("姓名: " + rs.getString("name"));
+                System.out.println("姓名: " + rs.getNString("name"));
                 System.out.println("年龄: " + rs.getInt("age"));
                 System.out.println("余额: " + rs.getInt("balance"));
                 System.out.println("--------------------");
@@ -147,7 +150,7 @@ public class userMegement {
 
             if (rs.next()) {
                 System.out.println("ID: " + rs.getInt("id"));
-                System.out.println("姓名: " + rs.getString("name"));
+                System.out.println("姓名: " + rs.getNString("name"));
                 System.out.println("年龄: " + rs.getInt("age"));
                 System.out.println("余额: " + rs.getInt("balance"));
             } else {
