@@ -13,19 +13,23 @@ public class bookMegement implements bookMegementDao {
     private Statement stmt = null;
 
     private void initializeDatabase() {
+        // 设置JVM字符编码
+        System.setProperty("file.encoding", "UTF-8");
         try {
             // 首先连接到master数据库
             String masterUrl = "jdbc:sqlserver://" + IP + ":" + PORT + ";"
                     + "encrypt=true;"
                     + "trustServerCertificate=true;"
-                    + "database=master;";
+                    + "database=master;"
+                    + "sendStringParametersAsUnicode=true;"
+                    + "characterEncoding=UTF-8;";
 
             conn = DriverManager.getConnection(masterUrl, user, password);
             stmt = conn.createStatement();
 
             // 检查并创建数据库
             String createDbSQL = "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '" + DB_NAME + "') " +
-                    "CREATE DATABASE " + DB_NAME;
+                    "CREATE DATABASE " + DB_NAME + " COLLATE Chinese_PRC_CI_AS";
             stmt.executeUpdate(createDbSQL);
 
             // 关闭master连接
@@ -36,7 +40,9 @@ public class bookMegement implements bookMegementDao {
             String dbUrl = "jdbc:sqlserver://" + IP + ":" + PORT + ";"
                     + "encrypt=true;"
                     + "trustServerCertificate=true;"
-                    + "database=" + DB_NAME + ";";
+                    + "database=" + DB_NAME + ";"
+                    + "sendStringParametersAsUnicode=true;"
+                    + "characterEncoding=UTF-8;";
             conn = DriverManager.getConnection(dbUrl, user, password);
             stmt = conn.createStatement();
 
@@ -45,9 +51,9 @@ public class bookMegement implements bookMegementDao {
                     "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'book') " +
                             "CREATE TABLE book (" +
                             "    id INT IDENTITY(1,1) PRIMARY KEY," +
-                            "    bookName NVARCHAR(100)," +
-                            "    author NVARCHAR(100)," +
-                            "    publisher NVARCHAR(100)," +
+                            "    bookName NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
+                            "    author NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
+                            "    publisher NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
                             "    publishDate NVARCHAR(20)," +
                             "    ISBN NVARCHAR(20)," +
                             "    quantity INT DEFAULT 1" +
