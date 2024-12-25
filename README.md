@@ -24,6 +24,6 @@ LibrarySystem类用于编写业务，注意，应与dao层所实现的功能相�
 
 JavaBean层：
 BookAccount：定义图书的基本属性
-LibraryAccount：定义图书管个人账号的基本属性
+User：定义图书管个人账号的基本属性
 
 剩余代码作为面向用户和前端交接的部分，先实现命令行控制，再实现前端UI界面
