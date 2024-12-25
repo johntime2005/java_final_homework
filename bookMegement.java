@@ -3,10 +3,83 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class bookMegement implements bookMegementDao {
-    private Connection conn;
+    private final String IP = "116.205.125.206";
+    private final String PORT = "1433";
+    private final String DB_NAME = "library";
+    private final String user = "sa";
+    private final String password = "952891332wW!";
 
-    public bookMegement(Connection conn) {
-        this.conn = conn;
+    private Connection conn = null;
+    private Statement stmt = null;
+
+    private void initializeDatabase() {
+        // 设置JVM字符编码
+        System.setProperty("file.encoding", "UTF-8");
+        try {
+            // 首先连接到master数据库
+            String masterUrl = "jdbc:sqlserver://" + IP + ":" + PORT + ";"
+                    + "encrypt=true;"
+                    + "trustServerCertificate=true;"
+                    + "database=master;"
+                    + "sendStringParametersAsUnicode=true;"
+                    + "characterEncoding=UTF-8;";
+
+            conn = DriverManager.getConnection(masterUrl, user, password);
+            stmt = conn.createStatement();
+
+            // 检查并创建数据库
+            String createDbSQL = "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '" + DB_NAME + "') " +
+                    "CREATE DATABASE " + DB_NAME + " COLLATE Chinese_PRC_CI_AS";
+            stmt.executeUpdate(createDbSQL);
+
+            // 关闭master连接
+            stmt.close();
+            conn.close();
+
+            // 连接到新创建的数据库
+            String dbUrl = "jdbc:sqlserver://" + IP + ":" + PORT + ";"
+                    + "encrypt=true;"
+                    + "trustServerCertificate=true;"
+                    + "database=" + DB_NAME + ";"
+                    + "sendStringParametersAsUnicode=true;"
+                    + "characterEncoding=UTF-8;";
+            conn = DriverManager.getConnection(dbUrl, user, password);
+            stmt = conn.createStatement();
+
+            // 创建book表
+            String createTableSQL =
+                    "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'book') " +
+                            "CREATE TABLE book (" +
+                            "    id INT IDENTITY(1,1) PRIMARY KEY," +
+                            "    bookName NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
+                            "    author NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
+                            "    publisher NVARCHAR(100) COLLATE Chinese_PRC_CI_AS," +
+                            "    publishDate NVARCHAR(20)," +
+                            "    ISBN NVARCHAR(20)," +
+                            "    quantity INT DEFAULT 1" +
+                            ")";
+            stmt.executeUpdate(createTableSQL);
+
+        } catch (SQLException e) {
+            e.printStackTrace();  // 建议在开发时打印错误信息以便调试
+        }
+    }
+
+    public bookMegement() {
+        initializeDatabase();
+    }
+
+    public void close() {
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
