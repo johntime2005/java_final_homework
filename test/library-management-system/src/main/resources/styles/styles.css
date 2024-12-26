@@ -1,0 +1,30 @@
+/* 这个文件是为了定义JavaFX应用程序的样式 */
+
+.root {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-background-color: #4CAF50; /* 绿色 */
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* 深绿色 */
+}
+
+.label {
+    -fx-text-fill: #333; /* 深灰色 */
+}
+
+.text-field {
+    -fx-border-color: #ccc; /* 浅灰色 */
+    -fx-padding: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: #4CAF50; /* 绿色 */
+}
