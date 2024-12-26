@@ -1,7 +1,7 @@
 public class User {
-    private int id; // 重命名accountId为id
+    private int id;
     private String name;
-    private int age; // 添加age属性
+    private int age;
     private int balance;
 
     public User(int id, String name, int age, int balance) {
@@ -11,7 +11,7 @@ public class User {
         this.balance = balance;
     }
 
-    // Getters
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -28,7 +28,6 @@ public class User {
         return balance;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }

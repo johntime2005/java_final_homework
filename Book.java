@@ -1,19 +1,13 @@
 public class Book {
     private int id;
-    private String bookName;
+    private String title;
     private String author;
-    private String publisher;
-    private String publishDate;
-    private String ISBN;
     private int quantity;
 
-    public Book(int id, String bookName, String author, String publisher, String publishDate, String ISBN, int quantity) {
+    public Book(int id, String title, String author, int quantity) {
         this.id = id;
-        this.bookName = bookName;
+        this.title = title;
         this.author = author;
-        this.publisher = publisher;
-        this.publishDate = publishDate;
-        this.ISBN = ISBN;
         this.quantity = quantity;
     }
 
@@ -22,52 +16,28 @@ public class Book {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public String getTitle() {
+        return title;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(String publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setQuantity(int quantity) {
@@ -76,14 +46,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", bookName='" + bookName + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", publishDate='" + publishDate + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", quantity=" + quantity +
-                '}';
+        return id + " " + title + " " + author + " " + quantity;
     }
 }

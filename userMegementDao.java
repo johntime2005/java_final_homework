@@ -3,7 +3,8 @@ import java.util.List;
 
 public interface userMegementDao {
     void create() throws SQLException;
-    void delete(String id) throws SQLException;
-    void update(String id, String name, int age, int balance) throws SQLException;
-    List<User> query(String id) throws SQLException;
+    void addUser(User user) throws SQLException;
+    void deleteUser(int id) throws SQLException;
+    void updateUser(User user) throws SQLException;
+    List<User> queryUser(int id) throws SQLException;
 }
