@@ -14,6 +14,10 @@ public class AdminPanel extends Application {
     private Button addButton, queryButton, updateButton;
     private TextArea bookInfoArea;
 
+    public AdminPanel() {
+        
+    }
+
     public AdminPanel(BookService bookService) {
         this.bookService = bookService;
     }
