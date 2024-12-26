@@ -1,5 +1,3 @@
-import javafx.beans.property.*;
-
 public class Book {
     private int id;
     private String title;
