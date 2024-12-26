@@ -1,89 +1,46 @@
+import javafx.beans.property.*;
+
 public class Book {
-    private int id;
-    private String bookName;
-    private String author;
-    private String publisher;
-    private String publishDate;
-    private String ISBN;
-    private int quantity;
+    private final IntegerProperty id;
+    private final StringProperty bookName;
+    private final StringProperty author;
+    private final StringProperty publisher;
+    private final StringProperty publishDate;
+    private final StringProperty isbn;
+    private final IntegerProperty quantity;
 
-    public Book(int id, String bookName, String author, String publisher, String publishDate, String ISBN, int quantity) {
-        this.id = id;
-        this.bookName = bookName;
-        this.author = author;
-        this.publisher = publisher;
-        this.publishDate = publishDate;
-        this.ISBN = ISBN;
-        this.quantity = quantity;
+    public Book(int id, String bookName, String author, String publisher, 
+                String publishDate, String isbn, int quantity) {
+        this.id = new SimpleIntegerProperty(id);
+        this.bookName = new SimpleStringProperty(bookName);
+        this.author = new SimpleStringProperty(author);
+        this.publisher = new SimpleStringProperty(publisher);
+        this.publishDate = new SimpleStringProperty(publishDate);
+        this.isbn = new SimpleStringProperty(isbn);
+        this.quantity = new SimpleIntegerProperty(quantity);
     }
 
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
+    // Getters for properties
+    public IntegerProperty idProperty() { return id; }
+    public StringProperty bookNameProperty() { return bookName; }
+    public StringProperty authorProperty() { return author; }
+    public StringProperty publisherProperty() { return publisher; }
+    public StringProperty publishDateProperty() { return publishDate; }
+    public StringProperty isbnProperty() { return isbn; }
+    public IntegerProperty quantityProperty() { return quantity; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(String publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    // Standard getters
+    public int getId() { return id.get(); }
+    public String getBookName() { return bookName.get(); }
+    public String getAuthor() { return author.get(); }
+    public String getPublisher() { return publisher.get(); }
+    public String getPublishDate() { return publishDate.get(); }
+    public String getIsbn() { return isbn.get(); }
+    public int getQuantity() { return quantity.get(); }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", bookName='" + bookName + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", publishDate='" + publishDate + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", quantity=" + quantity +
-                '}';
+        return String.format("Book{id=%d, name='%s', author='%s', publisher='%s', date='%s', ISBN='%s', quantity=%d}",
+                getId(), getBookName(), getAuthor(), getPublisher(), getPublishDate(), getIsbn(), getQuantity());
     }
 }
