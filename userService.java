@@ -2,38 +2,29 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class userService {
-    private final userMegementDao userdao;
+    private userMegement userDao;
 
-    public userService(userMegementDao userdao) {
-        this.userdao = userdao;
+    public userService(userMegement userDao) {
+        this.userDao = userDao;
     }
-    public void create() {
-        try {
-            userdao.create();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    // 创建新用户
+    public void createUser(User user) throws SQLException {
+        userDao.addUser(user);
     }
-    public void delete(String id) {
-        try {
-            userdao.delete(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    // 删除用户
+    public void deleteUser(int id) throws SQLException {
+        userDao.deleteUser(id);
     }
-    public void update(String id, String name, int age, int balance) {
-        try {
-            userdao.update(id, name, age, balance);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    // 更新用户信息
+    public void updateUser(User user) throws SQLException {
+        userDao.updateUser(user);
     }
-    public List<User> query(String id) {
-        try {
-            return userdao.query(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+    // 查询用户（根据id查询）
+    public List<User> getUserById(int id) throws SQLException {
+        return userDao.queryUser(id);
     }
 }

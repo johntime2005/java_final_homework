@@ -1,57 +1,30 @@
 import java.sql.SQLException;
 import java.util.List;
+
 public class BookService {
-    private final bookMegementDao bookdao;
+    private bookMegementDao bookDao;
 
-    public BookService(bookMegementDao bookdao) {
-        this.bookdao = bookdao;
+    public BookService(bookMegement bookDao) {
+        this.bookDao = bookDao;
     }
 
-    public void addBook(String bookName, String author, String publisher, String publishDate, String ISBN) {
-        try {
-            bookdao.addBook(bookName, author, publisher, publishDate, ISBN);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-        public void deleteBook (String bookName){
-            try {
-                bookdao.deleteBook(bookName);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        public void updateBook (String bookName, String author, String publisher, String publishDate, String ISBN){
-            try {
-                bookdao.updateBook(bookName, author, publisher, publishDate, ISBN);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        public List<Book> queryBook (String bookName){
-            try {
-                return bookdao.queryBook(bookName);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-    public List<Book> queryAllBooks() {
-        try {
-            return bookdao.queryAllBooks();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    // 创建新图书
+    public void createBook(Book book) throws SQLException {
+        bookDao.addBook(book);
     }
 
-    public InventoryStats getInventoryStats() {
-        try {
-            return bookdao.getInventoryStats();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    // 删除图书
+    public void deleteBook(int id) throws SQLException {
+        bookDao.deleteBook(id);
+    }
+
+    // 更新图书信息
+    public void updateBook(Book book) throws SQLException {
+        bookDao.updateBook(book);
+    }
+
+    // 查询图书（根据标题查询）
+    public List<Book> getBookByTitle(String title) throws SQLException {
+        return bookDao.queryBook(title);
     }
 }

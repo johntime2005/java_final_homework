@@ -1,46 +1,53 @@
 import javafx.beans.property.*;
 
 public class Book {
-    private final IntegerProperty id;
-    private final StringProperty bookName;
-    private final StringProperty author;
-    private final StringProperty publisher;
-    private final StringProperty publishDate;
-    private final StringProperty isbn;
-    private final IntegerProperty quantity;
+    private int id;
+    private String title;
+    private String author;
+    private int quantity;
 
-    public Book(int id, String bookName, String author, String publisher, 
-                String publishDate, String isbn, int quantity) {
-        this.id = new SimpleIntegerProperty(id);
-        this.bookName = new SimpleStringProperty(bookName);
-        this.author = new SimpleStringProperty(author);
-        this.publisher = new SimpleStringProperty(publisher);
-        this.publishDate = new SimpleStringProperty(publishDate);
-        this.isbn = new SimpleStringProperty(isbn);
-        this.quantity = new SimpleIntegerProperty(quantity);
+    public Book(int id, String title, String author, int quantity) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
     }
 
-    // Getters for properties
-    public IntegerProperty idProperty() { return id; }
-    public StringProperty bookNameProperty() { return bookName; }
-    public StringProperty authorProperty() { return author; }
-    public StringProperty publisherProperty() { return publisher; }
-    public StringProperty publishDateProperty() { return publishDate; }
-    public StringProperty isbnProperty() { return isbn; }
-    public IntegerProperty quantityProperty() { return quantity; }
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-    // Standard getters
-    public int getId() { return id.get(); }
-    public String getBookName() { return bookName.get(); }
-    public String getAuthor() { return author.get(); }
-    public String getPublisher() { return publisher.get(); }
-    public String getPublishDate() { return publishDate.get(); }
-    public String getIsbn() { return isbn.get(); }
-    public int getQuantity() { return quantity.get(); }
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {
-        return String.format("Book{id=%d, name='%s', author='%s', publisher='%s', date='%s', ISBN='%s', quantity=%d}",
-                getId(), getBookName(), getAuthor(), getPublisher(), getPublishDate(), getIsbn(), getQuantity());
+        return id + " " + title + " " + author + " " + quantity;
     }
 }
