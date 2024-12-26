@@ -1,34 +1,54 @@
-package com.library.model;
-
-import java.util.ArrayList;
-import java.util.List;
+package test.library
 
 public class User {
-    private String username;
-    private List<Book> borrowedBooks;
+    private int id; // 重命名accountId为id
+    private String name;
+    private int age; // 添加age属性
+    private int balance;
 
-    public User(String username) {
-        this.username = username;
-        this.borrowedBooks = new ArrayList<>();
+    public User(int id, String name, int age, int balance) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.balance = balance;
     }
 
-    public String getUsername() {
-        return username;
+    // Getters
+    public int getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getName() {
+        return name;
     }
 
-    public List<Book> getBorrowedBooks() {
-        return borrowedBooks;
+    public int getAge() {
+        return age;
     }
 
-    public void borrowBook(Book book) {
-        borrowedBooks.add(book);
+    public int getBalance() {
+        return balance;
     }
 
-    public void returnBook(Book book) {
-        borrowedBooks.remove(book);
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + name + " " + age + " " + balance;
     }
 }
