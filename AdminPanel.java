@@ -3,104 +3,126 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class AdminPanel extends Application {
+
     private BookService bookService;
 
-    // GUI组件
-    private TextField bookIdField, bookTitleField, bookAuthorField, bookQuantityField;
-    private Button addButton, queryButton, updateButton;
-    private TextArea bookInfoArea;
+    // 构造函数
+    public AdminPanel() {
+        try {
+            // 获取数据库连接
+            Connection connection = DatabaseConnection.getConnection();
 
-    public AdminPanel(BookService bookService) {
-        this.bookService = bookService;
+            // 创建 BookService 实例，传入 BookDao 实现（即 bookMegement）
+            this.bookService = new BookService(new bookMegement(connection)); // 传入数据库连接给 BookService
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // 如果连接数据库失败，弹出错误提示
+            new Alert(Alert.AlertType.ERROR, "Failed to connect to database!").showAndWait();
+        }
     }
 
     @Override
     public void start(Stage primaryStage) {
-        // 初始化GUI组件
-        bookIdField = new TextField();
-        bookIdField.setPromptText("Enter Book ID");
+        // 主界面布局
+        VBox layout = new VBox(10);
+        layout.setPadding(new javafx.geometry.Insets(10));
 
-        bookTitleField = new TextField();
-        bookTitleField.setPromptText("Enter Book Title");
+        // 输入查询书籍信息的控件
+        TextField bookTitleField = new TextField();
+        bookTitleField.setPromptText("Enter book title to search");
 
-        bookAuthorField = new TextField();
-        bookAuthorField.setPromptText("Enter Author");
+        Button queryButton = new Button("Query Book");
 
-        bookQuantityField = new TextField();
-        bookQuantityField.setPromptText("Enter Quantity");
+        // 添加书籍控件
+        TextField titleField = new TextField();
+        titleField.setPromptText("Book Title");
 
-        addButton = new Button("Add Book");
-        queryButton = new Button("Query Book");
-        updateButton = new Button("Update Book");
+        TextField authorField = new TextField();
+        authorField.setPromptText("Author");
 
-        bookInfoArea = new TextArea();
-        bookInfoArea.setEditable(false);
+        TextField publisherField = new TextField();
+        publisherField.setPromptText("Publisher");
 
-        // 添加图书按钮事件
-        addButton.setOnAction(e -> {
-            try {
-                int id = Integer.parseInt(bookIdField.getText());
-                String title = bookTitleField.getText();
-                String author = bookAuthorField.getText();
-                int quantity = Integer.parseInt(bookQuantityField.getText());
+        DatePicker publishDatePicker = new DatePicker();
+        publishDatePicker.setPromptText("Publish Date");
 
-                Book newBook = new Book(id, title, author, quantity);
-                bookService.createBook(newBook);
-                bookInfoArea.setText("Book added successfully!");
-            } catch (SQLException | NumberFormatException ex) {
-                ex.printStackTrace();
-                bookInfoArea.setText("Error: " + ex.getMessage());
-            }
-        });
+        TextField isbnField = new TextField();
+        isbnField.setPromptText("ISBN");
 
-        // 查询图书按钮事件
+        TextField quantityField = new TextField();
+        quantityField.setPromptText("Quantity");
+
+        Button addButton = new Button("Add Book");
+
+        // 查询书籍功能
         queryButton.setOnAction(e -> {
+            String title = bookTitleField.getText();
             try {
-                String title = bookTitleField.getText();
                 List<Book> books = bookService.getBookByTitle(title);
                 if (books.isEmpty()) {
-                    bookInfoArea.setText("Book not found!");
+                    new Alert(Alert.AlertType.INFORMATION, "No books found with that title.").showAndWait();
                 } else {
-                    StringBuilder bookDetails = new StringBuilder();
-                    for (Book book : books) {
-                        bookDetails.append(book.toString()).append("\n");
-                    }
-                    bookInfoArea.setText(bookDetails.toString());
+                    // 显示查询结果
+                    StringBuilder result = new StringBuilder("Books Found:\n");
+                    books.forEach(book -> result.append(book).append("\n"));
+                    new Alert(Alert.AlertType.INFORMATION, result.toString()).showAndWait();
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                bookInfoArea.setText("Error: " + ex.getMessage());
+                new Alert(Alert.AlertType.ERROR, "Error querying books!").showAndWait();
             }
         });
 
-        // 更新图书按钮事件
-        updateButton.setOnAction(e -> {
+        // 添加书籍功能
+        addButton.setOnAction(e -> {
             try {
-                int id = Integer.parseInt(bookIdField.getText());
-                String title = bookTitleField.getText();
-                String author = bookAuthorField.getText();
-                int quantity = Integer.parseInt(bookQuantityField.getText());
+                String title = titleField.getText();
+                String author = authorField.getText();
+                String publisher = publisherField.getText();
+                LocalDate publishDate = publishDatePicker.getValue();
+                String isbn = isbnField.getText();
+                int quantity = Integer.parseInt(quantityField.getText());
 
-                Book updatedBook = new Book(id, title, author, quantity);
-                bookService.updateBook(updatedBook);
-                bookInfoArea.setText("Book updated successfully!");
-            } catch (SQLException | NumberFormatException ex) {
+                // 创建新图书对象
+                Book book = new Book(0, title, author, publisher, publishDate, isbn, quantity);
+                bookService.addBook(book);
+
+                // 清空输入框
+                titleField.clear();
+                authorField.clear();
+                publisherField.clear();
+                publishDatePicker.setValue(null);
+                isbnField.clear();
+                quantityField.clear();
+
+                new Alert(Alert.AlertType.INFORMATION, "Book added successfully!").showAndWait();
+            } catch (SQLException ex) {
                 ex.printStackTrace();
-                bookInfoArea.setText("Error: " + ex.getMessage());
+                new Alert(Alert.AlertType.ERROR, "Error adding book!").showAndWait();
+            } catch (NumberFormatException ex) {
+                new Alert(Alert.AlertType.WARNING, "Please enter a valid number for quantity.").showAndWait();
             }
         });
 
-        // 布局
-        VBox layout = new VBox(10, bookIdField, bookTitleField, bookAuthorField, bookQuantityField,
-                addButton, queryButton, updateButton, bookInfoArea);
-        Scene scene = new Scene(layout, 400, 400);
+        // 将控件添加到布局
+        layout.getChildren().addAll(
+                bookTitleField, queryButton,
+                new Label("Add New Book:"),
+                titleField, authorField, publisherField, publishDatePicker, isbnField, quantityField, addButton
+        );
 
+        // 设置场景并显示
+        Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Admin Management");
+        primaryStage.setTitle("Admin Panel - Book Management");
         primaryStage.show();
     }
 
