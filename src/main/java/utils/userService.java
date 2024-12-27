@@ -48,7 +48,5 @@ public class userService {
         bookService.updateBookQuantity(bookId, 1);
         userDao.returnBook(userId, bookId);
     }
-    public void updateUserBalance(int userId, int newBalance) throws SQLException {
-        userDao.updateUserBalance(userId, newBalance);
-    }
+
 }

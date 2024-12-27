@@ -16,8 +16,8 @@ public class userMegement implements userMegementDao {
         this.connection = connection;
     }
 
-    // 创建用户
-    @Override
+    // 创建用户(使用简化版的user)
+
     public void create(User user) throws SQLException {
         String query = "INSERT INTO library_user (username, password, user_type, balance) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -30,7 +30,7 @@ public class userMegement implements userMegementDao {
     }
 
     // 删除用户
-    @Override
+
     public void delete(int userId) throws SQLException {
         String query = "DELETE FROM library_user WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -40,7 +40,6 @@ public class userMegement implements userMegementDao {
     }
 
     // 更新用户信息
-    @Override
     public void update(User user) throws SQLException {
         String query = "UPDATE library_user SET username = ?, password = ?, user_type = ?, balance = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -54,7 +53,7 @@ public class userMegement implements userMegementDao {
     }
 
     // 查询所有用户
-    @Override
+
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM library_user";
@@ -62,12 +61,12 @@ public class userMegement implements userMegementDao {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 users.add(new User(
-                    rs.getInt("id"),
-                    rs.getInt("age"),
-                    rs.getInt("balance"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("user_type")
+                        rs.getInt("id"),
+                        rs.getInt("age"),
+                        rs.getInt("balance"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_type")
                 ));
             }
         }
@@ -75,52 +74,52 @@ public class userMegement implements userMegementDao {
     }
 
     // 借书
-    @Override
-    public void borrowBook(int userId, int bookId) throws SQLException {
-        String query = "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (?, ?, GETDATE())";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            stmt.setInt(2, bookId);
-            stmt.executeUpdate();
+
+    public void borrowBook(int userId, String isbn) throws SQLException {
+        // 插入借书记录
+        String insertQuery = "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (?, (SELECT id FROM books WHERE isbn = ?), GETDATE())";
+        try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+            insertStmt.setInt(1, userId);
+            insertStmt.setString(2, isbn);
+            insertStmt.executeUpdate();
         }
 
         // 更新图书数量
-        String updateQuery = "UPDATE books SET quantity = quantity - 1 WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
-            stmt.setInt(1, bookId);
-            stmt.executeUpdate();
+        String updateBookQuery = "UPDATE books SET quantity = quantity - 1 WHERE isbn = ?";
+        try (PreparedStatement updateBookStmt = connection.prepareStatement(updateBookQuery)) {
+            updateBookStmt.setString(1, isbn);
+            updateBookStmt.executeUpdate();
+        }
+
+        // 更新用户余额
+        String updateBalanceQuery = "UPDATE library_user SET balance = balance - 1 WHERE id = ?";
+        try (PreparedStatement updateBalanceStmt = connection.prepareStatement(updateBalanceQuery)) {
+            updateBalanceStmt.setInt(1, userId);
+            updateBalanceStmt.executeUpdate();
         }
     }
+
 
     // 还书
-    @Override
-    public void returnBook(int userId, int bookId) throws SQLException {
+
+    public void returnBook(int userId, String isbn) throws SQLException {
         // 删除用户借书记录
-        String query = "DELETE FROM user_book WHERE user_id = ? AND book_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            stmt.setInt(2, bookId);
-            stmt.executeUpdate();
+        String deleteQuery = "DELETE FROM user_book WHERE user_id = ? AND book_id = (SELECT id FROM books WHERE isbn = ?)";
+        try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
+            deleteStmt.setInt(1, userId);
+            deleteStmt.setString(2, isbn);
+            deleteStmt.executeUpdate();
         }
 
         // 更新图书数量
-        String updateQuery = "UPDATE books SET quantity = quantity + 1 WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
-            stmt.setInt(1, bookId);
-            stmt.executeUpdate();
+        String updateQuery = "UPDATE books SET quantity = quantity + 1 WHERE isbn = ?";
+        try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+            updateStmt.setString(1, isbn);
+            updateStmt.executeUpdate();
         }
     }
 
-    public void updateUserBalance(int userId, int newBalance) throws SQLException {
-        String query = "UPDATE library_user SET balance = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, newBalance);
-            stmt.setInt(2, userId);
-            stmt.executeUpdate();
-        }
-    }
-
-    @Override
+//用户登录验证
     public User login(String username, String password) throws SQLException {
         String query = "SELECT * FROM library_user WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -129,30 +128,29 @@ public class userMegement implements userMegementDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new User(
-                        rs.getInt("id"),
-                        rs.getInt("age"),
-                        rs.getInt("balance"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("user_type")
+                            rs.getInt("id"),
+                            rs.getInt("age"),
+                            rs.getInt("balance"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("user_type")
                     );
                 }
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean isUsernameExists(String username) throws SQLException {
-        String query = "SELECT COUNT(*) FROM library_user WHERE username = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
+//检查用户名是否存在
+        public boolean isUsernameExists (String username) throws SQLException {
+            String query = "SELECT COUNT(*) FROM library_user WHERE username = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, username);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
                 }
             }
+            return false;
         }
-        return false;
     }
 }
