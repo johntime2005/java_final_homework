@@ -1,9 +1,9 @@
-package main.java.dao;
+package dao;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import main.java.model.User;
+import model.User;
 
 public interface userMegementDao {
 

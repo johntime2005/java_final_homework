@@ -1,4 +1,4 @@
-package main.java.utils;
+package utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.dao.bookMegementDao;
-import main.java.model.Book;
+import dao.bookMegementDao;
+import model.Book;
 
 public class BookService {
 

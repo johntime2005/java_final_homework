@@ -1,4 +1,4 @@
-package main.java.controllers;
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,10 +16,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import main.java.dao.userMegementDao;
-import main.java.impl.userMegement;
-import main.java.model.User;
-import main.java.utils.DatabaseConnection;
+import dao.userMegementDao;
+import impl.userMegement;
+import model.User;
+import utils.DatabaseConnection;
 
 
 public class UserLoginController {

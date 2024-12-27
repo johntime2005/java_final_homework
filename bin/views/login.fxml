@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
-
-<VBox alignment="CENTER" spacing="15.0" xmlns:fx="http://javafx.com/fxml/1" 
+<VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" 
       xmlns="http://javafx.com/javafx/21" 
-      fx:controller="main.java.controllers.UserLoginController">
-    
+      fx:controller="controllers.LoginController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
-
-    <Label text="用户登录" style="-fx-font-size: 20px;" />
-
-    <GridPane vgap="10" hgap="10" alignment="CENTER">
-        <Label text="用户名：" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200" />
-        
-        <Label text="密码：" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200" />
-    </GridPane>
-
-    <HBox spacing="10" alignment="CENTER">
-        <Button text="登录" onAction="#handleLogin" prefWidth="100" />
-        <Button text="注册" onAction="#handleRegister" prefWidth="100" />
-    </HBox>
-
-    <Button text="返回" onAction="#handleBack" prefWidth="80" />
+    <Label text="请选择登录类型" />
+    <Button fx:id="adminLoginBtn" text="管理员登录" onAction="#handleAdminLogin" prefWidth="200" />
+    <Button fx:id="userLoginBtn" text="用户登录" onAction="#handleUserLogin" prefWidth="200" />
 </VBox>

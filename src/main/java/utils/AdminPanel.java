@@ -1,4 +1,4 @@
-package main.java.utils;
+package utils;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -6,11 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import main.java.dao.userMegementDao;
-import main.java.impl.bookMegement;
-import main.java.impl.userMegement;
-import main.java.model.Book;
-import main.java.model.User;
+import dao.userMegementDao;
+import impl.bookMegement;
+import impl.userMegement;
+import model.Book;
+import model.User;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

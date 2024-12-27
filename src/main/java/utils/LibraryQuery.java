@@ -1,2 +1,2 @@
-package main.java.utils;
+package utils;
 

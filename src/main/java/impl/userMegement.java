@@ -1,11 +1,11 @@
-package main.java.impl;
+package impl;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.dao.userMegementDao;
-import main.java.model.User;
+import dao.userMegementDao;
+import model.User;
 
 public class userMegement implements userMegementDao {
 

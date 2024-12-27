@@ -1,4 +1,4 @@
-package main.java.utils;
+package utils;
 
 public class InventoryStats {
     private int uniqueBooks;
