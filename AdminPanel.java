@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -213,26 +214,24 @@ public class AdminPanel extends Application {
         mainLayout.setAlignment(javafx.geometry.Pos.CENTER);
 
         // 创建功能按钮
-        Button queryBookBtn = new Button("查询书籍");
-        Button addBookBtn = new Button("添加书籍");
-        Button advancedSearchBtn = new Button("高级查询");
-        
-        // 设置按钮样式和大小
-        queryBookBtn.setPrefWidth(200);
-        addBookBtn.setPrefWidth(200);
-        advancedSearchBtn.setPrefWidth(200);
+        Button combinedQueryBtn = new Button("综合查询");
+        combinedQueryBtn.setPrefWidth(200);
+        combinedQueryBtn.setOnAction(e -> showCombinedQueryInterface());
 
-        // 添加按钮点击事件
-        queryBookBtn.setOnAction(e -> showQueryInterface());
+        Button addBookBtn = new Button("添加书籍");
+        addBookBtn.setPrefWidth(200);
         addBookBtn.setOnAction(e -> showAddInterface());
-        advancedSearchBtn.setOnAction(e -> showAdvancedQueryInterface());
+
+        Button logoutBtn = new Button("退出登录");
+        logoutBtn.setPrefWidth(200);
+        logoutBtn.setOnAction(e -> showRoleSelectionInterface(stage));
 
         // 将按钮添加到主布局
         mainLayout.getChildren().addAll(
             new Label("图书管理系统 - 管理员界面"),
-            queryBookBtn,
+            combinedQueryBtn,
             addBookBtn,
-            advancedSearchBtn
+            logoutBtn
         );
 
         scene = new Scene(mainLayout, 400, 500);
@@ -241,43 +240,48 @@ public class AdminPanel extends Application {
         stage.show();
     }
 
-    // 显示查询界面
-    private void showQueryInterface() {
-        VBox queryLayout = new VBox(10);
-        queryLayout.setPadding(new javafx.geometry.Insets(10));
+    private void showCombinedQueryInterface() {
+        VBox combinedLayout = new VBox(10);
+        combinedLayout.setPadding(new javafx.geometry.Insets(10));
 
-        TextField bookTitleField = new TextField();
-        bookTitleField.setPromptText("输入书名以查询");
-        Button queryButton = new Button("搜索");
-        Button backButton = new Button("返回主菜单");
+        TextField titleField = new TextField();
+        titleField.setPromptText("书名 (可选)");
+        TextField authorField = new TextField();
+        authorField.setPromptText("作者 (可选)");
+        TextField publisherField = new TextField();
+        publisherField.setPromptText("出版社 (可选)");
 
-        queryButton.setOnAction(e -> {
-            String title = bookTitleField.getText();
+        Button searchBtn = new Button("搜索");
+        searchBtn.setOnAction(e -> {
             try {
-                List<Book> books = bookService.getBookByTitle(title);
+                List<Book> books = bookService.searchBooks(
+                    titleField.getText(),
+                    authorField.getText(),
+                    publisherField.getText()
+                );
                 if (books.isEmpty()) {
-                    new Alert(Alert.AlertType.INFORMATION, "不存在该书名书籍").showAndWait();
+                    new Alert(Alert.AlertType.INFORMATION, "未找到符合条件的书籍").showAndWait();
                 } else {
-                    StringBuilder result = new StringBuilder("找到书籍:\n");
-                    books.forEach(book -> result.append(book).append("\n"));
-                    new Alert(Alert.AlertType.INFORMATION, result.toString()).showAndWait();
+                    StringBuilder sb = new StringBuilder("查询结果:\n");
+                    for (Book book : books) {
+                        sb.append(book).append("\n");
+                    }
+                    new Alert(Alert.AlertType.INFORMATION, sb.toString()).showAndWait();
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "查询书籍失败").showAndWait();
+                new Alert(Alert.AlertType.ERROR, "查询失败: " + ex.getMessage()).showAndWait();
             }
         });
 
-        backButton.setOnAction(e -> scene.setRoot(mainLayout));
+        Button backBtn = new Button("返回主菜单");
+        backBtn.setOnAction(e -> scene.setRoot(mainLayout));
 
-        queryLayout.getChildren().addAll(
-            new Label("查询书籍"),
-            bookTitleField,
-            queryButton,
-            backButton
+        combinedLayout.getChildren().addAll(
+            new Label("综合查询 - 可根据任意条件搜索"),
+            titleField, authorField, publisherField,
+            searchBtn, backBtn
         );
-
-        scene.setRoot(queryLayout);
+        scene.setRoot(combinedLayout);
     }
 
     // 显示添加界面
@@ -350,54 +354,6 @@ public class AdminPanel extends Application {
         scene.setRoot(addLayout);
     }
 
-    private void showAdvancedQueryInterface() {
-        VBox advLayout = new VBox(10);
-        advLayout.setPadding(new javafx.geometry.Insets(10));
-
-        TextField titleField = new TextField();
-        titleField.setPromptText("书名 (可选)");
-        TextField authorField = new TextField();
-        authorField.setPromptText("作者 (可选)");
-        TextField publisherField = new TextField();
-        publisherField.setPromptText("出版社 (可选)");
-
-        Button searchBtn = new Button("搜索");
-        Button backBtn = new Button("返回主菜单");
-
-        searchBtn.setOnAction(e -> {
-            try {
-                List<Book> books = bookService.searchBooks(
-                    titleField.getText(),
-                    authorField.getText(),
-                    publisherField.getText()
-                );
-                if (books.isEmpty()) {
-                    new Alert(Alert.AlertType.INFORMATION, "未找到符合条件的书籍").showAndWait();
-                } else {
-                    StringBuilder sb = new StringBuilder("查询结果:\n");
-                    for (Book book : books) {
-                        sb.append(book).append("\n");
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, sb.toString()).showAndWait();
-                }
-            } catch (SQLException ex) {
-                new Alert(Alert.AlertType.ERROR, "查询失败: " + ex.getMessage()).showAndWait();
-            }
-        });
-
-        backBtn.setOnAction(e -> scene.setRoot(mainLayout));
-
-        advLayout.getChildren().addAll(
-            new Label("高级查询 - 可任意组合条件"),
-            titleField,
-            authorField,
-            publisherField,
-            searchBtn,
-            backBtn
-        );
-        scene.setRoot(advLayout);
-    }
-
     // 显示普通用户界面
     private void showUserMainInterface(Stage stage) {
         VBox userLayout = new VBox(10);
@@ -427,12 +383,33 @@ public class AdminPanel extends Application {
         VBox browseLayout = new VBox(10);
         browseLayout.setPadding(new javafx.geometry.Insets(10));
 
-        ListView<String> listView = new ListView<>();
+        TableView<Book> tableView = new TableView<>();
+        TableColumn<Book, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Book, String> titleCol = new TableColumn<>("书名");
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Book, String> authorCol = new TableColumn<>("作者");
+        authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        TableColumn<Book, String> publisherCol = new TableColumn<>("出版社");
+        publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+
+        TableColumn<Book, String> dateCol = new TableColumn<>("出版日期");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
+
+        TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
+        isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+
+        TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
+        qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        tableView.getColumns().addAll(idCol, titleCol, authorCol, publisherCol, dateCol, isbnCol, qtyCol);
+
         try {
             List<Book> allBooks = bookService.getAllBooks();
-            for (Book bk : allBooks) {
-                listView.getItems().add(bk.toString());
-            }
+            tableView.setItems(javafx.collections.FXCollections.observableArrayList(allBooks));
         } catch (SQLException ex) {
             new Alert(Alert.AlertType.ERROR, "获取书籍列表失败: " + ex.getMessage()).showAndWait();
         }
@@ -443,7 +420,7 @@ public class AdminPanel extends Application {
 
         browseLayout.getChildren().addAll(
             new Label("书籍列表"),
-            listView,
+            tableView,
             backBtn
         );
         scene.setRoot(browseLayout);
