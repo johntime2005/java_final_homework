@@ -20,8 +20,8 @@ bookMegement用于提供一系列书本管理的方法，从而实现在数据�
 
 service层：
 
-bookMegementDao类用于定义图书管理接口。确保所有类都遵循一致的行为规范。
-userMegementDao类用于定义用户管理接口。确保所有类都遵循一致的行为规范。
+bookMegementDao类用于定义图书管理接口。确保所有类都遵循一致的行为规范。  
+userMegementDao类用于定义用户管理接口。确保所有类都遵循一致的行为规范。  
 bookService类：作为服务层，封装了业务逻辑，调用 bookMegementDao 的具体实现来执行书籍管理操作，提高了代码的可维护性和扩展性。
 userService类：作为服务层，封装了业务逻辑，调用 userMegementDao 的具体实现来执行书籍管理操作，提高了代码的可维护性和扩展性。
 
