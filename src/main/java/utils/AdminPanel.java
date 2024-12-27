@@ -333,7 +333,7 @@ public class AdminPanel extends Application {
                 String isbn = isbnField.getText();
                 int quantity = Integer.parseInt(quantityField.getText());
 
-                Book book = new Book(0, title, author, publisher, publishDate, isbn, quantity);
+                Book book = new Book(0, title, author, publisher, isbn, quantity);
                 bookService.addBook(book);
 
                 titleField.clear();

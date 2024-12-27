@@ -12,8 +12,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <javafx.version>21.0.0</javafx.version>
-        <javafx.platform>win</javafx.platform> <!-- 根据操作系统调整，如win, linux, mac -->
+        <javafx.version>21.0.5</javafx.version>
+        <javafx.platform>win</javafx.platform> <!-- 根据操作系统调整，如: win, linux, mac -->
     </properties>
 
     <dependencies>
@@ -24,7 +24,7 @@
             <version>7.4.1.jre8</version>
         </dependency>
 
-        <!-- JavaFX 依赖 -->
+        <!-- JavaFX 依赖 (从 Maven 中央仓库获取，无需本地路径) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -60,7 +60,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler 插件 -->
+            <!-- Maven 编译插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -79,6 +79,13 @@
                 <configuration>
                     <mainClass>utils.AdminPanel</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Maven Shade 插件来创建可执行 jar -->

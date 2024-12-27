@@ -164,7 +164,6 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("publisher"),
-                        rs.getDate("publishDate").toLocalDate(),
                         rs.getString("isbn"),
                         rs.getInt("quantity")
                 );

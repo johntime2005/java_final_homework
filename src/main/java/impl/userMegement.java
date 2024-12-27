@@ -75,19 +75,19 @@ public class userMegement implements userMegementDao {
 
     // 借书
 
-    public void borrowBook(int userId, String isbn) throws SQLException {
+    public void borrowBook(int userId, int bookId) throws SQLException {
         // 插入借书记录
-        String insertQuery = "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (?, (SELECT id FROM books WHERE isbn = ?), GETDATE())";
+        String insertQuery = "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (?, ?, GETDATE())";
         try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
             insertStmt.setInt(1, userId);
-            insertStmt.setString(2, isbn);
+            insertStmt.setInt(2, bookId);
             insertStmt.executeUpdate();
         }
 
         // 更新图书数量
-        String updateBookQuery = "UPDATE books SET quantity = quantity - 1 WHERE isbn = ?";
+        String updateBookQuery = "UPDATE books SET quantity = quantity - 1 WHERE id = ?";
         try (PreparedStatement updateBookStmt = connection.prepareStatement(updateBookQuery)) {
-            updateBookStmt.setString(1, isbn);
+            updateBookStmt.setInt(1, bookId);
             updateBookStmt.executeUpdate();
         }
 
@@ -102,24 +102,33 @@ public class userMegement implements userMegementDao {
 
     // 还书
 
-    public void returnBook(int userId, String isbn) throws SQLException {
+    public void returnBook(int userId, int bookId) throws SQLException {
         // 删除用户借书记录
-        String deleteQuery = "DELETE FROM user_book WHERE user_id = ? AND book_id = (SELECT id FROM books WHERE isbn = ?)";
+        String deleteQuery = "DELETE FROM user_book WHERE user_id = ? AND book_id = ?";
         try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
             deleteStmt.setInt(1, userId);
-            deleteStmt.setString(2, isbn);
+            deleteStmt.setInt(2, bookId);
             deleteStmt.executeUpdate();
         }
 
         // 更新图书数量
-        String updateQuery = "UPDATE books SET quantity = quantity + 1 WHERE isbn = ?";
+        String updateQuery = "UPDATE books SET quantity = quantity + 1 WHERE id = ?";
         try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
-            updateStmt.setString(1, isbn);
+            updateStmt.setInt(1, bookId);
             updateStmt.executeUpdate();
         }
     }
 
-//用户登录验证
+    public void updateUserBalance(int userId, int amount) throws SQLException {
+        String query = "UPDATE library_user SET balance = balance + ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, amount);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    //用户登录验证
     public User login(String username, String password) throws SQLException {
         String query = "SELECT * FROM library_user WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -139,18 +148,19 @@ public class userMegement implements userMegementDao {
             }
         }
         return null;
-//检查用户名是否存在
-        public boolean isUsernameExists (String username) throws SQLException {
-            String query = "SELECT COUNT(*) FROM library_user WHERE username = ?";
-            try (PreparedStatement stmt = connection.prepareStatement(query)) {
-                stmt.setString(1, username);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt(1) > 0;
-                    }
+    }
+
+    //检查用户名是否存在
+    public boolean isUsernameExists(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM library_user WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
                 }
             }
-            return false;
         }
+        return false;
     }
 }
