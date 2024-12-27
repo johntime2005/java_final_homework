@@ -14,14 +14,12 @@ public class userMegement implements userMegementDao {
     // 创建用户
     @Override
     public void create(User user) throws SQLException {
-        String query = "INSERT INTO library_user (name, age, balance, username, password, user_type) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO library_user (username, password, user_type, balance) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getName());
-            stmt.setInt(2, user.getAge());
-            stmt.setInt(3, user.getBalance());
-            stmt.setString(4, user.getUsername());
-            stmt.setString(5, user.getPassword());
-            stmt.setString(6, user.getUserType());
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getUserType());
+            stmt.setInt(4, user.getBalance());
             stmt.executeUpdate();
         }
     }
@@ -39,12 +37,13 @@ public class userMegement implements userMegementDao {
     // 更新用户信息
     @Override
     public void update(User user) throws SQLException {
-        String query = "UPDATE library_user SET name = ?, age = ?, balance = ? WHERE id = ?";
+        String query = "UPDATE library_user SET username = ?, password = ?, user_type = ?, balance = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getName());
-            stmt.setInt(2, user.getAge());
-            stmt.setInt(3, user.getBalance());
-            stmt.setInt(4, user.getId());
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getUserType());
+            stmt.setInt(4, user.getBalance());
+            stmt.setInt(5, user.getId());
             stmt.executeUpdate();
         }
     }
@@ -53,15 +52,17 @@ public class userMegement implements userMegementDao {
     @Override
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        String query = "SELECT id, name, age, balance FROM library_user";
+        String query = "SELECT * FROM library_user";
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int age = rs.getInt("age");
-                int balance = rs.getInt("balance");
-                users.add(new User(id, name, age, balance));
+                users.add(new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("user_type"),
+                    rs.getInt("balance")
+                ));
             }
         }
         return users;
@@ -123,12 +124,10 @@ public class userMegement implements userMegementDao {
                 if (rs.next()) {
                     return new User(
                         rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("age"),
-                        rs.getInt("balance"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("user_type")
+                        rs.getString("user_type"),
+                        rs.getInt("balance")
                     );
                 }
             }

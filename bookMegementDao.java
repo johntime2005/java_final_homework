@@ -20,6 +20,8 @@ public interface bookMegementDao {
     // 获取所有书籍
     List<Book> getAllBooks() throws SQLException;
 
-//    void updateBookQuantity(int bookId, int quantity) throws SQLException;
-   void updateBook(Book book) throws SQLException;
+    // 多条件查询书籍
+    List<Book> searchBooks(String title, String author, String publisher) throws SQLException;
+
+    void updateBook(Book book) throws SQLException;
 }

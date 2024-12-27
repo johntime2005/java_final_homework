@@ -169,4 +169,47 @@ public class bookMegement implements bookMegementDao {
         }
         return books;
     }
+
+    @Override
+    public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
+        StringBuilder sb = new StringBuilder("SELECT * FROM books WHERE 1=1");
+        if (title != null && !title.trim().isEmpty()) {
+            sb.append(" AND title LIKE ?");
+        }
+        if (author != null && !author.trim().isEmpty()) {
+            sb.append(" AND author LIKE ?");
+        }
+        if (publisher != null && !publisher.trim().isEmpty()) {
+            sb.append(" AND publisher LIKE ?");
+        }
+
+        try (PreparedStatement stmt = connection.prepareStatement(sb.toString())) {
+            int index = 1;
+            if (title != null && !title.trim().isEmpty()) {
+                stmt.setString(index++, "%" + title + "%");
+            }
+            if (author != null && !author.trim().isEmpty()) {
+                stmt.setString(index++, "%" + author + "%");
+            }
+            if (publisher != null && !publisher.trim().isEmpty()) {
+                stmt.setString(index++, "%" + publisher + "%");
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Book> results = new ArrayList<>();
+                while (rs.next()) {
+                    results.add(new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getString("publisher"),
+                        rs.getDate("publishDate") == null ? null : rs.getDate("publishDate").toLocalDate(),
+                        rs.getString("isbn"),
+                        rs.getInt("quantity")
+                    ));
+                }
+                return results;
+            }
+        }
+    }
 }

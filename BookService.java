@@ -42,4 +42,9 @@ public class BookService {
     public void updateBookQuantity(int bookId, int quantity) throws SQLException {
         bookDao.updateBookQuantity(bookId, quantity);
     }
+
+    // 根据书名、作者和出版社搜索书籍
+    public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
+        return bookDao.searchBooks(title, author, publisher);
+    }
 }

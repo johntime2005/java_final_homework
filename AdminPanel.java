@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -28,18 +29,93 @@ public class AdminPanel extends Application {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // 如果连接数据库失败，弹出错误提示
-            new Alert(Alert.AlertType.ERROR, "连接数据库失败!").showAndWait();
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR, 
+                    "数据库连接或初始化失败: " + e.getMessage(), 
+                    ButtonType.OK
+                );
+                alert.showAndWait();
+                Platform.exit();
+            });
         }
     }
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage; // 保存主舞台引用
-        showLoginInterface(primaryStage);
+        // 启动时先显示角色选择界面
+        showRoleSelectionInterface(primaryStage);
     }
 
-    private void showLoginInterface(Stage stage) {
+    @Override
+    public void stop() {
+        DatabaseConnection.closeConnection();
+    }
+
+    // ========== 角色选择界面 ==========
+    private void showRoleSelectionInterface(Stage stage) {
+        VBox roleLayout = new VBox(15);
+        roleLayout.setPadding(new javafx.geometry.Insets(10));
+        roleLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Label titleLabel = new Label("请选择登录类型");
+        Button adminLoginBtn = new Button("管理员登录");
+        Button userLoginBtn = new Button("用户登录");
+
+        adminLoginBtn.setOnAction(e -> showAdminLoginInterface(stage));
+        userLoginBtn.setOnAction(e -> showUserLoginInterface(stage));
+
+        roleLayout.getChildren().addAll(titleLabel, adminLoginBtn, userLoginBtn);
+
+        scene = new Scene(roleLayout, 400, 300);
+        stage.setScene(scene);
+        stage.setTitle("选择登录类型");
+        stage.show();
+    }
+
+    // ========== 管理员登录界面(无注册功能) ==========
+    private void showAdminLoginInterface(Stage stage) {
+        VBox loginLayout = new VBox(10);
+        loginLayout.setPadding(new javafx.geometry.Insets(10));
+        loginLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("管理员用户名");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("密码");
+
+        Button loginButton = new Button("登录");
+        Button backButton = new Button("返回");
+
+        loginButton.setOnAction(e -> {
+            try {
+                User user = userService.login(usernameField.getText(), passwordField.getText());
+                if (user != null && "admin".equals(user.getUserType())) {
+                    showMainInterface(stage);
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "管理员用户名或密码错误！").showAndWait();
+                }
+            } catch (SQLException ex) {
+                new Alert(Alert.AlertType.ERROR, "登录失败：" + ex.getMessage()).showAndWait();
+            }
+        });
+
+        backButton.setOnAction(e -> showRoleSelectionInterface(stage));
+
+        loginLayout.getChildren().addAll(
+            new Label("管理员登录"),
+            usernameField,
+            passwordField,
+            loginButton,
+            backButton
+        );
+
+        scene.setRoot(loginLayout);
+        stage.setTitle("管理员登录");
+    }
+
+    // ========== 用户登录界面(提供注册功能) ==========
+    private void showUserLoginInterface(Stage stage) {
         VBox loginLayout = new VBox(10);
         loginLayout.setPadding(new javafx.geometry.Insets(10));
         loginLayout.setAlignment(javafx.geometry.Pos.CENTER);
@@ -51,51 +127,50 @@ public class AdminPanel extends Application {
 
         Button loginButton = new Button("登录");
         Button registerButton = new Button("注册");
+        Button backButton = new Button("返回");
 
         loginButton.setOnAction(e -> {
             try {
                 User user = userService.login(usernameField.getText(), passwordField.getText());
-                if (user != null && "admin".equals(user.getUserType())) {
-                    showMainInterface(stage);
+                if (user != null && "user".equals(user.getUserType())) {
+                    new Alert(Alert.AlertType.INFORMATION, "登录成功，进入用户界面...").showAndWait();
+                    showUserMainInterface(stage);
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "用户名或密码错误，或无管理员权限！").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "用户名或密码错误，或当前非用户账号！").showAndWait();
                 }
             } catch (SQLException ex) {
                 new Alert(Alert.AlertType.ERROR, "登录失败：" + ex.getMessage()).showAndWait();
             }
         });
 
-        registerButton.setOnAction(e -> showRegisterInterface(stage));
+        registerButton.setOnAction(e -> showUserRegisterInterface(stage));
+        backButton.setOnAction(e -> showRoleSelectionInterface(stage));
 
         loginLayout.getChildren().addAll(
-            new Label("管理员登录"),
+            new Label("用户登录"),
             usernameField,
             passwordField,
             loginButton,
-            registerButton
+            registerButton,
+            backButton
         );
 
-        scene = new Scene(loginLayout, 400, 500);
-        stage.setScene(scene);
-        stage.setTitle("登录");
-        stage.show();
+        scene.setRoot(loginLayout);
+        stage.setTitle("用户登录");
     }
 
-    private void showRegisterInterface(Stage stage) {
+    // ========== 用户注册界面 ==========
+    private void showUserRegisterInterface(Stage stage) {
         VBox registerLayout = new VBox(10);
         registerLayout.setPadding(new javafx.geometry.Insets(10));
 
-        TextField nameField = new TextField();
-        nameField.setPromptText("姓名");
         TextField usernameField = new TextField();
         usernameField.setPromptText("用户名");
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("密码");
-        TextField ageField = new TextField();
-        ageField.setPromptText("年龄");
 
         Button registerButton = new Button("注册");
-        Button backButton = new Button("返回登录");
+        Button backButton = new Button("返回");
 
         registerButton.setOnAction(e -> {
             try {
@@ -103,43 +178,32 @@ public class AdminPanel extends Application {
                     new Alert(Alert.AlertType.ERROR, "用户名已存在！").showAndWait();
                     return;
                 }
-
                 User newUser = new User(
-                    nameField.getText(),
-                    Integer.parseInt(ageField.getText()),
-                    0,
                     usernameField.getText(),
                     passwordField.getText(),
-                    "user"
+                    "user", // 普通用户类型
+                    0       // 初始余额
                 );
                 userService.create(newUser);
                 new Alert(Alert.AlertType.INFORMATION, "注册成功！").showAndWait();
-                showLoginInterface(stage); // 注册成功后返回登录界面
+                showUserLoginInterface(stage);
             } catch (SQLException ex) {
                 new Alert(Alert.AlertType.ERROR, "注册失败：" + ex.getMessage()).showAndWait();
             }
         });
 
-        backButton.setOnAction(e -> showLoginInterface(stage)); // 直接调用显示登录界面
+        backButton.setOnAction(e -> showUserLoginInterface(stage));
 
         registerLayout.getChildren().addAll(
             new Label("用户注册"),
-            nameField,
             usernameField,
             passwordField,
-            ageField,
             registerButton,
             backButton
         );
 
-        // 创建新的场景或更新现有场景
-        if (scene == null) {
-            scene = new Scene(registerLayout, 400, 500);
-            stage.setScene(scene);
-        } else {
-            scene.setRoot(registerLayout);
-        }
-        stage.setTitle("注册");
+        scene.setRoot(registerLayout);
+        stage.setTitle("用户注册");
     }
 
     private void showMainInterface(Stage stage) {
@@ -151,20 +215,24 @@ public class AdminPanel extends Application {
         // 创建功能按钮
         Button queryBookBtn = new Button("查询书籍");
         Button addBookBtn = new Button("添加书籍");
+        Button advancedSearchBtn = new Button("高级查询");
         
         // 设置按钮样式和大小
         queryBookBtn.setPrefWidth(200);
         addBookBtn.setPrefWidth(200);
+        advancedSearchBtn.setPrefWidth(200);
 
         // 添加按钮点击事件
         queryBookBtn.setOnAction(e -> showQueryInterface());
         addBookBtn.setOnAction(e -> showAddInterface());
+        advancedSearchBtn.setOnAction(e -> showAdvancedQueryInterface());
 
         // 将按钮添加到主布局
         mainLayout.getChildren().addAll(
             new Label("图书管理系统 - 管理员界面"),
             queryBookBtn,
-            addBookBtn
+            addBookBtn,
+            advancedSearchBtn
         );
 
         scene = new Scene(mainLayout, 400, 500);
@@ -235,10 +303,14 @@ public class AdminPanel extends Application {
 
         addButton.setOnAction(e -> {
             try {
+                LocalDate publishDate = publishDatePicker.getValue();
+                if (publishDate == null) {
+                    new Alert(Alert.AlertType.WARNING, "请先选择出版日期").showAndWait();
+                    return;
+                }
                 String title = titleField.getText();
                 String author = authorField.getText();
                 String publisher = publisherField.getText();
-                LocalDate publishDate = publishDatePicker.getValue();
                 String isbn = isbnField.getText();
                 int quantity = Integer.parseInt(quantityField.getText());
 
@@ -276,6 +348,106 @@ public class AdminPanel extends Application {
         );
 
         scene.setRoot(addLayout);
+    }
+
+    private void showAdvancedQueryInterface() {
+        VBox advLayout = new VBox(10);
+        advLayout.setPadding(new javafx.geometry.Insets(10));
+
+        TextField titleField = new TextField();
+        titleField.setPromptText("书名 (可选)");
+        TextField authorField = new TextField();
+        authorField.setPromptText("作者 (可选)");
+        TextField publisherField = new TextField();
+        publisherField.setPromptText("出版社 (可选)");
+
+        Button searchBtn = new Button("搜索");
+        Button backBtn = new Button("返回主菜单");
+
+        searchBtn.setOnAction(e -> {
+            try {
+                List<Book> books = bookService.searchBooks(
+                    titleField.getText(),
+                    authorField.getText(),
+                    publisherField.getText()
+                );
+                if (books.isEmpty()) {
+                    new Alert(Alert.AlertType.INFORMATION, "未找到符合条件的书籍").showAndWait();
+                } else {
+                    StringBuilder sb = new StringBuilder("查询结果:\n");
+                    for (Book book : books) {
+                        sb.append(book).append("\n");
+                    }
+                    new Alert(Alert.AlertType.INFORMATION, sb.toString()).showAndWait();
+                }
+            } catch (SQLException ex) {
+                new Alert(Alert.AlertType.ERROR, "查询失败: " + ex.getMessage()).showAndWait();
+            }
+        });
+
+        backBtn.setOnAction(e -> scene.setRoot(mainLayout));
+
+        advLayout.getChildren().addAll(
+            new Label("高级查询 - 可任意组合条件"),
+            titleField,
+            authorField,
+            publisherField,
+            searchBtn,
+            backBtn
+        );
+        scene.setRoot(advLayout);
+    }
+
+    // 显示普通用户界面
+    private void showUserMainInterface(Stage stage) {
+        VBox userLayout = new VBox(10);
+        userLayout.setPadding(new javafx.geometry.Insets(10));
+        userLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // 在此添加用户可执行的功能按钮
+        Button browseBooksBtn = new Button("浏览书籍");
+        browseBooksBtn.setPrefWidth(200);
+        browseBooksBtn.setOnAction(e -> showBrowseBooksInterface(stage));
+
+        Button logoutBtn = new Button("退出登录");
+        logoutBtn.setPrefWidth(200);
+        logoutBtn.setOnAction(e -> showRoleSelectionInterface(stage));
+
+        userLayout.getChildren().addAll(
+            new Label("欢迎进入用户界面"),
+            browseBooksBtn,
+            logoutBtn
+        );
+
+        scene.setRoot(userLayout);
+        stage.setTitle("用户面板");
+    }
+
+    private void showBrowseBooksInterface(Stage stage) {
+        VBox browseLayout = new VBox(10);
+        browseLayout.setPadding(new javafx.geometry.Insets(10));
+
+        ListView<String> listView = new ListView<>();
+        try {
+            List<Book> allBooks = bookService.getAllBooks();
+            for (Book bk : allBooks) {
+                listView.getItems().add(bk.toString());
+            }
+        } catch (SQLException ex) {
+            new Alert(Alert.AlertType.ERROR, "获取书籍列表失败: " + ex.getMessage()).showAndWait();
+        }
+
+        Button backBtn = new Button("返回用户界面");
+        backBtn.setPrefWidth(200);
+        backBtn.setOnAction(e -> showUserMainInterface(stage));
+
+        browseLayout.getChildren().addAll(
+            new Label("书籍列表"),
+            listView,
+            backBtn
+        );
+        scene.setRoot(browseLayout);
+        stage.setTitle("用户界面 - 浏览书籍");
     }
 
     public static void main(String[] args) {
