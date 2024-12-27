@@ -1,5 +1,4 @@
-package main.java.model;
-
+package model;
 public class User {
     private int id;
     private String username;    // 用户名（登录账号）

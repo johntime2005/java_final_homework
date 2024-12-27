@@ -1,22 +1,18 @@
-package main.java.model;
-import java.time.LocalDate;
-
+package model;
 public class Book {
     private int id;
     private String title;
     private String author;
     private String publisher;
-    private LocalDate publishDate;
     private String isbn;
     private int quantity;
 
     // 构造方法
-    public Book(int id, String title, String author, String publisher, LocalDate publishDate, String isbn, int quantity) {
+    public Book(int id, String title, String author, String publisher,  String isbn, int quantity) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.publishDate = publishDate;
         this.isbn = isbn;
         this.quantity = quantity;
     }
@@ -54,13 +50,7 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public LocalDate getPublishDate() {
-        return publishDate;
-    }
 
-    public void setPublishDate(LocalDate publishDate) {
-        this.publishDate = publishDate;
-    }
 
     public String getIsbn() {
         return isbn;
@@ -84,7 +74,6 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", publishDate=" + publishDate +
                 ", isbn='" + isbn + '\'' +
                 ", quantity=" + quantity +
                 '}';

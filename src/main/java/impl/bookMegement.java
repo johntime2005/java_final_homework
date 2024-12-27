@@ -1,10 +1,10 @@
-package main.java.impl;
+package impl;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.dao.bookMegementDao;
-import main.java.model.Book;
+import dao.bookMegementDao;
+import model.Book;
 
 public class bookMegement implements bookMegementDao {
     private final Connection connection;
@@ -14,14 +14,15 @@ public class bookMegement implements bookMegementDao {
     }
 
     // 添加书籍
-    @Override
+
     public void addBook(Book book) throws SQLException {
-        String query = "INSERT INTO books (title, author, publisher, publishDate, isbn, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO books (id,title, author, publisher,isbn, quantity) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, book.getTitle());
-            stmt.setString(2, book.getAuthor());
-            stmt.setString(3, book.getPublisher());
-            stmt.setDate(4, Date.valueOf(book.getPublishDate())); // Convert LocalDate to SQL Date
+            stmt.setInt(1, book.getId());
+            stmt.setString(2, book.getTitle());
+            stmt.setString(3, book.getAuthor());
+            stmt.setString(4, book.getPublisher());
+
             stmt.setString(5, book.getIsbn());
             stmt.setInt(6, book.getQuantity());
 
@@ -30,7 +31,6 @@ public class bookMegement implements bookMegementDao {
     }
 
     // 根据书名查询书籍
-    @Override
     public List<Book> getBooksByTitle(String title) throws SQLException {
         List<Book> books = new ArrayList<>();
         String query = "SELECT * FROM books WHERE title LIKE ?";
@@ -43,7 +43,7 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("publisher"),
-                        rs.getDate("publishDate").toLocalDate(), // Convert SQL Date to LocalDate
+//                        rs.getDate("publishDate").toLocalDate(), // Convert SQL Date to LocalDate
                         rs.getString("isbn"),
                         rs.getInt("quantity")
                 );
@@ -54,7 +54,7 @@ public class bookMegement implements bookMegementDao {
     }
 
     // 根据ID查询书籍
-    @Override
+
     public Book getBookById(int bookId) throws SQLException {
         String query = "SELECT * FROM books WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -67,7 +67,7 @@ public class bookMegement implements bookMegementDao {
                     rs.getString("title"),
                     rs.getString("author"),
                     rs.getString("publisher"),
-                    rs.getDate("publishDate").toLocalDate(),
+//                    rs.getDate("publishDate").toLocalDate(),
                     rs.getString("isbn"),
                     rs.getInt("quantity")
             );
@@ -77,14 +77,14 @@ public class bookMegement implements bookMegementDao {
     }
 
     // 更新书籍信息
-    @Override
+
     public void updateBook(Book book) throws SQLException {
         String query = "UPDATE books SET title = ?, author = ?, publisher = ?, publishDate = ?, isbn = ?, quantity = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
             stmt.setString(2, book.getAuthor());
             stmt.setString(3, book.getPublisher());
-            stmt.setDate(4, Date.valueOf(book.getPublishDate()));
+//            stmt.setDate(4, Date.valueOf(book.getPublishDate()));
             stmt.setString(5, book.getIsbn());
             stmt.setInt(6, book.getQuantity());
             stmt.setInt(7, book.getId());
@@ -142,7 +142,7 @@ public class bookMegement implements bookMegementDao {
 
 
     // 删除书籍
-    @Override
+//    @Override
     public void deleteBook(int id) throws SQLException {
         String query = "DELETE FROM books WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -152,7 +152,7 @@ public class bookMegement implements bookMegementDao {
     }
 
     // 获取所有书籍
-    @Override
+//    @Override
     public List<Book> getAllBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
         String query = "SELECT * FROM books";
@@ -174,7 +174,7 @@ public class bookMegement implements bookMegementDao {
         return books;
     }
 
-    @Override
+//    @Override
     public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
         StringBuilder sb = new StringBuilder("SELECT * FROM books WHERE 1=1");
         if (title != null && !title.trim().isEmpty()) {
@@ -207,7 +207,7 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("publisher"),
-                        rs.getDate("publishDate") == null ? null : rs.getDate("publishDate").toLocalDate(),
+//                        rs.getDate("publishDate") == null ? null : rs.getDate("publishDate").toLocalDate(),
                         rs.getString("isbn"),
                         rs.getInt("quantity")
                     ));

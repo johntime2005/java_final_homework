@@ -1,10 +1,10 @@
-package main.java.utils;
+package utils;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import main.java.dao.userMegementDao;
-import main.java.model.User;
+import dao.userMegementDao;
+import model.User;
 
 public class userService {
 
@@ -48,7 +48,5 @@ public class userService {
         bookService.updateBookQuantity(bookId, 1);
         userDao.returnBook(userId, bookId);
     }
-    public void updateUserBalance(int userId, int newBalance) throws SQLException {
-        userDao.updateUserBalance(userId, newBalance);
-    }
+
 }

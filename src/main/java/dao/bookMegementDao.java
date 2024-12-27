@@ -1,8 +1,8 @@
-package main.java.dao;
+package dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import main.java.model.Book;
+import model.Book;
 
 public interface bookMegementDao {
     // 添加书籍
