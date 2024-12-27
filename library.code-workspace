@@ -22,6 +22,5 @@
         "java.project.sourcePaths": ["src", "."],
         "java.configuration.updateBuildConfiguration": "automatic",
         "java.project.outputPath": "bin",
-        "java.debug.settings.vmArgs": "--module-path \"D:\\java_depences\\javafx-sdk-21.0.5\\lib\" --add-modules javafx.controls,javafx.fxml"
     }
 }

@@ -79,7 +79,7 @@ public class DatabaseInitializer {
     private static void createAdminUser(Connection connection) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             // 检查是否已存在管理员账户
-            var rs = stmt.executeQuery(
+            ResultSet rs = stmt.executeQuery(
                     "SELECT COUNT(*) FROM library_user WHERE user_type = 'admin'");
             if (rs.next() && rs.getInt(1) == 0) {
                 // 创建默认管理员账户

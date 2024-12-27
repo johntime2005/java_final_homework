@@ -3,8 +3,17 @@ package utils;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.DatePicker;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import dao.userMegementDao;
 import impl.bookMegement;
@@ -12,33 +21,23 @@ import impl.userMegement;
 import model.Book;
 import model.User;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.io.IOException;
-import java.net.URL;
 
 public class AdminPanel extends Application {
     private BookService bookService;
     private userMegementDao userService;
     private VBox mainLayout;
     private Scene scene;
-    private Stage primaryStage; // 添加主舞台引用
 
-    // 构造函数
     public AdminPanel() {
         try {
-            // 获取数据库连接
             Connection connection = DatabaseConnection.getConnection();
-
-            // 创建 BookService 实例，传入 BookDao 实现（即 bookMegement）
-            this.bookService = new BookService(new bookMegement(connection)); // 传入数据库连接给 BookService
+            this.bookService = new BookService(new bookMegement(connection));
             this.userService = new userMegement(connection);
-
         } catch (SQLException e) {
             e.printStackTrace();
             Platform.runLater(() -> {
@@ -54,20 +53,9 @@ public class AdminPanel extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
-            URL url = getClass().getResource("/views/login.fxml");
-            if (url == null) {
-                throw new IOException("Cannot find FXML file");
-            }
-            Parent root = FXMLLoader.load(url);
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("图书管理系统");
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error loading FXML: " + e.getMessage());
-        }
+        showRoleSelectionInterface(primaryStage);
+        primaryStage.setTitle("图书管理系统");
+        primaryStage.show();
     }
 
     @Override
@@ -427,7 +415,13 @@ public class AdminPanel extends Application {
         TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
         qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        tableView.getColumns().addAll(idCol, titleCol, authorCol, publisherCol, dateCol, isbnCol, qtyCol);
+        tableView.getColumns().add(idCol);
+        tableView.getColumns().add(titleCol);
+        tableView.getColumns().add(authorCol);
+        tableView.getColumns().add(publisherCol);
+        tableView.getColumns().add(dateCol);
+        tableView.getColumns().add(isbnCol);
+        tableView.getColumns().add(qtyCol);
 
         try {
             List<Book> allBooks = bookService.getAllBooks();
