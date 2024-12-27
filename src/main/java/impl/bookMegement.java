@@ -1,6 +1,10 @@
+package main.java.impl;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.java.dao.bookMegementDao;
+import main.java.model.Book;
 
 public class bookMegement implements bookMegementDao {
     private final Connection connection;

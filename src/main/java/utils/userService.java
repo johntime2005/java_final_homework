@@ -1,5 +1,10 @@
+package main.java.utils;
+
 import java.sql.SQLException;
 import java.util.List;
+
+import main.java.dao.userMegementDao;
+import main.java.model.User;
 
 public class userService {
 

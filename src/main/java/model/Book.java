@@ -1,3 +1,4 @@
+package main.java.model;
 import java.time.LocalDate;
 
 public class Book {

@@ -1,15 +1,26 @@
+package main.java.utils;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import main.java.dao.userMegementDao;
+import main.java.impl.bookMegement;
+import main.java.impl.userMegement;
+import main.java.model.Book;
+import main.java.model.User;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.io.IOException;
+import java.net.URL;
 
 public class AdminPanel extends Application {
     private BookService bookService;
@@ -43,9 +54,20 @@ public class AdminPanel extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage; // 保存主舞台引用
-        // 启动时先显示角色选择界面
-        showRoleSelectionInterface(primaryStage);
+        try {
+            URL url = getClass().getResource("/views/login.fxml");
+            if (url == null) {
+                throw new IOException("Cannot find FXML file");
+            }
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("图书管理系统");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error loading FXML: " + e.getMessage());
+        }
     }
 
     @Override

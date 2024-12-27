@@ -1,6 +1,11 @@
+package main.java.impl;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.java.dao.userMegementDao;
+import main.java.model.User;
 
 public class userMegement implements userMegementDao {
 
@@ -58,10 +63,11 @@ public class userMegement implements userMegementDao {
             while (rs.next()) {
                 users.add(new User(
                     rs.getInt("id"),
+                    rs.getInt("age"),
+                    rs.getInt("balance"),
                     rs.getString("username"),
                     rs.getString("password"),
-                    rs.getString("user_type"),
-                    rs.getInt("balance")
+                    rs.getString("user_type")
                 ));
             }
         }
@@ -124,10 +130,11 @@ public class userMegement implements userMegementDao {
                 if (rs.next()) {
                     return new User(
                         rs.getInt("id"),
+                        rs.getInt("age"),
+                        rs.getInt("balance"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("user_type"),
-                        rs.getInt("balance")
+                        rs.getString("user_type")
                     );
                 }
             }

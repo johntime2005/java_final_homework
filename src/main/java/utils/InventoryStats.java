@@ -1,3 +1,5 @@
+package main.java.utils;
+
 public class InventoryStats {
     private int uniqueBooks;
     private int totalBooks;
