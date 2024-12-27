@@ -14,11 +14,14 @@ public class userMegement implements userMegementDao {
     // 创建用户
     @Override
     public void create(User user) throws SQLException {
-        String query = "INSERT INTO library_user (name, age, balance) VALUES (?, ?, ?)";
+        String query = "INSERT INTO library_user (name, age, balance, username, password, user_type) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getName());
             stmt.setInt(2, user.getAge());
             stmt.setInt(3, user.getBalance());
+            stmt.setString(4, user.getUsername());
+            stmt.setString(5, user.getPassword());
+            stmt.setString(6, user.getUserType());
             stmt.executeUpdate();
         }
     }
@@ -100,6 +103,7 @@ public class userMegement implements userMegementDao {
             stmt.executeUpdate();
         }
     }
+
     public void updateUserBalance(int userId, int newBalance) throws SQLException {
         String query = "UPDATE library_user SET balance = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -107,5 +111,42 @@ public class userMegement implements userMegementDao {
             stmt.setInt(2, userId);
             stmt.executeUpdate();
         }
+    }
+
+    @Override
+    public User login(String username, String password) throws SQLException {
+        String query = "SELECT * FROM library_user WHERE username = ? AND password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("age"),
+                        rs.getInt("balance"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_type")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isUsernameExists(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM library_user WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -21,4 +21,10 @@ public interface userMegementDao {
     // 还书
     void returnBook(int userId, int bookId) throws SQLException;
     void updateUserBalance(int userId, int newBalance) throws SQLException;
+
+    // 登录
+    User login(String username, String password) throws SQLException;
+
+    // 检查用户名是否存在
+    boolean isUsernameExists(String username) throws SQLException;
 }
