@@ -11,6 +11,11 @@ public class User {
         this.balance = balance;
     }
 
+    public User(String name, int age, int balance) {
+        this.name = name;
+        this.age = age;
+        this.balance = balance;
+    }
     // Getters and Setters
     public int getId() {
         return id;

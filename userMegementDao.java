@@ -2,9 +2,23 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface userMegementDao {
-    void create() throws SQLException;
-    void addUser(User user) throws SQLException;
-    void deleteUser(int id) throws SQLException;
-    void updateUser(User user) throws SQLException;
-    List<User> queryUser(int id) throws SQLException;
+
+    // 创建用户
+    void create(User user) throws SQLException;
+
+    // 删除用户
+    void delete(int userId) throws SQLException;
+
+    // 更新用户信息
+    void update(User user) throws SQLException;
+
+    // 查询所有用户
+    List<User> getAllUsers() throws SQLException;
+
+    // 借书
+    void borrowBook(int userId, int bookId) throws SQLException;
+
+    // 还书
+    void returnBook(int userId, int bookId) throws SQLException;
+    void updateUserBalance(int userId, int newBalance) throws SQLException;
 }

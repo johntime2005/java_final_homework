@@ -25,7 +25,7 @@ public class AdminPanel extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
             // 如果连接数据库失败，弹出错误提示
-            new Alert(Alert.AlertType.ERROR, "Failed to connect to database!").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "连接数据库失败!").showAndWait();
         }
     }
 
@@ -37,30 +37,30 @@ public class AdminPanel extends Application {
 
         // 输入查询书籍信息的控件
         TextField bookTitleField = new TextField();
-        bookTitleField.setPromptText("Enter book title to search");
+        bookTitleField.setPromptText("输入书名以查询");
 
-        Button queryButton = new Button("Query Book");
+        Button queryButton = new Button("搜索");
 
         // 添加书籍控件
         TextField titleField = new TextField();
-        titleField.setPromptText("Book Title");
+        titleField.setPromptText("书名");
 
         TextField authorField = new TextField();
-        authorField.setPromptText("Author");
+        authorField.setPromptText("作者");
 
         TextField publisherField = new TextField();
-        publisherField.setPromptText("Publisher");
+        publisherField.setPromptText("出版社");
 
         DatePicker publishDatePicker = new DatePicker();
-        publishDatePicker.setPromptText("Publish Date");
+        publishDatePicker.setPromptText("出版日期");
 
         TextField isbnField = new TextField();
         isbnField.setPromptText("ISBN");
 
         TextField quantityField = new TextField();
-        quantityField.setPromptText("Quantity");
+        quantityField.setPromptText("数量");
 
-        Button addButton = new Button("Add Book");
+        Button addButton = new Button("添加");
 
         // 查询书籍功能
         queryButton.setOnAction(e -> {
@@ -68,16 +68,16 @@ public class AdminPanel extends Application {
             try {
                 List<Book> books = bookService.getBookByTitle(title);
                 if (books.isEmpty()) {
-                    new Alert(Alert.AlertType.INFORMATION, "No books found with that title.").showAndWait();
+                    new Alert(Alert.AlertType.INFORMATION, "不存在该书名书籍").showAndWait();
                 } else {
                     // 显示查询结果
-                    StringBuilder result = new StringBuilder("Books Found:\n");
+                    StringBuilder result = new StringBuilder("找到书籍:\n");
                     books.forEach(book -> result.append(book).append("\n"));
                     new Alert(Alert.AlertType.INFORMATION, result.toString()).showAndWait();
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error querying books!").showAndWait();
+                new Alert(Alert.AlertType.ERROR, "查询书籍失败").showAndWait();
             }
         });
 
@@ -103,26 +103,26 @@ public class AdminPanel extends Application {
                 isbnField.clear();
                 quantityField.clear();
 
-                new Alert(Alert.AlertType.INFORMATION, "Book added successfully!").showAndWait();
+                new Alert(Alert.AlertType.INFORMATION, "书籍添加成功！").showAndWait();
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error adding book!").showAndWait();
+                new Alert(Alert.AlertType.ERROR, "书籍添加失败!").showAndWait();
             } catch (NumberFormatException ex) {
-                new Alert(Alert.AlertType.WARNING, "Please enter a valid number for quantity.").showAndWait();
+                new Alert(Alert.AlertType.WARNING, "请输入有效的数量.").showAndWait();
             }
         });
 
         // 将控件添加到布局
         layout.getChildren().addAll(
                 bookTitleField, queryButton,
-                new Label("Add New Book:"),
+                new Label("添加新书:"),
                 titleField, authorField, publisherField, publishDatePicker, isbnField, quantityField, addButton
         );
 
         // 设置场景并显示
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Admin Panel - Book Management");
+        primaryStage.setTitle("管理员面板 - 书籍管理");
         primaryStage.show();
     }
 

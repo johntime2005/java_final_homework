@@ -12,11 +12,14 @@ public interface bookMegementDao {
     Book getBookById(int id) throws SQLException;
 
     // 更新书籍信息
-    void updateBook(Book book) throws SQLException;
+    void updateBookQuantity(int bookId, int quantity) throws SQLException;
 
     // 删除书籍
     void deleteBook(int id) throws SQLException;
 
     // 获取所有书籍
     List<Book> getAllBooks() throws SQLException;
+
+//    void updateBookQuantity(int bookId, int quantity) throws SQLException;
+   void updateBook(Book book) throws SQLException;
 }
