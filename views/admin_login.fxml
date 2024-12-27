@@ -11,9 +11,10 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
    <children>
-      <Label layoutX="20.0" text="图书管理系统" textFill="#eb1010" translateX="-50.0" />
-       <Label text="请选择登录类型" />
-       <Button fx:id="adminLoginBtn" onAction="#handleAdminLogin" prefWidth="200" text="管理员登录" />
-       <Button fx:id="userLoginBtn" onAction="#handleUserLogin" prefWidth="200" text="用户登录" />
+       <Label text="管理员登录" textFill="#e40f0f" />
+       <TextField fx:id="usernameField" promptText="用户名" />
+       <PasswordField fx:id="passwordField" promptText="密码" />
+       <Button onAction="#handleLogin" text="登录" />
+       <Button onAction="#handleBack" text="返回" />
    </children>
 </VBox>
