@@ -14,6 +14,9 @@ public class AdminManuController {
     
     @FXML
     private Button addBookButton;
+
+    @FXML
+    private Button deleteBookButton;
     
     @FXML
     private Button logoutButton;
@@ -40,6 +43,18 @@ public class AdminManuController {
             Parent addBookView = FXMLLoader.load(getClass().getResource("/views/addbook.fxml"));
             Stage stage = (Stage) addBookButton.getScene().getWindow();
             stage.setScene(new Scene(addBookView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleDeleteBook(ActionEvent event) {
+        try {
+            // 打开删除书籍页面
+            Parent deleteBookView = FXMLLoader.load(getClass().getResource("/views/deletebook.fxml"));
+            Stage stage = (Stage) deleteBookButton.getScene().getWindow();
+            stage.setScene(new Scene(deleteBookView));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

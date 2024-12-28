@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DeleteBookController">
+    <children>
+    <Label layoutX="50.0" layoutY="30.0" text="输入需要删除的id：" />
+    <TextField fx:id="idField" layoutX="150.0" layoutY="26.0" prefWidth="200.0" />
+    <Button fx:id="deleteButton" layoutX="150.0" layoutY="70.0" mnemonicParsing="false" onAction="#deleteBook" text="删除" />
+    <Label fx:id="resultLabel" layoutX="150.0" layoutY="110.0" />
+    <Button fx:id="backButton" layoutX="150.0" layoutY="160.0" mnemonicParsing="false" onAction="#handleBack" text="返回" />
+    </children>
+</AnchorPane>
