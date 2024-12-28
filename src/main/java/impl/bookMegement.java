@@ -146,13 +146,23 @@ public class bookMegement implements bookMegementDao {
 
     // 删除书籍
 //    @Override
+    //定义未找到id异常
+    public class BookNotFoundException extends SQLException {
+        public BookNotFoundException(String message) {
+            super(message);
+        }
+    }
     public void deleteBook(int id) throws SQLException {
         String query = "DELETE FROM books WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new BookNotFoundException("未找到ID为 " + id + " 的书籍记录");
+            }
         }
     }
+
 
     // 获取所有书籍
 //    @Override
