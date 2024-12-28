@@ -25,13 +25,16 @@ import utils.DatabaseConnection;
 
 public class UserBorrowController {
     @FXML
-    private TextField usernameField;
+    private PasswordField usernameField;
 
     @FXML
-    private TextField bookIdField;
+    private PasswordField bookIdField;
 
     @FXML
     private Button borrowButton;
+
+    @FXML
+    private Button cancelButton;
 
     private Connection connection;
     private userMegementDao userService;
@@ -85,7 +88,14 @@ public class UserBorrowController {
 
     @FXML
     private void cancel(ActionEvent event) {
-        loadFXML("/views/user_main.fxml", "返回", event);
+        try {
+            Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_main.fxml"));
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.setScene(new Scene(adminView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
