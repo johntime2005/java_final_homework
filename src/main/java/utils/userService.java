@@ -39,13 +39,13 @@ public class userService {
     // 借书
     public void borrowBook(int userId, int bookId) throws SQLException {
         userDao.borrowBook(userId, bookId);
-        bookService.updateBookQuantity(bookId, 0);//没有找到错误
+//        bookService.updateBookQuantity(bookId, 0);//没有找到错误
 
     }
 
     // 还书
     public void returnBook(int userId, int bookId) throws SQLException {
-        bookService.updateBookQuantity(bookId, 1);
+//        bookService.updateBookQuantity(bookId, 1);
         userDao.returnBook(userId, bookId);
     }
 
