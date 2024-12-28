@@ -39,6 +39,7 @@ public class UserLoginController {
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法连接到数据库");
+            System.out.println("无法连接到数据库");
         }
     }
     
