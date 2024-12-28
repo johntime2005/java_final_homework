@@ -1,4 +1,5 @@
 package controllers;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,9 +37,20 @@ public class AdminLoginController {
     }
 
     @FXML
-    private void handleBack() {
-        // 返回逻辑
+
+    private void handleBack(ActionEvent event) {
+        try {
+            Parent adminView = FXMLLoader.load(getClass().getResource("/views/login.fxml"));
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(adminView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "返回登录界面失败: " + e.getMessage());
+        }
     }
+
+
 
     private void showAlert(AlertType alertType, String message) {
         Alert alert = new Alert(alertType);

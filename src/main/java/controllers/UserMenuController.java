@@ -74,6 +74,10 @@ public class UserMenuController {
             showAlert(Alert.AlertType.ERROR, "错误", "加载界面失败: " + e.getMessage());
         }
     }
+    @FXML
+    private void updateUser(ActionEvent event) {
+        loadFXML("/views/updateuser.fxml", "修改信息", event);
+    }
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
