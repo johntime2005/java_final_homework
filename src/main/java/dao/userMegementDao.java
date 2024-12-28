@@ -14,7 +14,7 @@ public interface userMegementDao {
     void delete(int userId) throws SQLException;
 
     // 更新用户信息
-    void update(User user) throws SQLException;
+    void update(int age, String gender, String phonenumber, String schoolid, String birthdate, int id) throws SQLException;
 
     // 查询所有用户
     List<User> getAllUsers() throws SQLException;

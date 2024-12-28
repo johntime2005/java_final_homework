@@ -40,17 +40,19 @@ public class userMegement implements userMegementDao {
     }
 
     // 更新用户信息
-    public void update(User user) throws SQLException {
-        String query = "UPDATE library_user SET username = ?, password = ?, user_type = ?, balance = ? WHERE id = ?";
+    public void update(int age, String gender, String phonenumber, String schoolid, String birthdate, int id) throws SQLException {
+        String query = "UPDATE library_user SET age = ?, gender = ?, phonenumber = ?, schoolid = ?, birthdate = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getUserType());
-            stmt.setInt(4, user.getBalance());
-            stmt.setInt(5, user.getId());
+            stmt.setInt(1, age);
+            stmt.setString(2, gender);
+            stmt.setString(3, phonenumber);
+            stmt.setString(4, schoolid);
+            stmt.setString(5, birthdate);
+            stmt.setInt(6, id);
             stmt.executeUpdate();
         }
     }
+
 
     // 查询所有用户
 

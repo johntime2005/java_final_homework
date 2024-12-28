@@ -27,8 +27,8 @@ public class userService {
     }
 
     // 修改用户信息
-    public void update(User user) throws SQLException {
-        userDao.update(user);
+    public void update(int age, String gender, String phonenumber, String schoolid, String birthdate, int id) throws SQLException {
+        userDao.update(age,  gender, phonenumber,  schoolid,  birthdate, id);
     }
 
     // 查询所有用户

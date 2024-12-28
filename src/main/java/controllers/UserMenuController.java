@@ -59,6 +59,19 @@ public class UserMenuController {
     private void returnBook(ActionEvent event) {
         loadFXML("/views/returnbook.fxml", "还书", event);
     }
+    //返回
+    @FXML
+    private void cancel(ActionEvent event) {
+        try {
+            Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_main.fxml"));
+            Stage stage = (Stage) cancelBtn.getScene().getWindow();
+            stage.setScene(new Scene(adminView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     private void loadFXML(String fxmlPath, String title, ActionEvent event) {
         try {
             URL url = getClass().getResource(fxmlPath);
