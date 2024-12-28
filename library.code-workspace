@@ -22,5 +22,6 @@
         "java.project.sourcePaths": ["src", "."],
         "java.configuration.updateBuildConfiguration": "automatic",
         "java.project.outputPath": "bin",
+        "maven.view": "hierarchical",
     }
 }
