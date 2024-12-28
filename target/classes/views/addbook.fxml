@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" 
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddBookController">
+    <children>
+        <Label layoutX="50.0" layoutY="30.0" text="书名:" />
+        <TextField fx:id="nameField" layoutX="150.0" layoutY="26.0" prefWidth="200.0" />
+        
+        <Label layoutX="50.0" layoutY="80.0" text="作者:" />
+        <TextField fx:id="authorField" layoutX="150.0" layoutY="76.0" prefWidth="200.0" />
+        
+        <Label layoutX="50.0" layoutY="130.0" text="出版社:" />
+        <TextField fx:id="pressField" layoutX="150.0" layoutY="126.0" prefWidth="200.0" />
+        
+        <Label layoutX="50.0" layoutY="230.0" text="是否借出:" />
+        <TextField fx:id="borredField" layoutX="150.0" layoutY="226.0" prefWidth="200.0" />
+        
+        <Button layoutX="150.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleSubmit" text="提交" />
+        <Button layoutX="250.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleBack" text="返回" />
+    </children>
+</AnchorPane>
