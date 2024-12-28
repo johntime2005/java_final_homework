@@ -4,18 +4,20 @@ public class Book {
     private String title;
     private String author;
     private String publisher;
-    private String isbn;
-    private int quantity;
+//    private String isbn;
+    private boolean isborrowed;
 
     // 构造方法
-    public Book(int id, String title, String author, String publisher,  String isbn, int quantity) {
+    public Book(int id, String title, String author, String publisher, boolean isborrowed) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.isbn = isbn;
-        this.quantity = quantity;
+//        this.isbn = isbn;
+//        this.quantity = quantity;
+        this.isborrowed = isborrowed;
     }
+
 
     // Getter 和 Setter 方法
     public int getId() {
@@ -52,21 +54,27 @@ public class Book {
 
 
 
-    public String getIsbn() {
-        return isbn;
-    }
+//    public String getIsbn() {
+//        return isbn;
+//    }
+//
+//    public void setIsbn(String isbn) {
+//        this.isbn = isbn;
+//    }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public boolean getIsborrowed() {
+        return isborrowed;
     }
-
-    public int getQuantity() {
-        return quantity;
+    public void setIsborrowed(boolean isborrowed) {
+        this.isborrowed = isborrowed;
     }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//    public int getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//    }
 
     @Override
     public String toString() {
@@ -74,8 +82,9 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", quantity=" + quantity +
-                '}';
+                ", isborrowed=" + isborrowed+
+//                ", isbn='" + isbn + '\'' +
+//                ", quantity=" + quantity +
+                "}";
     }
 }

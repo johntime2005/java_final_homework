@@ -16,15 +16,15 @@ public class bookMegement implements bookMegementDao {
     // 添加书籍
 
     public void addBook(Book book) throws SQLException {
-        String query = "INSERT INTO books (id,title, author, publisher,isbn, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO books (title, author, publisher,isborrowed) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, book.getId());
-            stmt.setString(2, book.getTitle());
-            stmt.setString(3, book.getAuthor());
-            stmt.setString(4, book.getPublisher());
-
-            stmt.setString(5, book.getIsbn());
-            stmt.setInt(6, book.getQuantity());
+            //stmt.setInt(1, book.getId());
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getAuthor());
+            stmt.setString(3, book.getPublisher());
+            stmt.setBoolean(4, false);
+//            stmt.setString(5, book.getIsbn());
+//            stmt.setInt(6, );
 
             stmt.executeUpdate();
         }
@@ -44,8 +44,8 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("author"),
                         rs.getString("publisher"),
 //                        rs.getDate("publishDate").toLocalDate(), // Convert SQL Date to LocalDate
-                        rs.getString("isbn"),
-                        rs.getInt("quantity")
+//                        rs.getString("isbn"),
+                        rs.getBoolean("isborrowed")
                 );
                 books.add(book);
             }
@@ -67,9 +67,11 @@ public class bookMegement implements bookMegementDao {
                     rs.getString("title"),
                     rs.getString("author"),
                     rs.getString("publisher"),
+                    rs.getBoolean("isborrowed")
+
 //                    rs.getDate("publishDate").toLocalDate(),
-                    rs.getString("isbn"),
-                    rs.getInt("quantity")
+                    //rs.getString("isbn"),
+                   // rs.getInt("quantity")
             );
         } else {
             return null;  // 如果没有找到对应的书籍，返回 null
@@ -85,60 +87,61 @@ public class bookMegement implements bookMegementDao {
             stmt.setString(2, book.getAuthor());
             stmt.setString(3, book.getPublisher());
 //            stmt.setDate(4, Date.valueOf(book.getPublishDate()));
-            stmt.setString(5, book.getIsbn());
-            stmt.setInt(6, book.getQuantity());
+         //   stmt.setString(5, book.getIsbn());
+           // stmt.setInt(6, book.getQuantity());
             stmt.setInt(7, book.getId());
+            stmt.setBoolean(4, book.getIsborrowed());
 
             stmt.executeUpdate();
         }
     }
 
 
-    @Override
-    public void updateBookQuantity(int bookId, int quantity) throws SQLException {
-        // 1. 获取当前书籍的数量
-        String query = "SELECT quantity FROM books WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, bookId);  // 设置书籍ID
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    // 获取当前书籍的数量
-                    int currentQuantity = rs.getInt("quantity");
-
-                    // 2. 计算新的数量（增减）
-                    int newQuantity = currentQuantity + quantity;
-
-                    // 3. 更新书籍数量
-                    String updateQuery = "UPDATE books SET quantity = ? WHERE id = ?";
-                    try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
-                        updateStmt.setInt(1, newQuantity);  // 设置新的数量
-                        updateStmt.setInt(2, bookId);       // 设置书籍ID
-                        updateStmt.executeUpdate();         // 执行更新
-                        System.out.println("Book quantity updated successfully for book ID: " + bookId);  // 记录成功日志
-                    } catch (SQLException updateEx) {
-                        // 捕获更新操作的异常，输出详细错误信息
-                        System.err.println("Error updating book quantity for book ID: " + bookId);
-                        System.err.println("Update query: " + updateQuery);
-                        System.err.println("New quantity: " + newQuantity);
-                        throw new SQLException("Error executing update query for book ID: " + bookId, updateEx);
-                    }
-                } else {
-                    // 如果没有找到书籍，抛出异常
-                    throw new SQLException("Book with ID " + bookId + " not found.");
-                }
-            } catch (SQLException queryEx) {
-                // 捕获查询书籍数量的异常
-                System.err.println("Error executing query to fetch quantity for book ID: " + bookId);
-                System.err.println("Query: " + query);
-                throw new SQLException("Error fetching current quantity for book ID: " + bookId, queryEx);
-            }
-        } catch (SQLException ex) {
-            // 捕获整个方法的异常
-            System.err.println("SQL error while updating book quantity.");
-            throw new SQLException("SQL error while updating book quantity for book ID: " + bookId, ex);
-        }
-    }
+//    @Override
+//    public void updateBookQuantity(int bookId, int quantity) throws SQLException {
+//        // 1. 获取当前书籍的数量
+//        String query = "SELECT quantity FROM books WHERE id = ?";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            stmt.setInt(1, bookId);  // 设置书籍ID
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                if (rs.next()) {
+//                    // 获取当前书籍的数量
+//                    int currentQuantity = rs.getInt("quantity");
+//
+//                    // 2. 计算新的数量（增减）
+//                    int newQuantity = currentQuantity + quantity;
+//
+//                    // 3. 更新书籍数量
+//                    String updateQuery = "UPDATE books SET quantity = ? WHERE id = ?";
+//                    try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+//                        updateStmt.setInt(1, newQuantity);  // 设置新的数量
+//                        updateStmt.setInt(2, bookId);       // 设置书籍ID
+//                        updateStmt.executeUpdate();         // 执行更新
+//                        System.out.println("Book quantity updated successfully for book ID: " + bookId);  // 记录成功日志
+//                    } catch (SQLException updateEx) {
+//                        // 捕获更新操作的异常，输出详细错误信息
+//                        System.err.println("Error updating book quantity for book ID: " + bookId);
+//                        System.err.println("Update query: " + updateQuery);
+//                        System.err.println("New quantity: " + newQuantity);
+//                        throw new SQLException("Error executing update query for book ID: " + bookId, updateEx);
+//                    }
+//                } else {
+//                    // 如果没有找到书籍，抛出异常
+//                    throw new SQLException("Book with ID " + bookId + " not found.");
+//                }
+//            } catch (SQLException queryEx) {
+//                // 捕获查询书籍数量的异常
+//                System.err.println("Error executing query to fetch quantity for book ID: " + bookId);
+//                System.err.println("Query: " + query);
+//                throw new SQLException("Error fetching current quantity for book ID: " + bookId, queryEx);
+//            }
+//        } catch (SQLException ex) {
+//            // 捕获整个方法的异常
+//            System.err.println("SQL error while updating book quantity.");
+//            throw new SQLException("SQL error while updating book quantity for book ID: " + bookId, ex);
+//        }
+//    }
 
 
     // 删除书籍
@@ -164,8 +167,9 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("publisher"),
-                        rs.getString("isbn"),
-                        rs.getInt("quantity")
+                        //rs.getString("isbn"),
+                       // rs.getInt("quantity")
+                        rs.getBoolean("isborrowed")
                 );
                 books.add(book);
             }
@@ -207,8 +211,9 @@ public class bookMegement implements bookMegementDao {
                         rs.getString("author"),
                         rs.getString("publisher"),
 //                        rs.getDate("publishDate") == null ? null : rs.getDate("publishDate").toLocalDate(),
-                        rs.getString("isbn"),
-                        rs.getInt("quantity")
+                        //rs.getString("isbn"),
+                       // rs.getInt("quantity")
+                            rs.getBoolean("isborrowed")
                     ));
                 }
                 return results;

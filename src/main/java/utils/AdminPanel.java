@@ -3,16 +3,8 @@ package utils;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import dao.userMegementDao;
@@ -37,7 +29,7 @@ public class AdminPanel extends Application {
     private userMegementDao userService;
     private VBox mainLayout;
     private Scene scene;
-
+    private User loggedInUser;
     public AdminPanel() {
         try {
             Connection connection = DatabaseConnection.getConnection();
@@ -107,6 +99,7 @@ public class AdminPanel extends Application {
             try {
                 User user = userService.login(usernameField.getText(), passwordField.getText());
                 if (user != null && "admin".equals(user.getUserType())) {
+                    loggedInUser = user;//将用户对象存储在类级别的变量中
                     showMainInterface(stage);
                 } else {
                     new Alert(Alert.AlertType.ERROR, "管理员用户名或密码错误！").showAndWait();
@@ -149,6 +142,7 @@ public class AdminPanel extends Application {
             try {
                 User user = userService.login(usernameField.getText(), passwordField.getText());
                 if (user != null && "user".equals(user.getUserType())) {
+                    loggedInUser = user;//将用户对象存储在类级别的变量中
                     new Alert(Alert.AlertType.INFORMATION, "登录成功，进入用户界面...").showAndWait();
                     showUserMainInterface(stage);
                 } else {
@@ -198,7 +192,7 @@ public class AdminPanel extends Application {
                     usernameField.getText(),
                     passwordField.getText(),
                     "user", // 普通用户类型
-                    0       // 初始余额
+                    10       // 初始余额
                 );
                 userService.create(newUser);
                 new Alert(Alert.AlertType.INFORMATION, "注册成功！").showAndWait();
@@ -310,64 +304,44 @@ public class AdminPanel extends Application {
         authorField.setPromptText("作者");
         TextField publisherField = new TextField();
         publisherField.setPromptText("出版社");
-        DatePicker publishDatePicker = new DatePicker();
-        publishDatePicker.setPromptText("出版日期");
-        TextField isbnField = new TextField();
-        isbnField.setPromptText("ISBN");
-        TextField quantityField = new TextField();
-        quantityField.setPromptText("数量");
 
         Button addButton = new Button("添加");
         Button backButton = new Button("返回主菜单");
 
         addButton.setOnAction(e -> {
             try {
-                LocalDate publishDate = publishDatePicker.getValue();
-                if (publishDate == null) {
-                    new Alert(Alert.AlertType.WARNING, "请先选择出版日期").showAndWait();
-                    return;
-                }
                 String title = titleField.getText();
                 String author = authorField.getText();
                 String publisher = publisherField.getText();
-                String isbn = isbnField.getText();
-                int quantity = Integer.parseInt(quantityField.getText());
 
-                Book book = new Book(0, title, author, publisher, isbn, quantity);
+                Book book = new Book(0, title, author, publisher, false); // 只传递书名、作者和出版社
                 bookService.addBook(book);
 
                 titleField.clear();
                 authorField.clear();
                 publisherField.clear();
-                publishDatePicker.setValue(null);
-                isbnField.clear();
-                quantityField.clear();
 
                 new Alert(Alert.AlertType.INFORMATION, "书籍添加成功！").showAndWait();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "书籍添加失败!").showAndWait();
-            } catch (NumberFormatException ex) {
-                new Alert(Alert.AlertType.WARNING, "请输入有效的数量.").showAndWait();
             }
         });
 
         backButton.setOnAction(e -> scene.setRoot(mainLayout));
 
         addLayout.getChildren().addAll(
-            new Label("添加新书"),
-            titleField,
-            authorField,
-            publisherField,
-            publishDatePicker,
-            isbnField,
-            quantityField,
-            addButton,
-            backButton
+                new Label("添加新书"),
+                titleField,
+                authorField,
+                publisherField,
+                addButton,
+                backButton
         );
 
         scene.setRoot(addLayout);
     }
+
 
     // 显示普通用户界面
     private void showUserMainInterface(Stage stage) {
@@ -379,7 +353,9 @@ public class AdminPanel extends Application {
         Button browseBooksBtn = new Button("浏览书籍");
         browseBooksBtn.setPrefWidth(200);
         browseBooksBtn.setOnAction(e -> showBrowseBooksInterface(stage));
-
+        Button borrowBookBtn = new Button("借书"); // 新增借书按钮
+        borrowBookBtn.setPrefWidth(200);
+        borrowBookBtn.setOnAction(e -> showBorrowBookInterface(stage, loggedInUser.getId())); // 假设用户ID为1，实际应用中需要从登录信息中获取
         Button logoutBtn = new Button("退出登录");
         logoutBtn.setPrefWidth(200);
         logoutBtn.setOnAction(e -> showRoleSelectionInterface(stage));
@@ -387,6 +363,7 @@ public class AdminPanel extends Application {
         userLayout.getChildren().addAll(
             new Label("欢迎进入用户界面"),
             browseBooksBtn,
+                borrowBookBtn,
             logoutBtn
         );
 
@@ -410,23 +387,38 @@ public class AdminPanel extends Application {
 
         TableColumn<Book, String> publisherCol = new TableColumn<>("出版社");
         publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        TableColumn<Book, Boolean> isborrowedCol = new TableColumn<>("Is Borrowed");
+        isborrowedCol.setCellValueFactory(new PropertyValueFactory<>("isborrowed"));
+        isborrowedCol.setCellFactory(column -> new TableCell<Book, Boolean>()
+        {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "true" : "false");
+                }
+            }
+        });
 
-        TableColumn<Book, String> dateCol = new TableColumn<>("出版日期");
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
+        //TableColumn<Book, String> dateCol = new TableColumn<>("出版日期");
+        //dateCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
 
-        TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
-        isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        //TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
+        //isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 
-        TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
-        qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        //TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
+       // qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tableView.getColumns().add(idCol);
         tableView.getColumns().add(titleCol);
         tableView.getColumns().add(authorCol);
         tableView.getColumns().add(publisherCol);
-        tableView.getColumns().add(dateCol);
-        tableView.getColumns().add(isbnCol);
-        tableView.getColumns().add(qtyCol);
+        tableView.getColumns().add(isborrowedCol);
+       // tableView.getColumns().add(dateCol);
+       // tableView.getColumns().add(isbnCol);
+       // tableView.getColumns().add(qtyCol);
 
         try {
             List<Book> allBooks = bookService.getAllBooks();
@@ -448,6 +440,88 @@ public class AdminPanel extends Application {
         stage.setTitle("用户界面 - 浏览书籍");
     }
 
+    private void showBorrowBookInterface(Stage stage, int userId) {
+        VBox borrowLayout = new VBox(10);
+        borrowLayout.setPadding(new javafx.geometry.Insets(10));
+
+        TableView<Book> tableView = new TableView<>();
+        TableColumn<Book, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Book, String> titleCol = new TableColumn<>("书名");
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Book, String> authorCol = new TableColumn<>("作者");
+        authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        TableColumn<Book, String> publisherCol = new TableColumn<>("出版社");
+        publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        TableColumn<Book, Boolean> isborrowedCol = new TableColumn<>("Is Borrowed");
+        isborrowedCol.setCellValueFactory(new PropertyValueFactory<>("isborrowed"));
+
+        //TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
+       // isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+
+      // TableColumn<Book, Integer> quantityCol = new TableColumn<>("数量");
+        //quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        tableView.getColumns().addAll(idCol, titleCol, authorCol, isborrowedCol);
+        // 设置可选择的模式，使得只能单选
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        try {
+            List<Book> allBooks = bookService.getAllBooks(); // 假设这个方法返回所有可借的书籍
+            tableView.setItems(javafx.collections.FXCollections.observableArrayList(allBooks));
+        } catch (SQLException ex) {
+            new Alert(Alert.AlertType.ERROR, "获取书籍列表失败: " + ex.getMessage()).showAndWait();
+            return;
+        }
+
+        Button borrowBtn = new Button("借书");
+        borrowBtn.setPrefWidth(200);
+        borrowBtn.setOnAction(e -> {
+            Book selectedBook = tableView.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                try {
+                    userService.borrowBook(userId, selectedBook.getId()); // 调用借书方法
+                    new Alert(Alert.AlertType.INFORMATION, "借书成功！").showAndWait();
+                    showBrowseBooksInterface(stage); // 借书后返回书籍浏览界面
+                } catch (SQLException ex) {
+                    new Alert(Alert.AlertType.ERROR, "借书失败: " + ex.getMessage()).showAndWait();
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "请先选择一本书！").showAndWait();
+            }
+        });
+
+        Button backBtn = new Button("返回");
+        backBtn.setPrefWidth(200);
+        backBtn.setOnAction(e -> showBrowseBooksInterface(stage));
+
+        borrowLayout.getChildren().addAll(
+                new Label("选择书籍借出"),
+                tableView,
+                borrowBtn,
+                backBtn
+        );
+
+        Scene scene = new Scene(borrowLayout, 600, 400); // 创建或重新使用Scene
+        stage.setScene(scene);
+        stage.setTitle("用户界面 - 借书");
+        stage.show();
+    }
+
+    // 确保Book类有一个getId()方法
+// public class Book {
+//     private Integer id;
+//     private String title;
+//     private String author;
+//     // 其他属性和方法
+//     public Integer getId() {
+//         return id;
+//     }
+//     // 其他getter和setter
+// }
     public static void main(String[] args) {
         launch(args);
     }
