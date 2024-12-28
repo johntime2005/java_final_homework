@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="145">
-  <database-model serializer="dbm" dbms="MSSQL" family-id="MSSQL" format-version="4.53">
+  <database-model serializer="dbm" dbms="MSSQL" family-id="MSSQL" format-version="4.52">
     <root id="1">
       <Grants>2|||2|connect|G
 3|||2|connect|G
@@ -16872,8 +16872,8 @@
     </schema>
     <schema id="5575" parent="5511" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-12-28.09:48:45.477</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-12-27.17:48:45</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-12-28.20:22:15.093</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-12-28.04:22:15</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5576" parent="5511" name="guest">
@@ -16899,33 +16899,33 @@
     <table id="5580" parent="5575" name="user_book">
       <CreatedTimestamp>2024-12-28.09:48:32.663</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2024-12-28.09:48:32.663</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-12-28.20:22:12.180</ModifiedTimestamp>
       <ObjectId>1525580473</ObjectId>
       <LobDataSpaceId>0</LobDataSpaceId>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </table>
     <column id="5581" parent="5578" name="id">
+      <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(4)</SequenceIdentity>
-      <StoredType>int|0s</StoredType>
+      <SequenceIdentity>1(12)</SequenceIdentity>
     </column>
     <column id="5582" parent="5578" name="title">
+      <DasType>nvarchar(200 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StoredType>nvarchar(200 char)|0s</StoredType>
     </column>
     <column id="5583" parent="5578" name="author">
+      <DasType>nvarchar(100 char)|0s</DasType>
       <Position>3</Position>
-      <StoredType>nvarchar(100 char)|0s</StoredType>
     </column>
     <column id="5584" parent="5578" name="publisher">
+      <DasType>nvarchar(100 char)|0s</DasType>
       <Position>4</Position>
-      <StoredType>nvarchar(100 char)|0s</StoredType>
     </column>
     <column id="5585" parent="5578" name="isborrowed">
+      <DasType>bit|0s</DasType>
       <Position>8</Position>
-      <StoredType>bit|0s</StoredType>
       <DefaultConstraintId>1205579333</DefaultConstraintId>
       <DefaultConstraintName>DF__books__isborrowe__47DBAE45</DefaultConstraintName>
     </column>
@@ -16953,29 +16953,29 @@
       <UnderlyingIndexName>PK__books__3213E83FA3E10FA5</UnderlyingIndexName>
     </key>
     <column id="5589" parent="5579" name="id">
+      <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(7)</SequenceIdentity>
-      <StoredType>int|0s</StoredType>
+      <SequenceIdentity>1(8)</SequenceIdentity>
     </column>
     <column id="5590" parent="5579" name="username">
+      <DasType>nvarchar(50 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StoredType>nvarchar(50 char)|0s</StoredType>
     </column>
     <column id="5591" parent="5579" name="password">
+      <DasType>nvarchar(50 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StoredType>nvarchar(50 char)|0s</StoredType>
     </column>
     <column id="5592" parent="5579" name="user_type">
+      <DasType>nvarchar(10 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>nvarchar(10 char)|0s</StoredType>
     </column>
     <column id="5593" parent="5579" name="balance">
+      <DasType>int|0s</DasType>
       <Position>5</Position>
-      <StoredType>int|0s</StoredType>
       <DefaultConstraintId>949578421</DefaultConstraintId>
       <DefaultConstraintName>DF__library_u__balan__38996AB5</DefaultConstraintName>
     </column>
@@ -17017,16 +17017,20 @@
       <UnderlyingIndexName>UQ__library___F3DBC572D49C6FBE</UnderlyingIndexName>
     </key>
     <column id="5599" parent="5580" name="user_id">
+      <DasType>int|0s</DasType>
       <Position>1</Position>
-      <StoredType>int|0s</StoredType>
     </column>
     <column id="5600" parent="5580" name="book_id">
+      <DasType>int|0s</DasType>
       <Position>2</Position>
-      <StoredType>int|0s</StoredType>
     </column>
     <column id="5601" parent="5580" name="borrow_date">
+      <DasType>date|0s</DasType>
       <Position>3</Position>
-      <StoredType>date|0s</StoredType>
+    </column>
+    <column id="5602" parent="5580" name="return_date">
+      <DasType>date|0s</DasType>
+      <Position>5</Position>
     </column>
   </database-model>
 </dataSource>
