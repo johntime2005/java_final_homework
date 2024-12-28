@@ -30,6 +30,9 @@ public class UserBorrowController {
     @FXML
     private TextField bookIdField;
 
+    @FXML
+    private Button borrowButton;
+
     private Connection connection;
     private userMegementDao userService;
     private bookMegementDao bookService;
