@@ -4,23 +4,32 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-   prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminManuController">
+      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminManuController"
+      style="-fx-background-color: #f0f0f0;">
    <children>
-      <Button fx:id="queryButton" layoutX="252.0" layoutY="189.0" mnemonicParsing="false" 
-         onAction="#handleQuery" text="综合查询" />
-      <Button fx:id="addBookButton" layoutX="252.0" layoutY="254.0" mnemonicParsing="false" 
-         onAction="#handleAddBook" text="添加书籍" />
-      <Button fx:id="logoutButton" layoutX="252.0" layoutY="309.0" mnemonicParsing="false" 
-         onAction="#handleLogout" prefHeight="36.0" prefWidth="96.0" text="退出登录" />
-      <Label contentDisplay="TOP" layoutX="117.0" layoutY="108.0" text="图书管理系统-管理员页面"
-         textFill="#ee0c0c">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
+      <VBox alignment="CENTER" spacing="20" layoutX="150" layoutY="50">
+         <children>
+            <Label contentDisplay="TOP" text="图书管理系统-管理员页面"
+                   textFill="#ee0c0c" style="-fx-font-size: 32px; -fx-font-weight: bold;">
+            </Label>
+            <Button fx:id="queryButton" mnemonicParsing="false" onAction="#handleQuery" text="综合查询"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;">
+            </Button>
+            <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBook" text="添加书籍"
+                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;">
+            </Button>
+            <Button fx:id="deleteBookButton" mnemonicParsing="false" onAction="#handleDeleteBook" text="删除书籍"
+                    style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;">
+            </Button>
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" text="退出登录"
+                    style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;">
+            </Button>
+         </children>
+      </VBox>
    </children>
 </Pane>
