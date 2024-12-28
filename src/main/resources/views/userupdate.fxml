@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.UpdateUserController">
+   <children>
+      <Button fx:id="updateButton" layoutX="21.0" layoutY="350.0" mnemonicParsing="false" onAction="#updateUser" text="更新" textFill="#eb0b0b" />
+      <Button fx:id="cancelBtn" layoutX="492.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancel" text="返回" textFill="#e80e0e" />
+      <Label layoutX="28.0" layoutY="20.0" text="修改信息" textFill="#f50a0a">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="idField" layoutX="72.0" layoutY="89.0" prefHeight="36.0" prefWidth="219.0" />
+      <PasswordField fx:id="ageField" layoutX="72.0" layoutY="164.0" prefHeight="36.0" prefWidth="219.0" />
+      <PasswordField fx:id="genderField" layoutX="72.0" layoutY="238.0" prefHeight="36.0" prefWidth="219.0" />
+      <Label layoutX="32.0" layoutY="90.0" prefHeight="24.0" prefWidth="38.0" text="id" textFill="#ee0909">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="165.0" prefHeight="34.0" prefWidth="46.0" text="年龄" textFill="#ee0909" />
+      <Label layoutX="32.0" layoutY="238.0" prefHeight="24.0" prefWidth="38.0" text="性别" textFill="#ee0909" />
+      <Label layoutX="315.0" layoutY="239.0" prefHeight="24.0" prefWidth="38.0" text="生日" textFill="#ee0909" />
+      <Label layoutX="311.0" layoutY="166.0" prefHeight="34.0" prefWidth="46.0" text="电话" textFill="#ee0909" />
+      <Label layoutX="315.0" layoutY="91.0" prefHeight="24.0" prefWidth="38.0" text="学号" textFill="#ee0909" />
+      <PasswordField fx:id="birthdateField" layoutX="355.0" layoutY="239.0" prefHeight="36.0" prefWidth="219.0" />
+      <PasswordField fx:id="phonenumberField" layoutX="355.0" layoutY="165.0" prefHeight="36.0" prefWidth="219.0" />
+      <PasswordField fx:id="schoolidField" layoutX="355.0" layoutY="90.0" prefHeight="36.0" prefWidth="219.0" />
+   </children>
+</Pane>

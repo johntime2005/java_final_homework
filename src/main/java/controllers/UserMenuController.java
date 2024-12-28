@@ -89,7 +89,7 @@ public class UserMenuController {
     }
     @FXML
     private void updateUser(ActionEvent event) {
-        loadFXML("/views/updateuser.fxml", "修改信息", event);
+        loadFXML("/views/userupdate.fxml", "修改信息", event);
     }
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
