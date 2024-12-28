@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminManuController">
+   <children>
+      <Button layoutX="252.0" layoutY="189.0" mnemonicParsing="false" text="综合查询" />
+      <Button layoutX="252.0" layoutY="254.0" mnemonicParsing="false" text="添加书籍" />
+      <Button layoutX="252.0" layoutY="309.0" mnemonicParsing="false" prefHeight="36.0"
+         prefWidth="96.0" text="退出登录" />
+      <Label contentDisplay="TOP" layoutX="117.0" layoutY="108.0" text="图书管理系统-管理员页面"
+         textFill="#ee0c0c">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

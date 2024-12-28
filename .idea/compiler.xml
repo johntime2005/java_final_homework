@@ -9,8 +9,5 @@
         <module name="library-management" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="java_final_homework" target="21" />
-    </bytecodeTargetLevel>
   </component>
 </project>
