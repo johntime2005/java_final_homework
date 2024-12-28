@@ -11,6 +11,7 @@ controllers\LoginController.class
 utils\DatabaseConnection.class
 model\Book.class
 utils\userService.class
+utils\AdminPanel$1.class
 model\User.class
 utils\AdminPanel.class
 dao\bookMegementDao.class

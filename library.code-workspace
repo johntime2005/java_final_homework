@@ -19,9 +19,12 @@
             "D:\\java_depences\\javafx-sdk-21.0.5\\lib\\javafx.web.jar",
             "D:\\java_depences\\javafx-sdk-21.0.5\\lib\\javafx-swt.jar"
         ],
-        "java.project.sourcePaths": ["src", "."],
+        "java.project.sourcePaths": [
+            "src",
+            "."
+        ],
         "java.configuration.updateBuildConfiguration": "automatic",
         "java.project.outputPath": "bin",
-        "maven.view": "hierarchical",
+        "maven.view": "hierarchical"
     }
 }

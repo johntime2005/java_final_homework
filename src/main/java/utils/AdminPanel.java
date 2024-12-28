@@ -2,6 +2,7 @@ package utils;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -18,6 +19,7 @@ import impl.userMegement;
 import model.Book;
 import model.User;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,6 +32,7 @@ public class AdminPanel extends Application {
     private VBox mainLayout;
     private Scene scene;
     private User loggedInUser;
+
     public AdminPanel() {
         try {
             Connection connection = DatabaseConnection.getConnection();
@@ -38,10 +41,9 @@ public class AdminPanel extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, 
-                    "数据库连接或初始化失败: " + e.getMessage(), 
-                    ButtonType.OK
-                );
+                Alert alert = new Alert(Alert.AlertType.ERROR,
+                        "数据库连接或初始化失败: " + e.getMessage(),
+                        ButtonType.OK);
                 alert.showAndWait();
                 Platform.exit();
             });
@@ -50,9 +52,26 @@ public class AdminPanel extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        showRoleSelectionInterface(primaryStage);
-        primaryStage.setTitle("图书管理系统");
-        primaryStage.show();
+        try {
+            // 修改为加载角色选择界面
+            Parent root = FXMLLoader.load(getClass().getResource("/views/login.fxml"));
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("图书管理系统");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("启动失败", e.getMessage());
+        }
+    }
+
+    private void showError(String title, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setContentText(content);
+            alert.showAndWait();
+        });
     }
 
     @Override
@@ -99,7 +118,7 @@ public class AdminPanel extends Application {
             try {
                 User user = userService.login(usernameField.getText(), passwordField.getText());
                 if (user != null && "admin".equals(user.getUserType())) {
-                    loggedInUser = user;//将用户对象存储在类级别的变量中
+                    loggedInUser = user;// 将用户对象存储在类级别的变量中
                     showMainInterface(stage);
                 } else {
                     new Alert(Alert.AlertType.ERROR, "管理员用户名或密码错误！").showAndWait();
@@ -112,12 +131,11 @@ public class AdminPanel extends Application {
         backButton.setOnAction(e -> showRoleSelectionInterface(stage));
 
         loginLayout.getChildren().addAll(
-            new Label("管理员登录"),
-            usernameField,
-            passwordField,
-            loginButton,
-            backButton
-        );
+                new Label("管理员登录"),
+                usernameField,
+                passwordField,
+                loginButton,
+                backButton);
 
         scene.setRoot(loginLayout);
         stage.setTitle("管理员登录");
@@ -142,7 +160,7 @@ public class AdminPanel extends Application {
             try {
                 User user = userService.login(usernameField.getText(), passwordField.getText());
                 if (user != null && "user".equals(user.getUserType())) {
-                    loggedInUser = user;//将用户对象存储在类级别的变量中
+                    loggedInUser = user;// 将用户对象存储在类级别的变量中
                     new Alert(Alert.AlertType.INFORMATION, "登录成功，进入用户界面...").showAndWait();
                     showUserMainInterface(stage);
                 } else {
@@ -157,13 +175,12 @@ public class AdminPanel extends Application {
         backButton.setOnAction(e -> showRoleSelectionInterface(stage));
 
         loginLayout.getChildren().addAll(
-            new Label("用户登录"),
-            usernameField,
-            passwordField,
-            loginButton,
-            registerButton,
-            backButton
-        );
+                new Label("用户登录"),
+                usernameField,
+                passwordField,
+                loginButton,
+                registerButton,
+                backButton);
 
         scene.setRoot(loginLayout);
         stage.setTitle("用户登录");
@@ -189,10 +206,10 @@ public class AdminPanel extends Application {
                     return;
                 }
                 User newUser = new User(
-                    usernameField.getText(),
-                    passwordField.getText(),
-                    "user", // 普通用户类型
-                    10       // 初始余额
+                        usernameField.getText(),
+                        passwordField.getText(),
+                        "user", // 普通用户类型
+                        10 // 初始余额
                 );
                 userService.create(newUser);
                 new Alert(Alert.AlertType.INFORMATION, "注册成功！").showAndWait();
@@ -205,12 +222,11 @@ public class AdminPanel extends Application {
         backButton.setOnAction(e -> showUserLoginInterface(stage));
 
         registerLayout.getChildren().addAll(
-            new Label("用户注册"),
-            usernameField,
-            passwordField,
-            registerButton,
-            backButton
-        );
+                new Label("用户注册"),
+                usernameField,
+                passwordField,
+                registerButton,
+                backButton);
 
         scene.setRoot(registerLayout);
         stage.setTitle("用户注册");
@@ -237,11 +253,10 @@ public class AdminPanel extends Application {
 
         // 将按钮添加到主布局
         mainLayout.getChildren().addAll(
-            new Label("图书管理系统 - 管理员界面"),
-            combinedQueryBtn,
-            addBookBtn,
-            logoutBtn
-        );
+                new Label("图书管理系统 - 管理员界面"),
+                combinedQueryBtn,
+                addBookBtn,
+                logoutBtn);
 
         scene = new Scene(mainLayout, 400, 500);
         stage.setScene(scene);
@@ -264,10 +279,9 @@ public class AdminPanel extends Application {
         searchBtn.setOnAction(e -> {
             try {
                 List<Book> books = bookService.searchBooks(
-                    titleField.getText(),
-                    authorField.getText(),
-                    publisherField.getText()
-                );
+                        titleField.getText(),
+                        authorField.getText(),
+                        publisherField.getText());
                 if (books.isEmpty()) {
                     new Alert(Alert.AlertType.INFORMATION, "未找到符合条件的书籍").showAndWait();
                 } else {
@@ -286,10 +300,9 @@ public class AdminPanel extends Application {
         backBtn.setOnAction(e -> scene.setRoot(mainLayout));
 
         combinedLayout.getChildren().addAll(
-            new Label("综合查询 - 可根据任意条件搜索"),
-            titleField, authorField, publisherField,
-            searchBtn, backBtn
-        );
+                new Label("综合查询 - 可根据任意条件搜索"),
+                titleField, authorField, publisherField,
+                searchBtn, backBtn);
         scene.setRoot(combinedLayout);
     }
 
@@ -336,12 +349,10 @@ public class AdminPanel extends Application {
                 authorField,
                 publisherField,
                 addButton,
-                backButton
-        );
+                backButton);
 
         scene.setRoot(addLayout);
     }
-
 
     // 显示普通用户界面
     private void showUserMainInterface(Stage stage) {
@@ -361,11 +372,10 @@ public class AdminPanel extends Application {
         logoutBtn.setOnAction(e -> showRoleSelectionInterface(stage));
 
         userLayout.getChildren().addAll(
-            new Label("欢迎进入用户界面"),
-            browseBooksBtn,
+                new Label("欢迎进入用户界面"),
+                browseBooksBtn,
                 borrowBookBtn,
-            logoutBtn
-        );
+                logoutBtn);
 
         scene.setRoot(userLayout);
         stage.setTitle("用户面板");
@@ -389,8 +399,7 @@ public class AdminPanel extends Application {
         publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
         TableColumn<Book, Boolean> isborrowedCol = new TableColumn<>("Is Borrowed");
         isborrowedCol.setCellValueFactory(new PropertyValueFactory<>("isborrowed"));
-        isborrowedCol.setCellFactory(column -> new TableCell<Book, Boolean>()
-        {
+        isborrowedCol.setCellFactory(column -> new TableCell<Book, Boolean>() {
             @Override
             protected void updateItem(Boolean item, boolean empty) {
                 super.updateItem(item, empty);
@@ -402,23 +411,23 @@ public class AdminPanel extends Application {
             }
         });
 
-        //TableColumn<Book, String> dateCol = new TableColumn<>("出版日期");
-        //dateCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
+        // TableColumn<Book, String> dateCol = new TableColumn<>("出版日期");
+        // dateCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
 
-        //TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
-        //isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        // TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
+        // isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 
-        //TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
-       // qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        // TableColumn<Book, Integer> qtyCol = new TableColumn<>("数量");
+        // qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tableView.getColumns().add(idCol);
         tableView.getColumns().add(titleCol);
         tableView.getColumns().add(authorCol);
         tableView.getColumns().add(publisherCol);
         tableView.getColumns().add(isborrowedCol);
-       // tableView.getColumns().add(dateCol);
-       // tableView.getColumns().add(isbnCol);
-       // tableView.getColumns().add(qtyCol);
+        // tableView.getColumns().add(dateCol);
+        // tableView.getColumns().add(isbnCol);
+        // tableView.getColumns().add(qtyCol);
 
         try {
             List<Book> allBooks = bookService.getAllBooks();
@@ -432,10 +441,9 @@ public class AdminPanel extends Application {
         backBtn.setOnAction(e -> showUserMainInterface(stage));
 
         browseLayout.getChildren().addAll(
-            new Label("书籍列表"),
-            tableView,
-            backBtn
-        );
+                new Label("书籍列表"),
+                tableView,
+                backBtn);
         scene.setRoot(browseLayout);
         stage.setTitle("用户界面 - 浏览书籍");
     }
@@ -459,11 +467,11 @@ public class AdminPanel extends Application {
         TableColumn<Book, Boolean> isborrowedCol = new TableColumn<>("Is Borrowed");
         isborrowedCol.setCellValueFactory(new PropertyValueFactory<>("isborrowed"));
 
-        //TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
-       // isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        // TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
+        // isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 
-      // TableColumn<Book, Integer> quantityCol = new TableColumn<>("数量");
-        //quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        // TableColumn<Book, Integer> quantityCol = new TableColumn<>("数量");
+        // quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tableView.getColumns().addAll(idCol, titleCol, authorCol, isborrowedCol);
         // 设置可选择的模式，使得只能单选
@@ -502,8 +510,7 @@ public class AdminPanel extends Application {
                 new Label("选择书籍借出"),
                 tableView,
                 borrowBtn,
-                backBtn
-        );
+                backBtn);
 
         Scene scene = new Scene(borrowLayout, 600, 400); // 创建或重新使用Scene
         stage.setScene(scene);
@@ -512,16 +519,16 @@ public class AdminPanel extends Application {
     }
 
     // 确保Book类有一个getId()方法
-// public class Book {
-//     private Integer id;
-//     private String title;
-//     private String author;
-//     // 其他属性和方法
-//     public Integer getId() {
-//         return id;
-//     }
-//     // 其他getter和setter
-// }
+    // public class Book {
+    // private Integer id;
+    // private String title;
+    // private String author;
+    // // 其他属性和方法
+    // public Integer getId() {
+    // return id;
+    // }
+    // // 其他getter和setter
+    // }
     public static void main(String[] args) {
         launch(args);
     }
