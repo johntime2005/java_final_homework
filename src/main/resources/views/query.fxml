@@ -14,7 +14,7 @@
                 <TableColumn fx:id="nameColumn" prefWidth="150.0" text="书名" />
                 <TableColumn fx:id="authorColumn" prefWidth="100.0" text="作者" />
                 <TableColumn fx:id="pressColumn" prefWidth="120.0" text="出版社" />
-                <TableColumn fx:id="borredColumn" prefWidth="100.0" text="是否借出" />
+                <TableColumn fx:id="borrowedColumn" prefWidth="100.0" text="是否借出" />
             </columns>
         </TableView>
         <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack" text="返回" />
