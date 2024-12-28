@@ -341,6 +341,72 @@ public class AdminPanel extends Application {
 
         scene.setRoot(addLayout);
     }
+    private void showReturnBookInterface(Stage stage, int userId) {
+        VBox returnLayout = new VBox(10);
+        returnLayout.setPadding(new javafx.geometry.Insets(10));
+
+        TableView<Book> tableView = new TableView<>();
+        TableColumn<Book, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Book, String> titleCol = new TableColumn<>("书名");
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Book, String> authorCol = new TableColumn<>("作者");
+        authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        TableColumn<Book, String> publisherCol = new TableColumn<>("出版社");
+        publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+
+        TableColumn<Book, Boolean> isborrowedCol = new TableColumn<>("Is Borrowed");
+        isborrowedCol.setCellValueFactory(new PropertyValueFactory<>("isborrowed"));
+
+        tableView.getColumns().addAll(idCol, titleCol, authorCol, publisherCol, isborrowedCol);
+
+        // 设置可选择的模式，使得只能单选
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        try {
+            List<Book> allBooks = bookService.getAllBooks(); // 假设这个方法返回所有已借出的书籍
+            tableView.setItems(javafx.collections.FXCollections.observableArrayList(allBooks));
+        } catch (SQLException ex) {
+            new Alert(Alert.AlertType.ERROR, "获取书籍列表失败: " + ex.getMessage()).showAndWait();
+            return;
+        }
+
+        Button returnBtn = new Button("还书");
+        returnBtn.setPrefWidth(200);
+        returnBtn.setOnAction(e -> {
+            Book selectedBook = tableView.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                try {
+                    userService.returnBook(userId, selectedBook.getId()); // 调用还书方法
+                    new Alert(Alert.AlertType.INFORMATION, "还书成功！").showAndWait();
+                    showBrowseBooksInterface(stage); // 还书后返回书籍浏览界面
+                } catch (SQLException ex) {
+                    new Alert(Alert.AlertType.ERROR, "还书失败: " + ex.getMessage()).showAndWait();
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "请先选择一本书！").showAndWait();
+            }
+        });
+
+        Button backBtn = new Button("返回");
+        backBtn.setPrefWidth(200);
+        backBtn.setOnAction(e -> showBrowseBooksInterface(stage));
+
+        returnLayout.getChildren().addAll(
+                new Label("选择书籍归还"),
+                tableView,
+                returnBtn,
+                backBtn
+        );
+
+        Scene scene = new Scene(returnLayout, 600, 400); // 创建或重新使用Scene
+        stage.setScene(scene);
+        stage.setTitle("用户界面 - 还书");
+        stage.show();
+    }
 
 
     // 显示普通用户界面
@@ -355,7 +421,11 @@ public class AdminPanel extends Application {
         browseBooksBtn.setOnAction(e -> showBrowseBooksInterface(stage));
         Button borrowBookBtn = new Button("借书"); // 新增借书按钮
         borrowBookBtn.setPrefWidth(200);
-        borrowBookBtn.setOnAction(e -> showBorrowBookInterface(stage, loggedInUser.getId())); // 假设用户ID为1，实际应用中需要从登录信息中获取
+        borrowBookBtn.setOnAction(e -> showBorrowBookInterface(stage, loggedInUser.getId()));
+        Button returnBookBtn = new Button("还书"); // 新增还书按钮
+        returnBookBtn.setPrefWidth(200);
+        returnBookBtn.setOnAction(e -> showReturnBookInterface(stage, loggedInUser.getId()));
+        // 假设用户ID为1，实际应用中需要从登录信息中获取
         Button logoutBtn = new Button("退出登录");
         logoutBtn.setPrefWidth(200);
         logoutBtn.setOnAction(e -> showRoleSelectionInterface(stage));
@@ -364,6 +434,7 @@ public class AdminPanel extends Application {
             new Label("欢迎进入用户界面"),
             browseBooksBtn,
                 borrowBookBtn,
+                returnBookBtn,
             logoutBtn
         );
 

@@ -16872,8 +16872,8 @@
     </schema>
     <schema id="5575" parent="5511" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-12-28.09:48:45.477</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-12-27.17:48:45</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-12-28.20:22:15.093</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-12-28.04:22:15</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5576" parent="5511" name="guest">
@@ -16899,7 +16899,7 @@
     <table id="5580" parent="5575" name="user_book">
       <CreatedTimestamp>2024-12-28.09:48:32.663</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2024-12-28.09:48:32.663</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-12-28.20:22:12.180</ModifiedTimestamp>
       <ObjectId>1525580473</ObjectId>
       <LobDataSpaceId>0</LobDataSpaceId>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
@@ -16908,7 +16908,7 @@
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(4)</SequenceIdentity>
+      <SequenceIdentity>1(12)</SequenceIdentity>
     </column>
     <column id="5582" parent="5578" name="title">
       <DasType>nvarchar(200 char)|0s</DasType>
@@ -16956,7 +16956,7 @@
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(7)</SequenceIdentity>
+      <SequenceIdentity>1(8)</SequenceIdentity>
     </column>
     <column id="5590" parent="5579" name="username">
       <DasType>nvarchar(50 char)|0s</DasType>
@@ -17027,6 +17027,10 @@
     <column id="5601" parent="5580" name="borrow_date">
       <DasType>date|0s</DasType>
       <Position>3</Position>
+    </column>
+    <column id="5602" parent="5580" name="return_date">
+      <DasType>date|0s</DasType>
+      <Position>5</Position>
     </column>
   </database-model>
 </dataSource>

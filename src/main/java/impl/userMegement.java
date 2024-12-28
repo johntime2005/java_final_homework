@@ -131,9 +131,9 @@ public class userMegement implements userMegementDao {
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next()) {
                     boolean isBorrowed = rs.getBoolean("isborrowed");
-                    if (!isBorrowed) {
-                        // 插入借书记录
-                        String insertQuery = "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (?, ?, GETDATE())";
+                    if (isBorrowed) {
+                        // 插入还书记录
+                        String insertQuery = "INSERT INTO user_book (user_id, book_id, return_date) VALUES (?, ?, GETDATE())";
                         try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                             insertStmt.setInt(1, userId);
                             insertStmt.setInt(2, bookId);
@@ -143,30 +143,31 @@ public class userMegement implements userMegementDao {
                         // 更新图书状态
                         String updateBookQuery = "UPDATE books SET isborrowed = ? WHERE id = ?";
                         try (PreparedStatement updateBookStmt = connection.prepareStatement(updateBookQuery)) {
-                            updateBookStmt.setBoolean(1, true);
+                            updateBookStmt.setBoolean(1, false);
                             updateBookStmt.setInt(2, bookId);
                             updateBookStmt.executeUpdate();
                         }
 
                         // 更新用户余额
-                        String updateBalanceQuery = "UPDATE library_user SET balance = balance - 1 WHERE id = ?";
+                        String updateBalanceQuery = "UPDATE library_user SET balance = balance + 1 WHERE id = ?";
                         try (PreparedStatement updateBalanceStmt = connection.prepareStatement(updateBalanceQuery)) {
                             updateBalanceStmt.setInt(1, userId);
                             updateBalanceStmt.executeUpdate();
                         }
                     } else {
-                        throw new SQLException("该书籍已被借出，无法借阅。");
+                        throw new SQLException("还书失败，该书籍未被借出。");
                     }
                 } else {
-                    throw new SQLException("书籍ID不存在。");
+                    throw new SQLException("还书失败，书籍ID不存在。");
                 }
             }
         } catch (SQLException e) {
             // 处理SQL异常
-            throw new SQLException("借书过程中发生错误: " + e.getMessage(), e);
+            throw new SQLException("还书过程中发生错误: " + e.getMessage(), e);
         }
     }
-    
+
+
 
     //更新用户余额
 //    public void updateUserBalance(int userId, int amount) throws SQLException {
