@@ -49,7 +49,9 @@ public class AdminPanel extends Application {
             });
         }
     }
-
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user; // 设置当前登录的用户对象
+    }
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -80,7 +82,7 @@ public class AdminPanel extends Application {
     }
 
     // ========== 角色选择界面 ==========
-    private void showRoleSelectionInterface(Stage stage) {
+    public void showRoleSelectionInterface(Stage stage) {
         VBox roleLayout = new VBox(15);
         roleLayout.setPadding(new javafx.geometry.Insets(10));
         roleLayout.setAlignment(javafx.geometry.Pos.CENTER);
@@ -101,7 +103,7 @@ public class AdminPanel extends Application {
     }
 
     // ========== 管理员登录界面(无注册功能) ==========
-    private void showAdminLoginInterface(Stage stage) {
+ public  void showAdminLoginInterface(Stage stage) {
         VBox loginLayout = new VBox(10);
         loginLayout.setPadding(new javafx.geometry.Insets(10));
         loginLayout.setAlignment(javafx.geometry.Pos.CENTER);

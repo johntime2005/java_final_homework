@@ -4,9 +4,8 @@ import impl.userMegement;
 import model.User;
 import utils.DatabaseConnection;  // 假设你有这个类来处理数据库连接
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,7 +15,7 @@ import java.sql.Connection;
 public class AdminLoginController {
     @FXML
     private TextField usernameField;
-    
+
     @FXML
     private PasswordField passwordField;
 
@@ -53,20 +52,21 @@ public class AdminLoginController {
     }
 
     @FXML
-    private void handleBack() {
+    private void handleLogin() {
         try {
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/views/login.fxml"));
-            stage.setScene(new Scene(root));
-        } catch (Exception e) {
-            showError("返回失败", e.getMessage());
+            User user = userService.login(usernameField.getText(), passwordField.getText());
+            if (user != null && "admin".equals(user.getUserType())) {
+                adminPanel.setLoggedInUser(user);
+                adminPanel.showAdminLoginInterface(stage);
+            } else {
+                new Alert(AlertType.ERROR, "管理员用户名或密码错误！").showAndWait();
+            }
+        } catch (SQLException ex) {
+            new Alert(AlertType.ERROR, "登录失败：" + ex.getMessage()).showAndWait();
         }
     }
-
-    private void showError(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
+    @FXML
+    private void handleBack() {
+        adminPanel.showRoleSelectionInterface(stage);
     }
 }
