@@ -1,20 +1,13 @@
 package controllers;
-
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
-import model.User;
-import dao.userMegementDao;
-import impl.userMegement;
-import utils.AdminPanel;
-import utils.DatabaseConnection;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public class AdminLoginController {
+
     @FXML
     private TextField usernameField;
 
@@ -22,60 +15,28 @@ public class AdminLoginController {
     private PasswordField passwordField;
 
     @FXML
-    private Button loginButton;
-
-    @FXML
-    private Button backButton;
-
-    private userMegementDao userService;
-    private AdminPanel adminPanel;
-    private Stage stage;
-
-    public AdminLoginController() {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            this.userService = new userMegement(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Platform.runLater(() -> {
-                Alert alert = new Alert(AlertType.ERROR,
-                        "数据库连接或初始化失败: " + e.getMessage(),
-                        ButtonType.OK);
-                alert.showAndWait();
-                Platform.exit();
-            });
-        }
-    }
-
-    public void setAdminPanel(AdminPanel adminPanel) {
-        this.adminPanel = adminPanel;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    @FXML
-    private void initialize() {
-        loginButton.setOnAction(e -> handleLogin());
-        backButton.setOnAction(e -> handleBack());
-    }
-    @FXML
     private void handleLogin() {
-        try {
-            User user = userService.login(usernameField.getText(), passwordField.getText());
-            if (user != null && "admin".equals(user.getUserType())) {
-                adminPanel.setLoggedInUser(user);
-                adminPanel.showAdminLoginInterface(stage);
-            } else {
-                new Alert(AlertType.ERROR, "管理员用户名或密码错误！").showAndWait();
-            }
-        } catch (SQLException ex) {
-            new Alert(AlertType.ERROR, "登录失败：" + ex.getMessage()).showAndWait();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        // 这里可以添加登录逻辑
+        if ("admin".equals(username) && "password".equals(password)) {
+            showAlert(AlertType.INFORMATION, "登录成功");
+        } else {
+            showAlert(AlertType.ERROR, "用户名或密码错误");
         }
     }
+
     @FXML
     private void handleBack() {
-        adminPanel.showRoleSelectionInterface(stage);
+        // 返回逻辑
+    }
+
+    private void showAlert(AlertType alertType, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle("消息");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
