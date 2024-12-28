@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -42,25 +41,26 @@ public class UserBorrowController {
             userService = new userMegement(connection);
             bookService = new bookMegement(connection);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法连接到数据库");
         }
     }
 
-    // 借书：要求用户输入本人id，图书id，先通过用户id判断这个用户余额是否大于0，再通过图书id判断图书是否被借走。都满足情况才能借书，然后用户余额-1，更改图书被借状态，输出借书成功
+    // 借书：用户输入用户名和书籍编号，点击“借书”按钮后，调用将该书籍借给该用户
     @FXML
     private void borrowBook(ActionEvent event) {
         try {
             int userId = Integer.parseInt(usernameField.getText());
             int bookId = Integer.parseInt(bookIdField.getText());
-
-
+            userService.borrowBook(userId, bookId);
+            showAlert(Alert.AlertType.INFORMATION, "成功", "借书成功");
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的用户ID和图书ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "无法借书");
+        }
     }
-
-
 
     @FXML
     private void loadFXML(String fxmlPath, String title, ActionEvent event) {
