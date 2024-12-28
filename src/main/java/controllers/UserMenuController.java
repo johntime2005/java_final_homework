@@ -54,6 +54,11 @@ public class UserMenuController {
     private void borrowBook(ActionEvent event) {
         loadFXML("/views/borrowbook.fxml", "借书", event);
     }
+    //还书
+    @FXML
+    private void returnBook(ActionEvent event) {
+        loadFXML("/views/returnbook.fxml", "还书", event);
+    }
     private void loadFXML(String fxmlPath, String title, ActionEvent event) {
         try {
             URL url = getClass().getResource(fxmlPath);
