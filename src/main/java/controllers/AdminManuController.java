@@ -22,10 +22,12 @@ public class AdminManuController {
     private void handleQuery(ActionEvent event) {
         try {
             // 打开综合查询页面
+            System.out.println("点击了综合查询按钮");
             Parent queryView = FXMLLoader.load(getClass().getResource("/views/query.fxml"));
             Stage stage = (Stage) queryButton.getScene().getWindow();
             stage.setScene(new Scene(queryView));
             stage.show();
+            System.out.println("成功打开综合查询页面");
         } catch (Exception e) {
             e.printStackTrace();
         }
