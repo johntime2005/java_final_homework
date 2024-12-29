@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserBorrowController">
+   <children>
+      <Label layoutX="32.0" layoutY="250.0" prefHeight="36.0" prefWidth="130.0" text="输入图书id" textFill="#fc0c0c">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="cancelButton" layoutX="503.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancel" text="返回" textFill="#f50b0b" />
+      <Label layoutX="32.0" layoutY="138.0" prefHeight="36.0" prefWidth="130.0" text="输入你的id" textFill="#fc0c0c">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="borrowButton" layoutX="26.0" layoutY="350.0" mnemonicParsing="false" onAction="#borrowBook" text="提交" textFill="#da0d0d" />
+      <PasswordField fx:id="usernameField" layoutX="162.0" layoutY="138.0" />
+      <PasswordField fx:id="bookIdField" layoutX="162.0" layoutY="250.0" />
+   </children>
+</Pane>

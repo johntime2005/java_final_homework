@@ -73,4 +73,52 @@ public class AdminManuController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void handleImportBook(ActionEvent event) {
+        try {
+            // 打开导入书籍页面
+            Parent importBookView = FXMLLoader.load(getClass().getResource("/views/importbook.fxml"));
+            Stage stage = (Stage) addBookButton.getScene().getWindow();
+            stage.setScene(new Scene(importBookView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleExportBook(ActionEvent event) {
+        try {
+            // 打开导出书籍页面
+            Parent exportBookView = FXMLLoader.load(getClass().getResource("/views/exportbook.fxml"));
+            Stage stage = (Stage) addBookButton.getScene().getWindow();
+            stage.setScene(new Scene(exportBookView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleImportUser(ActionEvent event) {
+        try {
+            // 打开导入用户页面
+            Parent importUserView = FXMLLoader.load(getClass().getResource("/views/importuser.fxml"));
+            Stage stage = (Stage) addBookButton.getScene().getWindow();
+            stage.setScene(new Scene(importUserView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleExportUser(ActionEvent event) {
+        try {
+            // 打开导出用户页面
+            Parent exportUserView = FXMLLoader.load(getClass().getResource("/views/exportuser.fxml"));
+            Stage stage = (Stage) addBookButton.getScene().getWindow();
+            stage.setScene(new Scene(exportUserView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
