@@ -33,7 +33,7 @@ public class BookUserExportController {
             
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                List<Book> books = DatabaseConnection.getAllBooks();//这里有bug
+                List<Book> books = DatabaseConnection.getAllBooks();
                 ExcelUtils.exportBooks(books, file);
                 showAlert(Alert.AlertType.INFORMATION, "导出成功", "图书数据已成功导出到Excel文件！");
             }
@@ -54,7 +54,7 @@ public class BookUserExportController {
             
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                List<User> users = DatabaseConnection.getAllUsers();
+                List<User> users = DatabaseConnection.getAllUsers();//等待修复
                 ExcelUtils.exportUsers(users, file);
                 showAlert(Alert.AlertType.INFORMATION, "导出成功", "用户数据已成功导出到Excel文件！");
             }

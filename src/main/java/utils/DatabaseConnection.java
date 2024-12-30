@@ -66,10 +66,10 @@ public class DatabaseConnection {
             while (rs.next()) {
                 Book book = new Book();
                 book.setId(rs.getInt("id"));
-                book.setName(rs.getString("name"));
+                book.setName(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));
-                book.setPublisher(rs.getString("press"));
-                book.setIsborrowed(rs.getBoolean("is_borrowed"));
+                book.setPublisher(rs.getString("publisher"));
+                book.setIsborrowed(rs.getBoolean("isborrowed"));
                 books.add(book);
             }
         }
