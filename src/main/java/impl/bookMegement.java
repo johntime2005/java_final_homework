@@ -188,48 +188,52 @@ public class bookMegement implements bookMegementDao {
     }
 
 //    @Override
-    public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
-        StringBuilder sb = new StringBuilder("SELECT * FROM books WHERE 1=1");
+public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
+    StringBuilder sb = new StringBuilder("SELECT * FROM books WHERE 1=0"); // 初始化为无结果
+    List<String> conditions = new ArrayList<>();
+
+    if (title != null && !title.trim().isEmpty()) {
+        conditions.add("title LIKE ?");
+    }
+    if (author != null && !author.trim().isEmpty()) {
+        conditions.add("author LIKE ?");
+    }
+    if (publisher != null && !publisher.trim().isEmpty()) {
+        conditions.add("publisher LIKE ?");
+    }
+
+    if (!conditions.isEmpty()) {
+        sb.append(" OR ").append(String.join(" OR ", conditions));
+    }
+
+    try (PreparedStatement stmt = connection.prepareStatement(sb.toString())) {
+        int index = 1;
         if (title != null && !title.trim().isEmpty()) {
-            sb.append(" AND title LIKE ?");
+            stmt.setString(index++, "%" + title + "%");
         }
         if (author != null && !author.trim().isEmpty()) {
-            sb.append(" AND author LIKE ?");
+            stmt.setString(index++, "%" + author + "%");
         }
         if (publisher != null && !publisher.trim().isEmpty()) {
-            sb.append(" AND publisher LIKE ?");
+            stmt.setString(index++, "%" + publisher + "%");
         }
 
-        try (PreparedStatement stmt = connection.prepareStatement(sb.toString())) {
-            int index = 1;
-            if (title != null && !title.trim().isEmpty()) {
-                stmt.setString(index++, "%" + title + "%");
-            }
-            if (author != null && !author.trim().isEmpty()) {
-                stmt.setString(index++, "%" + author + "%");
-            }
-            if (publisher != null && !publisher.trim().isEmpty()) {
-                stmt.setString(index++, "%" + publisher + "%");
-            }
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                List<Book> results = new ArrayList<>();
-                while (rs.next()) {
-                    results.add(new Book(
+        try (ResultSet rs = stmt.executeQuery()) {
+            List<Book> results = new ArrayList<>();
+            while (rs.next()) {
+                results.add(new Book(
                         rs.getInt("id"),
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("publisher"),
-//                        rs.getDate("publishDate") == null ? null : rs.getDate("publishDate").toLocalDate(),
-                        //rs.getString("isbn"),
-                       // rs.getInt("quantity")
-                            rs.getBoolean("isborrowed")
-                    ));
-                }
-                return results;
+                        rs.getBoolean("isborrowed")
+                ));
             }
+            return results;
         }
     }
+}
+
 
     @Override
     public void batchInsertBooks(List<Book> books) throws SQLException {
