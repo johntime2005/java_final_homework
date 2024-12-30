@@ -23,7 +23,7 @@ import utils.ExcelUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.Node;
 
-import utils.DatabaseConnection;  // 替换 DatabaseUtils
+import utils.DatabaseConnection;
 import model.User;
 
 public class BookUserImportController {
