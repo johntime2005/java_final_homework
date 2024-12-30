@@ -27,4 +27,6 @@ public interface bookMegementDao {
     List<Book> searchBooks(String title, String author, String publisher) throws SQLException;
 
     void updateBook(Book book) throws SQLException;
+
+    void importBooks(List<Book> books) throws SQLException;
 }

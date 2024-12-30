@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BookUserImportController">
+   <children>
+      <Button fx:id="BookButton" layoutX="233.0" layoutY="118.0" mnemonicParsing="false" text="书籍导入"
+         onAction="#handleBook">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Button fx:id="UserButton" layoutX="233.0" layoutY="220.0" mnemonicParsing="false" text="用户导入"
+         onAction="#handleUser">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Button fx:id="BackButton" layoutX="467.0" layoutY="332.0" mnemonicParsing="false" text="返回" textFill="#f50c0c"
+         onAction="#handleBack">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

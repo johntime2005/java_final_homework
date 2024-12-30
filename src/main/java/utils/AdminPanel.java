@@ -5,14 +5,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import dao.userMegementDao;
-import impl.bookMegement;
-import impl.userMegement;
-import model.Book;
-import model.User;
 import dao.userMegementDao;
 import impl.bookMegement;
 import impl.userMegement;
@@ -23,7 +17,6 @@ import javafx.scene.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class AdminPanel extends Application {

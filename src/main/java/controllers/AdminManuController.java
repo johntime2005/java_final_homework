@@ -77,7 +77,7 @@ public class AdminManuController {
     private void handleImportBook(ActionEvent event) {
         try {
             // 打开导入书籍页面
-            Parent importBookView = FXMLLoader.load(getClass().getResource("/views/importbook.fxml"));
+            Parent importBookView = FXMLLoader.load(getClass().getResource("/views/bookuserim.fxml"));
             Stage stage = (Stage) addBookButton.getScene().getWindow();
             stage.setScene(new Scene(importBookView));
             stage.show();
@@ -86,36 +86,24 @@ public class AdminManuController {
         }
     }
     @FXML
-    private void handleExportBook(ActionEvent event) {
+    private void handleImport(ActionEvent event) {
+        try {
+            // 打开导入书籍页面
+            Parent importView = FXMLLoader.load(getClass().getResource("/views/bookuserimport.fxml"));
+            Stage stage = (Stage) addBookButton.getScene().getWindow();
+            stage.setScene(new Scene(importView));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleExport(ActionEvent event) {
         try {
             // 打开导出书籍页面
-            Parent exportBookView = FXMLLoader.load(getClass().getResource("/views/exportbook.fxml"));
+            Parent exportView = FXMLLoader.load(getClass().getResource("/views/bookuserexport.fxml"));
             Stage stage = (Stage) addBookButton.getScene().getWindow();
-            stage.setScene(new Scene(exportBookView));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    private void handleImportUser(ActionEvent event) {
-        try {
-            // 打开导入用户页面
-            Parent importUserView = FXMLLoader.load(getClass().getResource("/views/importuser.fxml"));
-            Stage stage = (Stage) addBookButton.getScene().getWindow();
-            stage.setScene(new Scene(importUserView));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    private void handleExportUser(ActionEvent event) {
-        try {
-            // 打开导出用户页面
-            Parent exportUserView = FXMLLoader.load(getClass().getResource("/views/exportuser.fxml"));
-            Stage stage = (Stage) addBookButton.getScene().getWindow();
-            stage.setScene(new Scene(exportUserView));
+            stage.setScene(new Scene(exportView));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
