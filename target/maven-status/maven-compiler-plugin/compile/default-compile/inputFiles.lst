@@ -3,6 +3,7 @@ d:\java_final_homework\src\main\java\model\Book.java
 d:\java_final_homework\src\main\java\controllers\UserLoginController.java
 d:\java_final_homework\src\main\java\controllers\UserQueryController.java
 d:\java_final_homework\src\main\java\utils\BookService.java
+d:\java_final_homework\src\main\java\utils\DatabaseUtils.java
 d:\java_final_homework\src\main\java\utils\DatabaseInitializer.java
 d:\java_final_homework\src\main\java\utils\SqlServerConnectionExample.java
 d:\java_final_homework\src\main\java\controllers\AdminLoginController.java
@@ -27,4 +28,5 @@ d:\java_final_homework\src\main\java\utils\DatabaseConnection.java
 d:\java_final_homework\src\main\java\utils\SQlconnectiontest.java
 d:\java_final_homework\src\main\java\utils\LibraryQuery.java
 d:\java_final_homework\src\main\java\controllers\UserReturnController.java
+d:\java_final_homework\src\main\java\controllers\BookUserExportController.java
 d:\java_final_homework\src\main\java\controllers\UserBorrowController.java
