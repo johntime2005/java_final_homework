@@ -78,7 +78,7 @@ public class DatabaseConnection {
     
     public static List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM library_user";
         
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
