@@ -1,6 +1,5 @@
 package controllers;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,33 +22,46 @@ public class UpdateUserController {
     @FXML
     private Button cancelBtn;
     @FXML
-    private PasswordField idField;
+    private TextField idField;
     @FXML
-    private PasswordField ageField;
+    private TextField ageField;
     @FXML
-    private PasswordField genderField;
+    private TextField genderField;
     @FXML
-    private PasswordField phonenumberField;
+    private TextField phonenumberField;
     @FXML
-    private PasswordField schoolidField;
+    private TextField schoolidField;
     @FXML
-    private PasswordField birthdateField;
+    private TextField birthdateField;
     @FXML
     private Button updateButton;
 
     private Connection connection;
     private userMegementDao userService;
 
-    private void initialize() {
+    @FXML
+    public void initialize() {
+        System.out.println("Initialize method called.");
         try {
             connection = DatabaseConnection.getConnection();
-            userService = new userMegement(connection);
+            if (connection != null) {
+                System.out.println("Database connection established.");
+                userService = new userMegement(connection);
+                if (userService != null) {
+                    System.out.println("UserService initialized successfully.");
+                } else {
+                    System.out.println("UserService initialization failed.");
+                }
+            } else {
+                System.out.println("Database connection is null.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法连接到数据库");
         }
     }
-    //更新信息
+
+    // 更新信息
     @FXML
     private void updateUser(ActionEvent event) {
         try {
@@ -59,13 +72,14 @@ public class UpdateUserController {
             String schoolid = schoolidField.getText();
             String birthdate = birthdateField.getText();
 
-            userService.update(age,  gender, phonenumber,  schoolid,  birthdate, id);
+            userService.update(age, gender, phonenumber, schoolid, birthdate, id);
             showAlert(Alert.AlertType.INFORMATION, "成功", "用户信息已更新");
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法更新用户信息");
         }
     }
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -89,6 +103,7 @@ public class UpdateUserController {
             showAlert(Alert.AlertType.ERROR, "错误", "无法加载新窗口");
         }
     }
+
     @FXML
     private void cancel(ActionEvent event) {
         try {
