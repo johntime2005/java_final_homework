@@ -4,11 +4,14 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserQueryController">
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserQueryController">
     <children>
-        <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="23.0" prefWidth="200.0" promptText="输入搜索关键词" />
-        <Button layoutX="224.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSearch" text="搜索" />
-        <TableView fx:id="bookTable" layoutX="14.0" layoutY="50.0" prefHeight="300.0" prefWidth="570.0">
+        <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="23.0"
+            prefWidth="200.0" promptText="输入搜索关键词" />
+        <Button layoutX="224.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSearch"
+            text="搜索" />
+        <TableView fx:id="bookTable" layoutX="14.0" layoutY="50.0" prefHeight="300.0"
+            prefWidth="570.0">
             <columns>
                 <TableColumn fx:id="idColumn" prefWidth="50.0" text="编号" />
                 <TableColumn fx:id="nameColumn" prefWidth="150.0" text="书名" />
@@ -17,6 +20,7 @@
                 <TableColumn fx:id="borrowedColumn" prefWidth="100.0" text="是否借出" />
             </columns>
         </TableView>
-        <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack" text="返回" />
+        <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack"
+            text="返回" />
     </children>
 </AnchorPane>

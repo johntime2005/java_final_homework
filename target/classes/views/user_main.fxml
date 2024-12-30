@@ -6,14 +6,20 @@
 <?import javafx.scene.layout.*?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserMenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserMenuController">
    <children>
-      <Button fx:id="browseBookBtn" layoutX="217.0" layoutY="70.0" mnemonicParsing="false" onAction="#browseBook" text="浏览书籍" />
-      <Button fx:id="borrowBookBtn" layoutX="217.0" layoutY="128.0" mnemonicParsing="false" onAction="#borrowBook" text="借书" />
-      <Button fx:id="returnBookBtn" layoutX="217.0" layoutY="182.0" mnemonicParsing="false" onAction="#returnBook" text="还书" />
-      <Button fx:id="modifyBtn" layoutX="217.0" layoutY="243.0" mnemonicParsing="false" onAction="#updateUser" text="修改信息" />
-      <Button fx:id="cancelBtn" layoutX="496.0" layoutY="350.0" mnemonicParsing="false" onAction="#cancel" text="返回" />
+      <Button fx:id="browseBookBtn" layoutX="217.0" layoutY="70.0" mnemonicParsing="false"
+         onAction="#browseBook" text="浏览书籍" />
+      <Button fx:id="borrowBookBtn" layoutX="217.0" layoutY="128.0" mnemonicParsing="false"
+         onAction="#borrowBook" text="借书" />
+      <Button fx:id="returnBookBtn" layoutX="217.0" layoutY="182.0" mnemonicParsing="false"
+         onAction="#returnBook" text="还书" />
+      <Button fx:id="modifyBtn" layoutX="217.0" layoutY="243.0" mnemonicParsing="false"
+         onAction="#updateUser" text="修改信息" />
+      <Button fx:id="cancelBtn" layoutX="496.0" layoutY="350.0" mnemonicParsing="false"
+         onAction="#cancel" text="返回" />
       <Label layoutX="14.0" layoutY="14.0" text="请选择任意功能" textFill="#e40b0b">
          <font>
             <Font size="28.0" />

@@ -1,8 +1,14 @@
 package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Book;
 import model.User;
 import utils.ExcelUtils;
@@ -12,6 +18,8 @@ import java.io.File;
 import java.util.List;
 
 public class BookUserExportController {
+    @FXML
+    private Button backButton;  // 添加返回按钮的FXML注入
     
     @FXML
     private void handleBookExport() {
@@ -56,9 +64,16 @@ public class BookUserExportController {
     }
     
     @FXML
-    private void handleBack() {
-        // 返回主界面
-        SceneManager.loadScene("mainview.fxml");
+    private void handleBack(ActionEvent event) {
+        try {
+            Parent adminsystem = FXMLLoader.load(getClass().getResource("/views/adminsystem.fxml"));
+            Stage stage = (Stage) backButton.getScene().getWindow();  // 使用正确的按钮引用
+            stage.setScene(new Scene(adminsystem));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "返回页面时发生错误：" + e.getMessage());
+        }
     }
     
     private void showAlert(Alert.AlertType alertType, String title, String content) {
