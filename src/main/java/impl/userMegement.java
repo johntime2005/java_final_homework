@@ -3,7 +3,7 @@ package impl;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import javafx.stage.FileChooser;
 import dao.userMegementDao;
 import model.User;
 
@@ -52,6 +52,16 @@ public class userMegement implements userMegementDao {
             stmt.executeUpdate();
         }
     }
+    //书籍的导入
+//    public void importBoook(String Filename)
+//    {
+//        String query = "BULK INSERT books FROM 'C:\\Users\\Administrator\\Desktop\\books.csv' WITH (FIELDTERMINATOR = ',', ROWTERMINATOR = '\n')";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            stmt.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     // 查询所有用户
