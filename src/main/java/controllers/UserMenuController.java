@@ -63,7 +63,7 @@ public class UserMenuController {
     @FXML
     private void cancel(ActionEvent event) {
         try {
-            Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_main.fxml"));
+            Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_login.fxml"));
             Stage stage = (Stage) cancelBtn.getScene().getWindow();
             stage.setScene(new Scene(adminView));
             stage.show();
