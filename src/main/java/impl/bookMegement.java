@@ -230,4 +230,19 @@ public class bookMegement implements bookMegementDao {
             }
         }
     }
+
+    @Override
+    public void batchInsertBooks(List<Book> books) throws SQLException {
+        String query = "INSERT INTO books (title, author, publisher, isborrowed) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            for (Book book : books) {
+                stmt.setString(1, book.getTitle());
+                stmt.setString(2, book.getAuthor());
+                stmt.setString(3, book.getPublisher());
+                stmt.setBoolean(4, false);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        }
+    }
 }

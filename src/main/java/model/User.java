@@ -2,17 +2,20 @@ package model;
 
 public class User {
     private int id;
-    private String username;    // 用户名（登录账号）
-    private String password;    // 密码
-    private String userType;    // 用户类型（admin/user）
-    private int balance;        // 账户余额
-//    private int age;            // 用户年龄
-//    private String schoolid;
-//    private String gender;
-//    private String phonenumber;
-//    private String birthdate;
+    private String username; // 用户名（登录账号）
+    private String password; // 密码
+    private String userType; // 用户类型（admin/user）
+    private int balance; // 账户余额
+    // private int age; // 用户年龄
+    // private String schoolid;
+    // private String gender;
+    // private String phonenumber;
+    // private String birthdate;
 
     // 主构造函数，包含所有字段
+    public User() {
+    }
+
     public User(int id, int balance, String username, String password, String userType) {
         this.id = id;
         this.balance = balance;
