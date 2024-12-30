@@ -33,7 +33,7 @@ public class BookUserExportController {
             
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                List<Book> books = DatabaseConnection.getAllBooks();
+                List<Book> books = DatabaseConnection.getAllBooks();//这里有bug
                 ExcelUtils.exportBooks(books, file);
                 showAlert(Alert.AlertType.INFORMATION, "导出成功", "图书数据已成功导出到Excel文件！");
             }
