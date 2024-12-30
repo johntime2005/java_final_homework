@@ -7,23 +7,42 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.paint.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminManuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+        prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;"
+        xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="controllers.AdminManuController">
         <children>
-                <VBox alignment="CENTER" layoutX="117.0" layoutY="61.0" spacing="20">
+                <VBox alignment="CENTER" layoutX="150" layoutY="50" spacing="20">
                         <children>
-                                <Label contentDisplay="TOP" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="图书管理系统-管理员页面" textFill="#ee0c0c">
+                                <Label contentDisplay="TOP"
+                                        style="-fx-font-size: 32px; -fx-font-weight: bold;"
+                                        text="图书管理系统-管理员页面" textFill="#ee0c0c">
                                 </Label>
-                                <Button fx:id="queryButton" mnemonicParsing="false" onAction="#handleQuery" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="综合查询">
+                                <Button fx:id="queryButton" mnemonicParsing="false"
+                                        onAction="#handleQuery"
+                                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;"
+                                        text="综合查询">
                                 </Button>
-                                <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBook" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="添加书籍">
+                                <Button fx:id="addBookButton" mnemonicParsing="false"
+                                        onAction="#handleAddBook"
+                                        style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;"
+                                        text="添加书籍">
                                 </Button>
-                                <Button fx:id="deleteBookButton" mnemonicParsing="false" onAction="#handleDeleteBook" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="删除书籍">
+                                <Button fx:id="deleteBookButton" mnemonicParsing="false"
+                                        onAction="#handleDeleteBook"
+                                        style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;"
+                                        text="删除书籍">
                                 </Button>
-                                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="退出登录">
+                                <Button fx:id="logoutButton" mnemonicParsing="false"
+                                        onAction="#handleLogout"
+                                        style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;"
+                                        text="退出登录">
                                 </Button>
                         </children>
                 </VBox>
-                <Button layoutX="14.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleImport" text="导入" textFill="#f80b0b" />
-                <Button layoutX="526.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleExport" text="导出" textFill="#f21111" />
+                <Button layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="导入"
+                        textFill="#f80b0b" onAction="#handleImport" />
+                <Button layoutX="526.0" layoutY="340.0" mnemonicParsing="false" text="导出"
+                        textFill="#f21111" onAction="#handleExport" />
         </children>
 </Pane>
