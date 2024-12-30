@@ -1,8 +1,9 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
+import java.sql.*;
 
-private class connect extends Thread {
+class connect extends Thread {
     private Socket socket;
     
     public connect(Socket socket) {
@@ -13,7 +14,42 @@ private class connect extends Thread {
         try {
             // 处理与客户端的通信逻辑
             System.out.println("新客户端连接: " + socket.getInetAddress());
-            // TODO: 在这里添加具体的客户端通信处理代码
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                
+                // SQLServer连接字符串
+                String connectionUrl = 
+                    "jdbc:sqlserver://localhost:1433;"
+                    + "databaseName=library;"
+                    + "encrypt=true;"
+                    + "trustServerCertificate=true";
+                
+                conn = DriverManager.getConnection(connectionUrl, "sa", "952891332wW!");
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery("SELECT * FROM book");
+                System.out.println("数据库连接成功");
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            
             
         } catch (Exception e) {
             System.out.println("客户端连接异常: " + e.getMessage());
