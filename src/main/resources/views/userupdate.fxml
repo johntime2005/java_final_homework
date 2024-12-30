@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-   prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UpdateUserController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UpdateUserController">
    <children>
-      <Button fx:id="updateButton" layoutX="21.0" layoutY="350.0" mnemonicParsing="false"
-         onAction="#updateUser" text="更新" textFill="#eb0b0b" />
-      <Button fx:id="cancelBtn" layoutX="492.0" layoutY="350.0" mnemonicParsing="false"
-         onAction="#cancel" text="返回" textFill="#e80e0e" />
-      <Label layoutX="28.0" layoutY="20.0" text="修改信息(输入id来实现检索)" textFill="#f50a0a">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <TextField fx:id="idField" layoutX="72.0" layoutY="89.0" prefHeight="36.0" prefWidth="219.0" />
-      <TextField fx:id="ageField" layoutX="72.0" layoutY="164.0" prefHeight="36.0" prefWidth="219.0" />
-      <TextField fx:id="genderField" layoutX="72.0" layoutY="238.0" prefHeight="36.0"
-         prefWidth="219.0" />
-      <Label layoutX="32.0" layoutY="90.0" prefHeight="24.0" prefWidth="38.0" text="id"
-         textFill="#ee0909">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <Label layoutX="28.0" layoutY="165.0" prefHeight="34.0" prefWidth="46.0" text="年龄"
-         textFill="#ee0909" />
-      <Label layoutX="32.0" layoutY="238.0" prefHeight="24.0" prefWidth="38.0" text="性别"
-         textFill="#ee0909" />
-      <Label layoutX="315.0" layoutY="239.0" prefHeight="24.0" prefWidth="38.0" text="生日"
-         textFill="#ee0909" />
-      <Label layoutX="311.0" layoutY="166.0" prefHeight="34.0" prefWidth="46.0" text="电话"
-         textFill="#ee0909" />
-      <Label layoutX="315.0" layoutY="91.0" prefHeight="24.0" prefWidth="38.0" text="学号"
-         textFill="#ee0909" />
-      <TextField fx:id="birthdateField" layoutX="355.0" layoutY="239.0" prefHeight="36.0"
-         prefWidth="219.0" />
-      <TextField fx:id="phonenumberField" layoutX="355.0" layoutY="165.0" prefHeight="36.0"
-         prefWidth="219.0" />
-      <TextField fx:id="schoolidField" layoutX="355.0" layoutY="90.0" prefHeight="36.0"
-         prefWidth="219.0" />
+      <VBox alignment="CENTER" layoutX="131.0" layoutY="5.0" spacing="20">
+         <children>
+            <Label contentDisplay="TOP" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="修改用户信息" textFill="#ee0c0c" />
+            <GridPane alignment="CENTER" hgap="10" vgap="10">
+               <children>
+                  <Label text="id" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="idField" promptText="输入用户ID以检索" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <Label text="年龄" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <TextField fx:id="ageField" promptText="请输入年龄" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="性别" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <TextField fx:id="genderField" promptText="请输入性别" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="生日" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                  <TextField fx:id="birthdateField" promptText="请输入生日" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="电话" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                  <TextField fx:id="phonenumberField" promptText="请输入电话" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="学号" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                  <TextField fx:id="schoolidField" promptText="请输入学号" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+            <HBox alignment="CENTER" spacing="20">
+               <children>
+                  <Button fx:id="updateButton" onAction="#updateUser" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="更新" />
+                  <Button fx:id="cancelBtn" onAction="#cancel" prefHeight="42.0" prefWidth="72.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="返回" />
+               </children>
+            </HBox>
+
+         </children>
+      </VBox>
    </children>
 </Pane>
