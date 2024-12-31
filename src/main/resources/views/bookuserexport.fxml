@@ -5,28 +5,27 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-    prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BookUserExportController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BookUserExportController">
     <children>
-        <Button layoutX="233.0" layoutY="118.0" mnemonicParsing="false" text="书籍导出"
-            onAction="#handleBookExport">
+        <Button layoutX="233.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleBookExport" text="书籍导出">
             <font>
                 <Font size="25.0" />
             </font>
         </Button>
-        <Button layoutX="233.0" layoutY="220.0" mnemonicParsing="false" text="用户导出"
-            onAction="#handleUserExport">
+        <Button layoutX="233.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleUserExport" text="用户导出">
             <font>
                 <Font size="25.0" />
             </font>
         </Button>
-        <Button layoutX="467.0" layoutY="332.0" mnemonicParsing="false" text="返回"
-            onAction="#handleBack" textFill="#f50c0c" fx:id="backButton">
+        <Button fx:id="backButton" layoutX="467.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleBack" text="返回" textFill="#f50c0c">
             <font>
                 <Font size="25.0" />
             </font>
         </Button>
+      <Button layoutX="233.0" layoutY="260.0" mnemonicParsing="false" onAction="#annualReport" text="年度报告">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
     </children>
 </Pane>

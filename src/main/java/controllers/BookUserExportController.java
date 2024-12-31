@@ -62,7 +62,27 @@ public class BookUserExportController {
             showAlert(Alert.AlertType.ERROR, "导出失败", "导出用户数据时发生错误：" + e.getMessage());
         }
     }
-    
+    //年度报告
+    @FXML
+    private void annualReport() {
+    try{
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("导出年度报告");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
+        );
+        fileChooser.setInitialFileName("annualReport.xlsx");
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            List<User> users = DatabaseConnection.getAllUsers();//等待修复
+            PDFUtils.exportUsers(users, file);
+            showAlert(Alert.AlertType.INFORMATION, "导出成功", "用户数据已成功导出到Excel文件！");
+        }
+    } catch (Exception e) {
+        showAlert(Alert.AlertType.ERROR, "导出失败", "导出用户数据时发生错误：" + e.getMessage());
+    }
+    }
     @FXML
     private void handleBack(ActionEvent event) {
         try {
