@@ -16,6 +16,7 @@ import utils.DatabaseConnection;
 
 import java.io.File;
 import java.util.List;
+import utils.PDFUtils;
 
 public class BookUserExportController {
     @FXML
