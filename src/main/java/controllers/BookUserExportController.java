@@ -72,13 +72,13 @@ public class BookUserExportController {
         fileChooser.getExtensionFilters().add(
             new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
-        fileChooser.setInitialFileName("annualReport.xlsx");
+        fileChooser.setInitialFileName("annualReport.pdf");
 
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             List<User> users = DatabaseConnection.getAllUsers();//等待修复
             PDFUtils.exportUsers(users, file);
-            showAlert(Alert.AlertType.INFORMATION, "导出成功", "用户数据已成功导出到Excel文件！");
+            showAlert(Alert.AlertType.INFORMATION, "导出成功", "用户数据已成功导出到PDF文件！");
         }
     } catch (Exception e) {
         showAlert(Alert.AlertType.ERROR, "导出失败", "导出用户数据时发生错误：" + e.getMessage());
