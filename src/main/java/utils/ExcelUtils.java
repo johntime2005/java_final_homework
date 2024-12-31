@@ -11,38 +11,98 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
+import java.io.IOException;
 public class ExcelUtils {
     
-    public static List<Book> importBooks(File file) throws Exception {
-        List<Book> books = new ArrayList<>();
-        FileInputStream fis = new FileInputStream(file);
-        Workbook workbook;
-        
-        if (file.getName().endsWith("xlsx")) {
-            workbook = new XSSFWorkbook(fis);
-        } else {
-            workbook = new HSSFWorkbook(fis);
+//    public static List<Book> importBooks(File file) throws Exception {
+//        List<Book> books = new ArrayList<>();
+//        FileInputStream fis = new FileInputStream(file);
+//        Workbook workbook;
+//
+//        if (file.getName().endsWith("xlsx")) {
+//            workbook = new XSSFWorkbook(fis);
+//        } else {
+//            workbook = new HSSFWorkbook(fis);
+//        }
+//
+//        Sheet sheet = workbook.getSheetAt(0);
+//        int lastRowNum = sheet.getLastRowNum();
+//
+//        for (int i = 1; i <= lastRowNum; i++) {
+//            Row row = sheet.getRow(i);
+//            Book book = new Book();
+//            book.setName(row.getCell(0).getStringCellValue());
+//            book.setAuthor(row.getCell(1).getStringCellValue());
+//            book.setPress(row.getCell(2).getStringCellValue());
+//            book.setIsborrowed(false); // 新书默认未借出
+//            books.add(book);
+//        }
+//
+//        workbook.close();
+//        fis.close();
+//        return books;
+//    }
+
+
+
+        public static List<Book> importBooks(File file) throws IOException {
+            List<Book> books = new ArrayList<>();
+            FileInputStream fis = new FileInputStream(file);
+            Workbook workbook;
+
+            if (file.getName().endsWith("xlsx")) {
+                workbook = new XSSFWorkbook(fis);
+            } else {
+                workbook = new HSSFWorkbook(fis);
+            }
+
+            Sheet sheet = workbook.getSheetAt(0);
+            int lastRowNum = sheet.getLastRowNum();
+
+            for (int i = 1; i <= lastRowNum; i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    continue; // Skip empty rows
+                }
+
+                Book book = new Book();
+                book.setName(getCellValueAsString(row.getCell(0)));
+                book.setAuthor(getCellValueAsString(row.getCell(1)));
+                book.setPress(getCellValueAsString(row.getCell(2)));
+                book.setIsborrowed(false); // 新书默认未借出
+                books.add(book);
+            }
+
+            workbook.close();
+            fis.close();
+            return books;
         }
-        
-        Sheet sheet = workbook.getSheetAt(0);
-        int lastRowNum = sheet.getLastRowNum();
-        
-        for (int i = 1; i <= lastRowNum; i++) {
-            Row row = sheet.getRow(i);
-            Book book = new Book();
-            book.setName(row.getCell(0).getStringCellValue());
-            book.setAuthor(row.getCell(1).getStringCellValue());
-            book.setPress(row.getCell(2).getStringCellValue());
-            book.setIsborrowed(false); // 新书默认未借出
-            books.add(book);
+
+        private static String getCellValueAsString(Cell cell) {
+            if (cell == null) {
+                return "";
+            }
+            switch (cell.getCellType()) {
+                case STRING:
+                    return cell.getStringCellValue();
+                case NUMERIC:
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        return cell.getDateCellValue().toString();
+                    } else {
+                        return String.valueOf(cell.getNumericCellValue());
+                    }
+                case BOOLEAN:
+                    return String.valueOf(cell.getBooleanCellValue());
+                case FORMULA:
+                    return cell.getCellFormula();
+                default:
+                    return "";
+            }
         }
-        
-        workbook.close();
-        fis.close();
-        return books;
-    }
-    
+
+
     public static void exportBooks(List<Book> books, File file) throws Exception {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Books");
