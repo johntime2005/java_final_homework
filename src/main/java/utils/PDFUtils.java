@@ -30,13 +30,7 @@ public class PDFUtils {
         table.addCell(new Cell().add(new Paragraph("邮箱")));
         table.addCell(new Cell().add(new Paragraph("电话")));
 
-        // 添加用户数据到表格
-        for (User user : users) {
-            table.addCell(new Cell().add(new Paragraph(String.valueOf(user.getId()))));
-            table.addCell(new Cell().add(new Paragraph(user.getName())));
-            table.addCell(new Cell().add(new Paragraph(user.getEmail())));
-            table.addCell(new Cell().add(new Paragraph(user.getPhone())));
-        }
+        
 
         // 将表格添加到文档中
         document.add(table);
