@@ -9,7 +9,7 @@ import java.io.File;
 
 public class DatabaseConnection {
     // SQL Server 连接配置
-    private static final String SERVER_URL = "jdbc:sqlserver://116.205.125.206:1433;"
+    private static final String SERVER_URL = "jdbc:sqlserver://1.95.82.58:1433;"
             + "encrypt=true;"
             + "trustServerCertificate=true;";
     private static final String DB_URL = SERVER_URL + "databaseName=library;";

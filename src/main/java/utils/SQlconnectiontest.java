@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class SQlconnectiontest {
     public static void main(String[] args) {
-        String url = "jdbc:sqlserver://116.205.125.206:1433;databaseName=library;encrypt=true;trustServerCertificate=true;";
+        String url = "jdbc:sqlserver://1.95.82.58:1433;databaseName=library;encrypt=true;trustServerCertificate=true;";
         String username = "sa";
         String password = "952891332wW!";
 
