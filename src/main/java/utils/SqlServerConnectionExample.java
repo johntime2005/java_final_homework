@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 public class SqlServerConnectionExample {
 
     // 数据库URL、用户名和密码
-    private static final String DB_URL = "jdbc:sqlserver://116.205.125.206:1433;"
+    private static final String DB_URL = "jdbc:sqlserver://1.95.82.58:1433;"
             + "databaseName=library;"
             + "encrypt=true;"
             + "trustServerCertificate=true;"; // 添加信任服务器证书
