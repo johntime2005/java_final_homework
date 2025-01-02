@@ -6,6 +6,9 @@ import java.util.List;
 import javafx.stage.FileChooser;
 import dao.userMegementDao;
 import model.User;
+import model.UserBook;
+
+import static utils.DatabaseConnection.getConnection;
 
 public class userMegement implements userMegementDao {
 
@@ -64,6 +67,27 @@ public class userMegement implements userMegementDao {
 //    }
 
 
+
+
+    // 查询所有用户借阅记录
+    public List<UserBook> getAllUserBooks() throws SQLException {
+        List<UserBook> userBooks = new ArrayList<>();
+        String query = "SELECT user_id, book_id, borrow_date, return_date FROM user_book";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int userId = rs.getInt("user_id");
+                int bookId = rs.getInt("book_id");
+                String borrowDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_date");
+                userBooks.add(new UserBook(userId, bookId, borrowDate, returnDate));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("查询所有用户借阅记录失败");
+        }
+        return userBooks;
+    }
     // 查询所有用户
 
     public List<User> getAllUsers() throws SQLException {
@@ -227,4 +251,5 @@ public class userMegement implements userMegementDao {
         }
         return false;
     }
+
 }

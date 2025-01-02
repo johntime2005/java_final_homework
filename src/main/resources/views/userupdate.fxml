@@ -15,8 +15,6 @@
             <Label contentDisplay="TOP" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="修改用户信息" textFill="#ee0c0c" />
             <GridPane alignment="CENTER" hgap="10" vgap="10">
                <children>
-                  <Label text="id" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                  <TextField fx:id="idField" promptText="输入用户ID以检索" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                   <Label text="年龄" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                   <TextField fx:id="ageField" promptText="请输入年龄" style="-fx-background-color: #fff; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 5 10 5 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="性别" textFill="#ee0909" GridPane.columnIndex="0" GridPane.rowIndex="2" />

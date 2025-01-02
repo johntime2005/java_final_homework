@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-
+import Manager.SessionManager;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -21,8 +21,8 @@ import utils.DatabaseConnection;
 public class UpdateUserController {
     @FXML
     private Button cancelBtn;
-    @FXML
-    private TextField idField;
+//    @FXML
+//    private TextField idField;
     @FXML
     private TextField ageField;
     @FXML
@@ -65,7 +65,8 @@ public class UpdateUserController {
     @FXML
     private void updateUser(ActionEvent event) {
         try {
-            int id = Integer.parseInt(idField.getText());
+            int id = SessionManager.getInstance().getCurrentUser().getId();
+//            int id = Integer.parseInt(idField.getText());
             int age = Integer.parseInt(ageField.getText());
             String gender = genderField.getText();
             String phonenumber = phonenumberField.getText();

@@ -2,7 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.List;
-
+import model.UserBook;
 import model.User;
 
 public interface userMegementDao {
@@ -31,4 +31,6 @@ public interface userMegementDao {
 
     // 检查用户名是否存在
     boolean isUsernameExists(String username) throws SQLException;
+    //获取所有用户借阅记录
+    List<UserBook> getAllUserBooks() throws SQLException;
 }

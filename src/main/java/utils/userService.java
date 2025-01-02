@@ -5,7 +5,7 @@ import java.util.List;
 
 import dao.userMegementDao;
 import model.User;
-
+import model.UserBook;
 public class userService {
 
     private userMegementDao userDao;
@@ -48,5 +48,8 @@ public class userService {
 //        bookService.updateBookQuantity(bookId, 1);
         userDao.returnBook(userId, bookId);
     }
-
+   //获取所有用户借阅记录
+    public List<UserBook> getAllUserBooks() throws SQLException {
+        return userDao.getAllUserBooks();
+    }
 }
