@@ -22,10 +22,10 @@ import dao.bookMegementDao;
 import impl.bookMegement;
 import model.Book;
 import utils.DatabaseConnection;
-
+import Manager.SessionManager;
 public class UserReturnController {
-    @FXML
-    private PasswordField usernameField;
+//    @FXML
+//    private PasswordField usernameField;
 
     @FXML
     private PasswordField bookIdField;
@@ -42,6 +42,7 @@ public class UserReturnController {
 
     @FXML
     private void initialize() {
+
         try {
             connection = DatabaseConnection.getConnection();
             userService = new userMegement(connection);
@@ -55,10 +56,16 @@ public class UserReturnController {
     // 借书：用户输入用户名和书籍编号，点击“借书”按钮后，调用将该书籍借给该用户
     @FXML
     private void returnBook(ActionEvent event) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if(currentUser == null){
+            showAlert(Alert.AlertType.ERROR, "错误", "请先登录");
+            return;
+        }
         try {
-            int userId = Integer.parseInt(usernameField.getText());
+
+//            int userId = Integer.parseInt(usernameField.getText());
             int bookId = Integer.parseInt(bookIdField.getText());
-            userService.returnBook(userId, bookId);
+            userService.returnBook(currentUser.getId(), bookId);
             showAlert(Alert.AlertType.INFORMATION, "成功", "还书成功");
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的用户ID和图书ID");

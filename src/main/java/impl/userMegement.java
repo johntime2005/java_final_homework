@@ -145,10 +145,10 @@ public class userMegement implements userMegementDao {
                     boolean isBorrowed = rs.getBoolean("isborrowed");
                     if (isBorrowed) {
                         // 插入还书记录
-                        String insertQuery = "INSERT INTO user_book (user_id, book_id, return_date) VALUES (?, ?, GETDATE())";
+                        String insertQuery = "INSERT INTO user_book (use_id, book_id, return_date) VALUES ( ?,?, GETDATE())";
                         try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                             insertStmt.setInt(1, userId);
-                            insertStmt.setInt(2, bookId);
+                            insertStmt.setInt(1, bookId);
                             insertStmt.executeUpdate();
                         }
 

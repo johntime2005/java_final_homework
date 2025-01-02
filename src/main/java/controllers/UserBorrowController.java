@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-
+import Manager.SessionManager;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -24,8 +24,8 @@ import model.Book;
 import utils.DatabaseConnection;
 
 public class UserBorrowController {
-    @FXML
-    private PasswordField usernameField;
+//    @FXML
+//    private PasswordField usernameField;
 
     @FXML
     private PasswordField bookIdField;
@@ -55,10 +55,15 @@ public class UserBorrowController {
     // 借书：用户输入用户名和书籍编号，点击“借书”按钮后，调用将该书籍借给该用户
     @FXML
     private void borrowBook(ActionEvent event) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "错误", "请先登录");
+            return;
+        }
         try {
-            int userId = Integer.parseInt(usernameField.getText());
+//            int userId = Integer.parseInt(usernameField.getText());
             int bookId = Integer.parseInt(bookIdField.getText());
-            userService.borrowBook(userId, bookId);
+            userService.borrowBook(currentUser.getId(), bookId);
             showAlert(Alert.AlertType.INFORMATION, "成功", "借书成功");
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的用户ID和图书ID");

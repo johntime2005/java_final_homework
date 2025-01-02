@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-
+import Manager.SessionManager;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -56,6 +56,7 @@ public class UserLoginController {
         try {
             User user = userService.login(username, password);
             if (user != null && "user".equals(user.getUserType())) {
+                SessionManager.getInstance().setCurrentUser(user);
                 loadFXML("/views/user_main.fxml", "用户主界面", event);
             } else {
                 showAlert(Alert.AlertType.ERROR, "错误", "用户名或密码错误，或当前账号非普通用户账号");
