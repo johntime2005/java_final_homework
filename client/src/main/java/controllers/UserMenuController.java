@@ -34,6 +34,7 @@ public class UserMenuController {
     private Button cancelBtn; // 修正 ID
     @FXML
     private Button queryBanlanceBtn;
+
     private userMegementDao userService;
 
     @FXML
@@ -87,6 +88,8 @@ public class UserMenuController {
     private void updateUser(ActionEvent event) {
         loadFXML("/views/userupdate.fxml", "修改信息", event);
     }
+
+
     @FXML
     private void queryBanlance(ActionEvent event) {
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -94,7 +97,6 @@ public class UserMenuController {
             showAlert(Alert.AlertType.ERROR, "错误", "用户未登录");
             return;
         }
-
         try {
             int balance = userService.getUserBalance(currentUser.getId());
             showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
