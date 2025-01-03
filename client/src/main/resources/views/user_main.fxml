@@ -20,5 +20,7 @@
          </font>
       </Label>
       <Button fx:id="cancelBtn" layoutX="233.0" layoutY="344.0" mnemonicParsing="false" onAction="#cancel" prefHeight="42.0" prefWidth="106.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20 10 20; -fx-background-radius: 5;" text="返回" />
+      <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" text="销户" textFill="#f50b0b" />
+      <Button layoutX="490.0" layoutY="356.0" mnemonicParsing="false" text="查询余额" textFill="#da1010" />
    </children>
 </Pane>
