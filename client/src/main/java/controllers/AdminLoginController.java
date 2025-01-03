@@ -55,10 +55,10 @@ public class AdminLoginController {
             }
         } catch (SQLException e) {
             showAlert1(Alert.AlertType.ERROR, "错误", "数据库错误: " + e.getMessage());
-            System.out.println("数据库错误: " + e.getMessage());
+            //System.out.println("数据库错误: " + e.getMessage());
         } catch (Exception e) {
             showAlert1(Alert.AlertType.ERROR, "错误", "登录失败: " + e.getMessage());
-            System.out.println("登录失败: " + e.getMessage());
+            //System.out.println("登录失败: " + e.getMessage());
         }
     }
 

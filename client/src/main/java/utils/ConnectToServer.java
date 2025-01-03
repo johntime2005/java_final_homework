@@ -69,7 +69,7 @@ public class ConnectToServer {
             while ((line = in.readLine()) != null) {
                 response.append(line);
             }
-            System.out.println("收到服务器响应: " + response.toString());
+            //System.out.println("收到服务器响应: " + response.toString());
 
         } catch (IOException e) {
             logger.error("获取响应失败: {}", e.getMessage());
@@ -80,7 +80,7 @@ public class ConnectToServer {
                 if (out != null) out.close();
                 if (socket != null) socket.close();
             } catch (IOException e) {
-                System.out.println("关闭连接时出错: " + e.getMessage());
+                //System.out.println("关闭连接时出错: " + e.getMessage());
             }
         }
         return response.toString();
@@ -96,7 +96,7 @@ public class ConnectToServer {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             try {
-                System.out.println("反序列化前的响应: " + response);
+                //System.out.println("反序列化前的响应: " + response);
                 List<Map<String, String>> list = mapper.readValue(response, new TypeReference<List<Map<String, String>>>(){});
                 return list.isEmpty() ? null : mapper.convertValue(list.get(0), type);
             } catch (Exception e) {

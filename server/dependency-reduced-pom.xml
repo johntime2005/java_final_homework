@@ -57,6 +57,12 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
   <properties>
     <javafx.platform>win</javafx.platform>
     <maven.compiler.target>21</maven.compiler.target>

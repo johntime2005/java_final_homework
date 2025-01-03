@@ -106,7 +106,7 @@ public class ConnectToClient {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(PORT);
-            System.out.println("服务器启动，监听端口: " + PORT);
+            //System.out.println("服务器启动，监听端口: " + PORT);
 
             while (true) {
                 try {
@@ -115,11 +115,11 @@ public class ConnectToClient {
                     // 为每个客户端创建新的处理线程
                     new ConnectMaintainer(clientSocket).start();
                 } catch (IOException e) {
-                    System.out.println("接受客户端连接失败: " + e.getMessage());
+                    //System.out.println("接受客户端连接失败: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.out.println("服务器启动失败: " + e.getMessage());
+            //System.out.println("服务器启动失败: " + e.getMessage());
         } finally {
             try {
                 if (serverSocket != null && !serverSocket.isClosed()) {

@@ -43,9 +43,9 @@ public class bookMegement implements bookMegementDao {
         String sql = String.format(
                 "SELECT * FROM books WHERE id = %d",
                 bookId);
-        System.out.println("getBookById SQL: " + sql);
+        //System.out.println("getBookById SQL: " + sql);
         Book book = server.getObjectResponse(sql, Book.class);
-        System.out.println("getBookById result: " + book);
+        //System.out.println("getBookById result: " + book);
         return book;
     }
 

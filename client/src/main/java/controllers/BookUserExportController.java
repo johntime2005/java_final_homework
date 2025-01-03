@@ -97,7 +97,7 @@ public class BookUserExportController {
             }
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "导出失败", "导出用户数据时发生错误：" + e.getMessage());
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 

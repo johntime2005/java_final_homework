@@ -16,7 +16,7 @@ public class DataBaseConnection {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         stmt = conn.createStatement();
-        System.out.println("成功连接到数据库");
+        //System.out.println("成功连接到数据库");
     }
 
     public Statement getStatement() {

@@ -27,13 +27,13 @@ public class SqlServerConnectionExample {
             
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("添加成功！");
+                //System.out.println("添加成功！");
             }
             
         } catch (SQLException se) {
-            System.out.println("数据库错误: " + se.getMessage());
+            //System.out.println("数据库错误: " + se.getMessage());
         } catch (Exception e) {
-            System.out.println("程序错误: " + e.getMessage());
+            //System.out.println("程序错误: " + e.getMessage());
         }
     }
 
@@ -49,10 +49,10 @@ public class SqlServerConnectionExample {
                         ")";
             
             stmt.executeUpdate(sql);
-            System.out.println("表创建成功或已存在！");
+            //System.out.println("表创建成功或已存在！");
             
         } catch (SQLException se) {
-            System.out.println("创建表时发生错误: " + se.getMessage());
+            //System.out.println("创建表时发生错误: " + se.getMessage());
         }
     }
 
@@ -64,20 +64,20 @@ public class SqlServerConnectionExample {
             // Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
             // 打开连接
-            System.out.println("Connecting to database...");
+            //System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             // 执行查询
-            System.out.println("Creating statement...");
+            //System.out.println("Creating statement...");
             stmt = conn.createStatement();
             // 只查询用户表，不包含系统表
             String sql = "SELECT TABLE_NAME FROM library.INFORMATION_SCHEMA.TABLES " +
                     "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE 'sys%'";
             ResultSet rs = stmt.executeQuery(sql);
 
-            System.out.println("用户表列表：");
+            //System.out.println("用户表列表：");
             while (rs.next()) {
-                System.out.println("表名: " + rs.getString("TABLE_NAME"));
+                //System.out.println("表名: " + rs.getString("TABLE_NAME"));
             }
             // 完成后关闭
             rs.close();
@@ -103,7 +103,7 @@ public class SqlServerConnectionExample {
                 se.printStackTrace();
             }
         }
-        System.out.println("查询完成");
+        //System.out.println("查询完成");
         createTable();  // 先创建表
         add("张三", 20);  // 再添加数据
     }

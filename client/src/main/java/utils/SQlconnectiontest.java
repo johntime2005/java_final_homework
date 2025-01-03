@@ -32,13 +32,13 @@ public class SQlconnectiontest {
             // 执行SQL语句
             stmt.executeUpdate(createTableSQL);
 
-            System.out.println("成功连接到数据库并创建了表！");
+            //System.out.println("成功连接到数据库并创建了表！");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            System.out.println("JDBC驱动程序未找到！");
+            //System.out.println("JDBC驱动程序未找到！");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("数据库连接失败或SQL执行出错！");
+            //System.out.println("数据库连接失败或SQL执行出错！");
         } finally {
             // 关闭Statement和Connection
             try {
