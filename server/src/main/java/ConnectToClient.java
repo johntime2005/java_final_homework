@@ -1,5 +1,3 @@
-package server;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.*;
@@ -42,7 +40,7 @@ class RequestHandler extends Thread {
                     int cols = meta.getColumnCount();
                     ObjectNode objNode = mapper.createObjectNode();
                     for (int i = 1; i <= cols; i++) {
-                        objNode.put(meta.getColumnName(i), rs.getObject(i)); // 使用 getObject 而不是 getString
+                        objNode.put(meta.getColumnName(i), rs.getString(i));
                     }
                     arrayNode.add(objNode);
                 }
