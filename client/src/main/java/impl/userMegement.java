@@ -57,30 +57,35 @@ public class userMegement implements userMegementDao {
     public void borrowBook(int userId, int bookId) throws SQLException {
         // 检查是否被借出
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
+        String sql = String.format("SELECT balance FROM library_user WHERE id = %d", userId);
         Boolean isBorrowed = server.getObjectResponse(checkSql, Boolean.class);
-        
+        int banlance = server.getObjectResponse(sql, Integer.class);
         if (isBorrowed == null || !isBorrowed) {
-            // 插入借书记录
-            String borrowSql = String.format(
-                "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (%d, %d, GETDATE())",
-                userId, bookId
-            );
-            server.sendvoidRequest(borrowSql);
+            if (banlance >= 1) {
+                // 插入借书记录
+                String borrowSql = String.format(
+                        "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (%d, %d, GETDATE())",
+                        userId, bookId
+                );
+                server.sendvoidRequest(borrowSql);
 
-            // 更新图书状态
-            String updateBookSql = String.format(
-                "UPDATE books SET isborrowed = true WHERE id = %d",
-                bookId
-            );
-            server.sendvoidRequest(updateBookSql);
+                // 更新图书状态
+                String updateBookSql = String.format(
+                        "UPDATE books SET isborrowed = true WHERE id = %d",
+                        bookId
+                );
+                server.sendvoidRequest(updateBookSql);
 
-            // 更新用户余额
-            String updateBalanceSql = String.format(
-                "UPDATE library_user SET balance = balance - 1 WHERE id = %d",
-                userId
-            );
-            server.sendvoidRequest(updateBalanceSql);
-        } else {
+                // 更新用户余额
+                String updateBalanceSql = String.format(
+                        "UPDATE library_user SET balance = balance - 1 WHERE id = %d",
+                        userId
+                );
+                server.sendvoidRequest(updateBalanceSql);
+            }else {
+                throw new SQLException("借书失败，用户余额不足。");
+            }
+        }else {
             throw new SQLException("该书籍已被借出，无法借阅。");
         }
     }
