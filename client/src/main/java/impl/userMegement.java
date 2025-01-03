@@ -163,6 +163,7 @@ public class userMegement implements userMegementDao {
         return balance;
     }
 
+    
     public boolean isUsernameExists(String username) throws SQLException {
         String sql = String.format(
             "SELECT COUNT(*) as count FROM library_user WHERE username = '%s'",
