@@ -22,7 +22,7 @@ public class bookMegement implements bookMegementDao {
     // 添加书籍
     public void addBook(Book book) throws SQLException {
         String sql = String.format(
-                "INSERT INTO books (title, author, publisher, isborrowed) VALUES ('%s', '%s', '%s', %d)",
+                "INSERT INTO books (title, author, publisher, isborrowed) VALUES (N'%s', N'%s', N'%s', %d)",
                 book.getTitle(), book.getAuthor(), book.getPublisher(),
                 book.getIsborrowed() ? 1 : 0);
         server.sendvoidRequest(sql);
@@ -52,7 +52,7 @@ public class bookMegement implements bookMegementDao {
     // 更新书籍信息
     public void updateBook(Book book) throws SQLException {
         String sql = String.format(
-                "UPDATE books SET title = '%s', author = '%s', publisher = '%s', isborrowed = %d WHERE id = %d",
+                "UPDATE books SET title = N'%s', author = N'%s', publisher = N'%s', isborrowed = %d WHERE id = %d",
                 book.getTitle(), book.getAuthor(), book.getPublisher(),
                 book.getIsborrowed() ? 1 : 0, book.getId());
         server.sendvoidRequest(sql);
@@ -78,13 +78,13 @@ public class bookMegement implements bookMegementDao {
     public List<Book> searchBooks(String title, String author, String publisher) throws SQLException {
         List<String> conditions = new ArrayList<>();
         if (title != null && !title.trim().isEmpty()) {
-            conditions.add(String.format("title LIKE '%%%s%%'", title));
+            conditions.add(String.format("title LIKE N'%%%s%%'", title));
         }
         if (author != null && !author.trim().isEmpty()) {
-            conditions.add(String.format("author LIKE '%%%s%%'", author));
+            conditions.add(String.format("author LIKE N'%%%s%%'", author));
         }
         if (publisher != null && !publisher.trim().isEmpty()) {
-            conditions.add(String.format("publisher LIKE '%%%s%%'", publisher));
+            conditions.add(String.format("publisher LIKE N'%%%s%%'", publisher));
         }
 
         String sql = "SELECT * FROM books WHERE " +

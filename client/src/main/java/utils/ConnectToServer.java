@@ -18,6 +18,10 @@ public class ConnectToServer {
     private static final String SERVER_ADDRESS = "1.95.82.58";
     private static final int SERVER_PORT = 8888;
 
+    public ConnectToServer() {
+        System.setProperty("file.encoding","UTF-8");
+    }
+
     public void sendvoidRequest(String sql) {
         Socket socket = null;
         PrintWriter out = null;
@@ -26,7 +30,7 @@ public class ConnectToServer {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
             logger.info("成功连接到服务器: {}:{}" , SERVER_ADDRESS, SERVER_PORT);
 
-            out = new PrintWriter(socket.getOutputStream(), true);
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
             out.println(sql);
             logger.info("成功发送SQL请求: {}", sql);
 
@@ -55,8 +59,8 @@ public class ConnectToServer {
 
         try {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
             out.println(sql);
             String line;

@@ -23,8 +23,10 @@ import impl.bookMegement;
 import model.Book;
 
 import Manager.SessionManager;
+import utils.ConnectToServer;
 
 public class UserReturnController {
+    private ConnectToServer server = new ConnectToServer();
 
     @FXML
     private PasswordField bookIdField;
@@ -64,7 +66,10 @@ public class UserReturnController {
                 return;
             }
             book.setIsborrowed(false);
-            bookService.updateBook(book);
+            String sql = String.format(
+                "UPDATE books SET isborrowed = %d WHERE id = %d",
+                book.getIsborrowed() ? 1 : 0, book.getId());
+            server.sendvoidRequest(sql);
             showAlert(Alert.AlertType.INFORMATION, "成功", "还书成功");
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
