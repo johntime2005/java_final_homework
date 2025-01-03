@@ -79,23 +79,20 @@ public class userMegement implements userMegementDao {
             );
             server.sendvoidRequest(borrowSql);
 
-                // 更新图书状态
-                String updateBookSql = String.format(
-                        "UPDATE books SET isborrowed = true WHERE id = %d",
-                        bookId
-                );
-                server.sendvoidRequest(updateBookSql);
+            // 更新图书状态
+            String updateBookSql = String.format(
+                "UPDATE books SET isborrowed = true WHERE id = %d",
+                bookId
+            );
+            server.sendvoidRequest(updateBookSql);
 
-                // 更新用户余额
-                String updateBalanceSql = String.format(
-                        "UPDATE library_user SET balance = balance - 1 WHERE id = %d",
-                        userId
-                );
-                server.sendvoidRequest(updateBalanceSql);
-            }else {
-                throw new SQLException("借书失败，用户余额不足。");
-            }
-        }else {
+            // 更新用户余额
+            String updateBalanceSql = String.format(
+                "UPDATE library_user SET balance = balance - 1 WHERE id = %d",
+                userId
+            );
+            server.sendvoidRequest(updateBalanceSql);
+        } else {
             throw new SQLException("该书籍已被借出，无法借阅。");
         }
     }
@@ -163,7 +160,6 @@ public class userMegement implements userMegementDao {
         return balance;
     }
 
-    
     public boolean isUsernameExists(String username) throws SQLException {
         String sql = String.format(
             "SELECT COUNT(*) as count FROM library_user WHERE username = '%s'",
