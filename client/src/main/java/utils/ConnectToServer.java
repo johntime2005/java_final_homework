@@ -63,10 +63,10 @@ public class ConnectToServer {
             while ((line = in.readLine()) != null) {
                 response.append(line);
             }
-            logger.info("收到服务器响应: {}", response.toString());
+            System.out.println("收到服务器响应: " + response.toString());
 
         } catch (IOException e) {
-            logger.error("获取响应失败: {}", e.getMessage());
+            System.out.println("获取响应失败: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -74,7 +74,7 @@ public class ConnectToServer {
                 if (out != null) out.close();
                 if (socket != null) socket.close();
             } catch (IOException e) {
-                logger.error("关闭连接时出错: {}", e.getMessage());
+                System.out.println("关闭连接时出错: " + e.getMessage());
             }
         }
         return response.toString();
@@ -90,9 +90,12 @@ public class ConnectToServer {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             try {
-                return mapper.readValue(response, type);
+                System.out.println("反序列化前的响应: " + response);
+                List<T> list = mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, type));
+                return list.isEmpty() ? null : list.get(0);
             } catch (Exception e) {
                 logger.error("对象转换失败: {}", e.getMessage());
+                e.printStackTrace();
             }
         }
         return null;

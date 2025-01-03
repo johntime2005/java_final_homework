@@ -34,18 +34,6 @@ public class Book {
         this.isborrowed = isborrowed;
     }
 
-    @JsonCreator
-    public static Boolean convertToBoolean(Object value) {
-        if (value == null) return false;
-        if (value instanceof Boolean) return (Boolean) value;
-        if (value instanceof Number) return ((Number) value).intValue() != 0;
-        if (value instanceof String) {
-            String strVal = ((String) value).toLowerCase();
-            return "1".equals(strVal) || "true".equals(strVal);
-        }
-        return false;
-    }
-
     // Getter 和 Setter 方法
     public int getId() {
         return id;
