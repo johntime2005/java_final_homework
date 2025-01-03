@@ -48,18 +48,26 @@ public class UserReturnController {
     @FXML
     private void returnBook(ActionEvent event) {
         User currentUser = SessionManager.getInstance().getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             showAlert(Alert.AlertType.ERROR, "错误", "请先登录");
             return;
         }
         try {
-
-//            int userId = Integer.parseInt(usernameField.getText());
             int bookId = Integer.parseInt(bookIdField.getText());
-            userService.returnBook(currentUser.getId(), bookId);
+            Book book = bookService.getBookById(bookId);
+            if (book == null) {
+                showAlert(Alert.AlertType.ERROR, "错误", "未找到该书籍");
+                return;
+            }
+            if (Boolean.FALSE.equals(book.getIsborrowed())) {
+                showAlert(Alert.AlertType.ERROR, "错误", "该书籍未被借出");
+                return;
+            }
+            book.setIsborrowed(false);
+            bookService.updateBook(book);
             showAlert(Alert.AlertType.INFORMATION, "成功", "还书成功");
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的用户ID和图书ID");
+            showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法还书");
