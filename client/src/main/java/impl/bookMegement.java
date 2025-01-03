@@ -18,8 +18,9 @@ public class bookMegement implements bookMegementDao {
     // 添加书籍
     public void addBook(Book book) throws SQLException {
         String sql = String.format(
-            "INSERT INTO books (title, author, publisher, isborrowed) VALUES ('%s', '%s', '%s', false)",
-            book.getTitle(), book.getAuthor(), book.getPublisher()
+            "INSERT INTO books (title, author, publisher, isborrowed) VALUES ('%s', '%s', '%s', %d)",
+            book.getTitle(), book.getAuthor(), book.getPublisher(),
+            book.getIsborrowed() ? 1 : 0
         );
         server.sendvoidRequest(sql);
     }
@@ -46,9 +47,9 @@ public class bookMegement implements bookMegementDao {
     // 更新书籍信息
     public void updateBook(Book book) throws SQLException {
         String sql = String.format(
-            "UPDATE books SET title = '%s', author = '%s', publisher = '%s', isborrowed = %b WHERE id = %d",
+            "UPDATE books SET title = '%s', author = '%s', publisher = '%s', isborrowed = %d WHERE id = %d",
             book.getTitle(), book.getAuthor(), book.getPublisher(), 
-            book.getIsborrowed(), book.getId()
+            book.getIsborrowed() ? 1 : 0, book.getId()
         );
         server.sendvoidRequest(sql);
     }
