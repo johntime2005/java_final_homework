@@ -62,6 +62,7 @@ public class QueryController implements Initializable  {
             bookTable.setItems(FXCollections.observableArrayList(books));
         } catch (Exception e) {
             showAlert("错误", "加载图书数据失败: " + e.getMessage());
+            System.out.println("加载图书数据失败: " + e.getMessage());
         }
     }
     

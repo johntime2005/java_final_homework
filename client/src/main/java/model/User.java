@@ -3,17 +3,35 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
+    @JsonProperty("id")
     private int id;
+
+    @JsonProperty("username")
     private String username; // 用户名（登录账号）
+
+    @JsonProperty("password")
     private String password; // 密码
+
     @JsonProperty("user_type")
     private String userType; // 用户类型（admin/user）
+
+    @JsonProperty("balance")
     private int balance; // 账户余额
-    // private int age; // 用户年龄
-    // private String schoolid;
-    // private String gender;
-    // private String phonenumber;
-    // private String birthdate;
+
+    @JsonProperty("age")
+    private Integer age;
+
+    @JsonProperty("gender")
+    private String gender;
+
+    @JsonProperty("phonenumber")
+    private String phonenumber;
+
+    @JsonProperty("schoolid")
+    private String schoolid;
+
+    @JsonProperty("birthdate")
+    private String birthdate;
 
     // 主构造函数，包含所有字段
     public User() {
@@ -71,5 +89,45 @@ public class User {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getSchoolid() {
+        return schoolid;
+    }
+
+    public void setSchoolid(String schoolid) {
+        this.schoolid = schoolid;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 }

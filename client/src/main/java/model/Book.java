@@ -1,22 +1,49 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import utils.BooleanDeserializer;
+
 public class Book {
+    @JsonProperty("id")
     private int id;
+
+    @JsonProperty("title")
     private String title;
+
+    @JsonProperty("author")
     private String author;
+
+    @JsonProperty("publisher")
     private String publisher;
-    private boolean isborrowed;
+
+    @JsonProperty("isborrowed")
+    @JsonDeserialize(using = BooleanDeserializer.class)
+    private Boolean isborrowed;
 
     // 构造方法
     public Book() {
     }
 
-    public Book(int id, String title, String author, String publisher, boolean isborrowed) {
+    public Book(int id, String title, String author, String publisher, Boolean isborrowed) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.isborrowed = isborrowed;
+    }
+
+    @JsonCreator
+    public static Boolean convertToBoolean(Object value) {
+        if (value == null) return false;
+        if (value instanceof Boolean) return (Boolean) value;
+        if (value instanceof Number) return ((Number) value).intValue() != 0;
+        if (value instanceof String) {
+            String strVal = ((String) value).toLowerCase();
+            return "1".equals(strVal) || "true".equals(strVal);
+        }
+        return false;
     }
 
     // Getter 和 Setter 方法
@@ -52,11 +79,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public boolean getIsborrowed() {
+    public Boolean getIsborrowed() {
         return isborrowed;
     }
 
-    public void setIsborrowed(boolean isborrowed) {
+    public void setIsborrowed(Boolean isborrowed) {
         this.isborrowed = isborrowed;
     }
 
