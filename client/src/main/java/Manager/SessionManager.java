@@ -16,5 +16,8 @@ public class SessionManager {
     public User getCurrentUser(){
         return currentUser;
     }
+    public void logout(){
+        currentUser = null;
+    }
 
 }

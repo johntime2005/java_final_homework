@@ -142,4 +142,8 @@ public class userMegement implements userMegementDao {
         Integer count = server.getObjectResponse(sql, Integer.class);
         return count != null && count > 0;
     }
+    public void deleteUser(int userId) throws SQLException {
+        String sql = String.format("DELETE FROM library_user WHERE id = %d", userId);
+        server.sendvoidRequest(sql);
+    }
 }

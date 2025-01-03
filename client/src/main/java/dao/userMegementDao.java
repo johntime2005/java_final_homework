@@ -35,4 +35,5 @@ public interface userMegementDao {
     List<UserBook> getAllUserBooks() throws SQLException;
     //获取用户余额
     int getUserBalance(int userId) throws SQLException;
+    void deleteUser(int userId) throws SQLException;
 }
