@@ -65,6 +65,8 @@ public class UserReturnController {
         } catch (SQLException e) {
             if (e.getMessage().contains("只有借书人")) {
                 showAlert(Alert.AlertType.ERROR, "错误", "只有借书人才能还书");
+            } else if (e.getMessage().contains("这本书不是您借的")) {
+                showAlert(Alert.AlertType.ERROR, "错误", "这本书不是您借的，无法归还。");
             } else {
                 showAlert(Alert.AlertType.ERROR, "错误", e.getMessage());
             }

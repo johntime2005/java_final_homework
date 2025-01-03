@@ -11,6 +11,7 @@ import model.UserBook;
 import utils.ConnectToServer;
 import java.sql.SQLException;
 
+
 public class userMegement implements userMegementDao {
     private ConnectToServer server;
 
@@ -99,10 +100,10 @@ public class userMegement implements userMegementDao {
     }
 
     public void returnBook(int userId, int bookId) throws SQLException {
-        // 检查是否是借书人在还书
+        // 验证归还者是否是借书人
         String checkBorrowerSql = String.format(
-            "SELECT user_id FROM user_book WHERE book_id = %d AND return_date IS NULL",
-            bookId
+            "SELECT user_id FROM user_book WHERE book_id = %d AND user_id = %d AND return_date IS NULL",
+            bookId, userId
         );
         List<Map<String, String>> borrowerResponse = server.getObjectResponse(
             checkBorrowerSql, 
@@ -110,17 +111,10 @@ public class userMegement implements userMegementDao {
         );
         
         if (borrowerResponse == null || borrowerResponse.isEmpty()) {
-            throw new SQLException("找不到该书的借阅记录。");
+            throw new SQLException("这本书不是您借的，无法归还。");
         }
         
-        String borrowerIdStr = borrowerResponse.get(0).get("user_id");
-        int borrowerId = Integer.parseInt(borrowerIdStr);
-        
-        if (borrowerId != userId) {
-            throw new SQLException("只有借书人才能还书。");
-        }
-
-        // 检查书籍状态
+        // 先检查书籍状态
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
         List<Map<String, String>> response = server.getObjectResponse(checkSql, new TypeReference<List<Map<String, String>>>(){});
         if (response == null || response.isEmpty()) {
@@ -137,7 +131,7 @@ public class userMegement implements userMegementDao {
             );
             server.sendvoidRequest(updateBalanceSql);
 
-            // 更新图书状态为未借出(0)
+            // 更新图书状态
             String updateBookSql = String.format(
                 "UPDATE books SET isborrowed = 0 WHERE id = %d",
                 bookId
