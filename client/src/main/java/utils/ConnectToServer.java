@@ -20,7 +20,8 @@ public class ConnectToServer {
     private static final int SERVER_PORT = 8888;
 
     public ConnectToServer() {
-        System.setProperty("file.encoding","UTF-8");
+        System.setProperty("file.encoding", "UTF-8");
+        System.setProperty("sun.jnu.encoding", "UTF-8");
     }
 
     public void sendvoidRequest(String sql) {
@@ -29,7 +30,7 @@ public class ConnectToServer {
 
         try {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-            logger.info("成功连接到服务器: {}:{}" , SERVER_ADDRESS, SERVER_PORT);
+            logger.info("成功连接到服务器: {}:{}", SERVER_ADDRESS, SERVER_PORT);
 
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
             out.println(sql);
@@ -71,7 +72,7 @@ public class ConnectToServer {
             System.out.println("收到服务器响应: " + response.toString());
 
         } catch (IOException e) {
-            System.out.println("获取响应失败: " + e.getMessage());
+            logger.error("获取响应失败: {}", e.getMessage());
             e.printStackTrace();
         } finally {
             try {

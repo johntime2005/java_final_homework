@@ -56,26 +56,14 @@ public class UserReturnController {
         }
         try {
             int bookId = Integer.parseInt(bookIdField.getText());
-            Book book = bookService.getBookById(bookId);
-            if (book == null) {
-                showAlert(Alert.AlertType.ERROR, "错误", "未找到该书籍");
-                return;
-            }
-            if (Boolean.FALSE.equals(book.getIsborrowed())) {
-                showAlert(Alert.AlertType.ERROR, "错误", "该书籍未被借出");
-                return;
-            }
-            book.setIsborrowed(false);
-            String sql = String.format(
-                "UPDATE books SET isborrowed = %d WHERE id = %d",
-                book.getIsborrowed() ? 1 : 0, book.getId());
-            server.sendvoidRequest(sql);
-            showAlert(Alert.AlertType.INFORMATION, "成功", "还书成功");
+            userService.returnBook(currentUser.getId(), bookId);
+            int newBalance = userService.getUserBalance(currentUser.getId());
+            showAlert(Alert.AlertType.INFORMATION, "成功", 
+                String.format("还书成功，当前余额：%d", newBalance));
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
         } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "错误", "无法还书");
+            showAlert(Alert.AlertType.ERROR, "错误", e.getMessage());
         }
     }
 

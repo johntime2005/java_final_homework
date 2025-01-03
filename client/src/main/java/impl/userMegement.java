@@ -9,6 +9,7 @@ import dao.userMegementDao;
 import model.User;
 import model.UserBook;
 import utils.ConnectToServer;
+import java.sql.SQLException;
 
 public class userMegement implements userMegementDao {
     private ConnectToServer server;
@@ -56,11 +57,22 @@ public class userMegement implements userMegementDao {
     }
 
     public void borrowBook(int userId, int bookId) throws SQLException {
+        // 检查用户余额
+        int balance = getUserBalance(userId);
+        if (balance <= 0) {
+            throw new SQLException("余额不足，无法借书。");
+        }
+
         // 检查是否被借出
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
-        Boolean isBorrowed = server.getObjectResponse(checkSql, Boolean.class);
-        
-        if (isBorrowed == null || !isBorrowed) {
+        List<Map<String, String>> response = server.getObjectResponse(checkSql, new TypeReference<List<Map<String, String>>>(){});
+        if (response == null || response.isEmpty()) {
+            throw new SQLException("未找到该书籍。");
+        }
+        String isBorrowedStr = response.get(0).get("isborrowed");
+        Boolean isBorrowed = "1".equals(isBorrowedStr);
+
+        if (!isBorrowed) {
             // 插入借书记录
             String borrowSql = String.format(
                 "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (%d, %d, GETDATE())",
@@ -87,30 +99,36 @@ public class userMegement implements userMegementDao {
     }
 
     public void returnBook(int userId, int bookId) throws SQLException {
+        // 先检查书籍状态
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
-        Boolean isBorrowed = server.getObjectResponse(checkSql, Boolean.class);
-        
-        if (isBorrowed != null && isBorrowed) {
-            // 更新还书记录
-            String returnSql = String.format(
-                "UPDATE user_book SET return_date = GETDATE() WHERE user_id = %d AND book_id = %d",
-                userId, bookId
-            );
-            server.sendvoidRequest(returnSql);
+        List<Map<String, String>> response = server.getObjectResponse(checkSql, new TypeReference<List<Map<String, String>>>(){});
+        if (response == null || response.isEmpty()) {
+            throw new SQLException("未找到该书籍。");
+        }
+        String isBorrowedStr = response.get(0).get("isborrowed");
+        Boolean isBorrowed = "1".equals(isBorrowedStr);
 
-            // 更新图书状态
-            String updateBookSql = String.format(
-                "UPDATE books SET isborrowed = false WHERE id = %d",
-                bookId
-            );
-            server.sendvoidRequest(updateBookSql);
-
-            // 更新用户余额
+        if (isBorrowed) {
+            // 首先更新余额
             String updateBalanceSql = String.format(
                 "UPDATE library_user SET balance = balance + 1 WHERE id = %d",
                 userId
             );
             server.sendvoidRequest(updateBalanceSql);
+
+            // 更新图书状态
+            String updateBookSql = String.format(
+                "UPDATE books SET isborrowed = 0 WHERE id = %d",
+                bookId
+            );
+            server.sendvoidRequest(updateBookSql);
+
+            // 更新还书记录
+            String returnSql = String.format(
+                "UPDATE user_book SET return_date = GETDATE() WHERE user_id = %d AND book_id = %d AND return_date IS NULL",
+                userId, bookId
+            );
+            server.sendvoidRequest(returnSql);
         } else {
             throw new SQLException("还书失败，该书籍未被借出。");
         }
