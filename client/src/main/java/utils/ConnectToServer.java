@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,8 +96,8 @@ public class ConnectToServer {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             try {
                 System.out.println("反序列化前的响应: " + response);
-                List<T> list = mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, type));
-                return list.isEmpty() ? null : list.get(0);
+                List<Map<String, String>> list = mapper.readValue(response, new TypeReference<List<Map<String, String>>>(){});
+                return list.isEmpty() ? null : mapper.convertValue(list.get(0), type);
             } catch (Exception e) {
                 logger.error("对象转换失败: {}", e.getMessage());
                 e.printStackTrace();

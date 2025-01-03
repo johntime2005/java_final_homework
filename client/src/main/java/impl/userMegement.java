@@ -3,6 +3,7 @@ package impl;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
 import dao.userMegementDao;
 import model.User;
@@ -130,15 +131,24 @@ public class userMegement implements userMegementDao {
         return null;
     }
 
-    // 新增方法：查询用户余额
+    // 修改 getUserBalance 方法以正确反序列化服务器响应
     public int getUserBalance(int userId) throws SQLException {
         String sql = String.format("SELECT balance FROM library_user WHERE id = %d", userId);
-        Integer balance = server.getObjectResponse(sql, Integer.class);
-//        if (balance == null) {
-//            return 0; // 默认余额为 0
-//        }
+        List<Map<String, String>> response = server.getObjectResponse(sql, new TypeReference<List<Map<String, String>>>(){});
+        int balance = 0;
+        if (response != null && !response.isEmpty()) {
+            String balanceStr = response.get(0).get("balance");
+            if (balanceStr != null) {
+                try {
+                    balance = Integer.parseInt(balanceStr);
+                } catch (NumberFormatException e) {
+                    // 记录或处理解析错误
+                }
+            }
+        }
         return balance;
     }
+
     public boolean isUsernameExists(String username) throws SQLException {
         String sql = String.format(
             "SELECT COUNT(*) as count FROM library_user WHERE username = '%s'",

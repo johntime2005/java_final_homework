@@ -23,15 +23,15 @@ import model.User;
 import Manager.SessionManager;
 public class UserMenuController {
     @FXML
-    private Button browseBookBtn; // 修正 ID
+    private Button browseBookBtn; 
     @FXML
-    private Button borrowBookBtn; // 修正 ID
+    private Button borrowBookBtn; 
     @FXML
-    private Button returnBookBtn; // 修正 ID
+    private Button returnBookBtn; 
     @FXML
-    private Button modifyBtn; // 修正 ID
+    private Button modifyBtn; 
     @FXML
-    private Button cancelBtn; // 修正 ID
+    private Button cancelBtn; 
     @FXML
     private Button queryBanlanceBtn;
 
@@ -61,6 +61,7 @@ public class UserMenuController {
     private void cancel(ActionEvent event) {
         try {
             Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_login.fxml"));
+            SessionManager.getInstance().logout();
             Stage stage = (Stage) cancelBtn.getScene().getWindow();
             stage.setScene(new Scene(adminView));
             stage.show();
@@ -98,8 +99,12 @@ public class UserMenuController {
             return;
         }
         try {
-            int balance = userService.getUserBalance(currentUser.getId());
-            showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
+            Integer balance = userService.getUserBalance(currentUser.getId());
+            if (balance != null) {
+                showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "错误", "查询余额失败: 余额为空");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "查询余额失败: " + e.getMessage());
