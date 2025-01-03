@@ -23,17 +23,18 @@ import model.User;
 import Manager.SessionManager;
 public class UserMenuController {
     @FXML
-    private Button browseBookBtn; // 修正 ID
+    private Button browseBookBtn; 
     @FXML
-    private Button borrowBookBtn; // 修正 ID
+    private Button borrowBookBtn; 
     @FXML
-    private Button returnBookBtn; // 修正 ID
+    private Button returnBookBtn; 
     @FXML
-    private Button modifyBtn; // 修正 ID
+    private Button modifyBtn; 
     @FXML
-    private Button cancelBtn; // 修正 ID
+    private Button cancelBtn; 
     @FXML
     private Button queryBanlanceBtn;
+
     private userMegementDao userService;
 
     @FXML
@@ -60,6 +61,7 @@ public class UserMenuController {
     private void cancel(ActionEvent event) {
         try {
             Parent adminView = FXMLLoader.load(getClass().getResource("/views/user_login.fxml"));
+            SessionManager.getInstance().logout();
             Stage stage = (Stage) cancelBtn.getScene().getWindow();
             stage.setScene(new Scene(adminView));
             stage.show();
@@ -87,6 +89,8 @@ public class UserMenuController {
     private void updateUser(ActionEvent event) {
         loadFXML("/views/userupdate.fxml", "修改信息", event);
     }
+
+
     @FXML
     private void queryBanlance(ActionEvent event) {
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -94,10 +98,13 @@ public class UserMenuController {
             showAlert(Alert.AlertType.ERROR, "错误", "用户未登录");
             return;
         }
-
         try {
-            int balance = userService.getUserBalance(currentUser.getId());
-            showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
+            Integer balance = userService.getUserBalance(currentUser.getId());
+            if (balance != null) {
+                showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "错误", "查询余额失败: 余额为空");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "查询余额失败: " + e.getMessage());
@@ -108,5 +115,36 @@ public class UserMenuController {
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+    @FXML
+    private void delete(ActionEvent event) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "错误", "用户未登录");
+            return;
+        }
+
+        try {
+            // 弹出确认框
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("确认");
+            alert.setHeaderText("确定要删除用户吗?");
+            alert.setContentText("删除后将无法恢复");
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        userService.deleteUser(currentUser.getId());
+                        SessionManager.getInstance().logout();
+                        loadFXML("/views/user_login.fxml", "用户登录", event);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        showAlert(Alert.AlertType.ERROR, "错误", "删除用户失败: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "操作失败: " + e.getMessage());
+        }
     }
 }
