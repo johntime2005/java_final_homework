@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class DataBaseConnection {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=library;encrypt=false;trustServerCertificate=true";
     private static final String USERNAME = "sa";

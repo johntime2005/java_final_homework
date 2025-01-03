@@ -33,4 +33,6 @@ public interface userMegementDao {
     boolean isUsernameExists(String username) throws SQLException;
     //获取所有用户借阅记录
     List<UserBook> getAllUserBooks() throws SQLException;
+    //获取用户余额
+    int getUserBalance(int userId) throws SQLException;
 }

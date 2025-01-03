@@ -18,6 +18,7 @@ import java.util.List;
 import dao.userMegementDao;
 import impl.userMegement;
 import model.User;
+import utils.ConnectToServer;
 import dao.bookMegementDao;
 import impl.bookMegement;
 import model.Book;
@@ -25,7 +26,7 @@ import model.Book;
 public class UserBorrowController {
 //    @FXML
 //    private PasswordField usernameField;
-
+    private ConnectToServer server = new ConnectToServer();
     @FXML
     private PasswordField bookIdField;
 
@@ -53,12 +54,24 @@ public class UserBorrowController {
             return;
         }
         try {
-//            int userId = Integer.parseInt(usernameField.getText());
             int bookId = Integer.parseInt(bookIdField.getText());
-            userService.borrowBook(currentUser.getId(), bookId);
+            Book book = bookService.getBookById(bookId);
+            if (book == null) {
+                showAlert(Alert.AlertType.ERROR, "错误", "未找到该书籍");
+                return;
+            }
+            if (Boolean.TRUE.equals(book.getIsborrowed())) {
+                showAlert(Alert.AlertType.ERROR, "错误", "书籍已被借出");
+                return;
+            }
+            book.setIsborrowed(true);
+            String sql = String.format(
+                "UPDATE books SET isborrowed = %d WHERE id = %d",
+                book.getIsborrowed() ? 1 : 0, book.getId());
+            server.sendvoidRequest(sql);
             showAlert(Alert.AlertType.INFORMATION, "成功", "借书成功");
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的用户ID和图书ID");
+            showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "错误", "无法借书");

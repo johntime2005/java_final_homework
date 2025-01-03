@@ -20,7 +20,7 @@ import java.util.List;
 import dao.userMegementDao;
 import impl.userMegement;
 import model.User;
-
+import Manager.SessionManager;
 public class UserMenuController {
     @FXML
     private Button browseBookBtn; // 修正 ID
@@ -32,10 +32,13 @@ public class UserMenuController {
     private Button modifyBtn; // 修正 ID
     @FXML
     private Button cancelBtn; // 修正 ID
+    @FXML
+    private Button queryBanlanceBtn;
+    private userMegementDao userService;
 
-     @FXML
+    @FXML
     private void initialize() {
-        // 移除数据库连接相关代码
+        userService = new userMegement(); // 直接初始化
     }
     //浏览图书
     @FXML
@@ -83,6 +86,22 @@ public class UserMenuController {
     @FXML
     private void updateUser(ActionEvent event) {
         loadFXML("/views/userupdate.fxml", "修改信息", event);
+    }
+    @FXML
+    private void queryBanlance(ActionEvent event) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "错误", "用户未登录");
+            return;
+        }
+
+        try {
+            int balance = userService.getUserBalance(currentUser.getId());
+            showAlert(Alert.AlertType.INFORMATION, "余额信息", "当前余额: " + balance);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "查询余额失败: " + e.getMessage());
+        }
     }
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);

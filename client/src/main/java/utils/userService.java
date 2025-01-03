@@ -59,4 +59,8 @@ public class userService {
     public List<UserBook> getAllUserBooks() throws SQLException {
         return userDao.getAllUserBooks();
     }
+    //获取用户余额
+    public int getUserBalance(int userId) throws SQLException {
+        return userDao.getUserBalance(userId);
+    }
 }

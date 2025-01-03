@@ -37,10 +37,15 @@ public class userMegement implements userMegementDao {
         server.sendvoidRequest(sql);
     }
 
+
     public List<UserBook> getAllUserBooks() throws SQLException {
         String sql = "SELECT user_id, book_id, borrow_date, return_date FROM user_book";
         TypeReference<List<UserBook>> typeRef = new TypeReference<List<UserBook>>() {};
-        return server.getObjectResponse(sql, typeRef.getType());
+        List<UserBook> userBooks = server.getObjectResponse(sql, typeRef);
+        if (userBooks == null) {
+            userBooks = new ArrayList<>(); // 初始化为空列表
+        }
+        return userBooks;
     }
 
     public List<User> getAllUsers() throws SQLException {
@@ -120,6 +125,15 @@ public class userMegement implements userMegementDao {
         return null;
     }
 
+    // 新增方法：查询用户余额
+    public int getUserBalance(int userId) throws SQLException {
+        String sql = String.format("SELECT balance FROM library_user WHERE id = %d", userId);
+        Integer balance = server.getObjectResponse(sql, Integer.class);
+//        if (balance == null) {
+//            return 0; // 默认余额为 0
+//        }
+        return balance;
+    }
     public boolean isUsernameExists(String username) throws SQLException {
         String sql = String.format(
             "SELECT COUNT(*) as count FROM library_user WHERE username = '%s'",

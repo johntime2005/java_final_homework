@@ -19,7 +19,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+import java.util.ArrayList;
 import impl.userMegement;
 
 public class BookUserExportController {
@@ -88,7 +88,10 @@ public class BookUserExportController {
 
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                List<UserBook> userBooks = userService.getAllUserBooks(); // 从 userMegement 获取数据
+                List<UserBook> userBooks = new ArrayList<>();
+
+                 userBooks = userService.getAllUserBooks(); // 从 userMegement 获取数据
+
                 PDFUtils.exportUserBook(userBooks, file);
                 showAlert(Alert.AlertType.INFORMATION, "导出成功", "用户数据已成功导出到PDF文件！");
             }

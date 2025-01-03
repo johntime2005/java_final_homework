@@ -93,6 +93,12 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
     <build>
         <resources>
             <!-- 服务器相关资源 -->
@@ -118,6 +124,8 @@
                     <mainClass>ConnectToClient</mainClass>
                 </configuration>
             </plugin>
+           <!--maven中央仓库的配置-->
+           
 
             <!-- Maven Shade 插件 -->
             <plugin>

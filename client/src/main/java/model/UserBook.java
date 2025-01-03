@@ -1,5 +1,5 @@
 package model;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserBook {
     private int userId;
     private int bookId;
@@ -7,7 +7,10 @@ public class UserBook {
     private String returnDate;
 
     // 构造函数
-    public UserBook(int userId, int bookId, String borrowDate, String returnDate) {
+    public UserBook(@JsonProperty("user_id") int userId,
+                    @JsonProperty("book_id") int bookId,
+                    @JsonProperty("borrow_date") String borrowDate,
+                    @JsonProperty("return_date") String returnDate) {
         this.userId = userId;
         this.bookId = bookId;
         this.borrowDate = borrowDate;
