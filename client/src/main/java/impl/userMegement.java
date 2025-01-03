@@ -56,22 +56,11 @@ public class userMegement implements userMegementDao {
     }
 
     public void borrowBook(int userId, int bookId) throws SQLException {
-        // 检查用户余额
-        int balance = getUserBalance(userId);
-        if (balance <= 0) {
-            throw new SQLException("余额不足，无法借书。");
-        }
-
         // 检查是否被借出
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
-        List<Map<String, String>> response = server.getObjectResponse(checkSql, new TypeReference<List<Map<String, String>>>(){});
-        if (response == null || response.isEmpty()) {
-            throw new SQLException("未找到该书籍。");
-        }
-        String isBorrowedStr = response.get(0).get("isborrowed");
-        Boolean isBorrowed = "1".equals(isBorrowedStr);
-
-        if (!isBorrowed) {
+        Boolean isBorrowed = server.getObjectResponse(checkSql, Boolean.class);
+        
+        if (isBorrowed == null || !isBorrowed) {
             // 插入借书记录
             String borrowSql = String.format(
                 "INSERT INTO user_book (user_id, book_id, borrow_date) VALUES (%d, %d, GETDATE())",
@@ -99,14 +88,9 @@ public class userMegement implements userMegementDao {
 
     public void returnBook(int userId, int bookId) throws SQLException {
         String checkSql = String.format("SELECT isborrowed FROM books WHERE id = %d", bookId);
-        List<Map<String, String>> response = server.getObjectResponse(checkSql, new TypeReference<List<Map<String, String>>>(){});
-        if (response == null || response.isEmpty()) {
-            throw new SQLException("未找到该书籍。");
-        }
-        String isBorrowedStr = response.get(0).get("isborrowed");
-        Boolean isBorrowed = "1".equals(isBorrowedStr);
-
-        if (isBorrowed) {
+        Boolean isBorrowed = server.getObjectResponse(checkSql, Boolean.class);
+        
+        if (isBorrowed != null && isBorrowed) {
             // 更新还书记录
             String returnSql = String.format(
                 "UPDATE user_book SET return_date = GETDATE() WHERE user_id = %d AND book_id = %d",

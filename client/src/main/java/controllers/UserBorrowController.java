@@ -55,12 +55,26 @@ public class UserBorrowController {
         }
         try {
             int bookId = Integer.parseInt(bookIdField.getText());
-            userService.borrowBook(currentUser.getId(), bookId);
-            showAlert(Alert.AlertType.INFORMATION, "成功", "借书成功，余额减少1");
+            Book book = bookService.getBookById(bookId);
+            if (book == null) {
+                showAlert(Alert.AlertType.ERROR, "错误", "未找到该书籍");
+                return;
+            }
+            if (Boolean.TRUE.equals(book.getIsborrowed())) {
+                showAlert(Alert.AlertType.ERROR, "错误", "书籍已被借出");
+                return;
+            }
+            book.setIsborrowed(true);
+            String sql = String.format(
+                "UPDATE books SET isborrowed = %d WHERE id = %d",
+                book.getIsborrowed() ? 1 : 0, book.getId());
+            server.sendvoidRequest(sql);
+            showAlert(Alert.AlertType.INFORMATION, "成功", "借书成功");
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "错误", e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "无法借书");
         }
     }
 

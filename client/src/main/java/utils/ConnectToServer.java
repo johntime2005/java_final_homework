@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +18,9 @@ public class ConnectToServer {
     private static final Logger logger = LoggerFactory.getLogger(ConnectToServer.class);
     private static final String SERVER_ADDRESS = "1.95.82.58";
     private static final int SERVER_PORT = 8888;
-    private ObjectMapper objectMapper;
 
     public ConnectToServer() {
         System.setProperty("file.encoding","UTF-8");
-        this.objectMapper = new ObjectMapper();
     }
 
     public void sendvoidRequest(String sql) {
@@ -88,15 +85,6 @@ public class ConnectToServer {
         return response.toString();
     }
 
-    public <T> T getObjectResponse(String sql, TypeReference<T> typeRef) throws SQLException {
-        String jsonResponse = getStringResponse(sql);
-        try {
-            return objectMapper.readValue(jsonResponse, typeRef);
-        } catch (IOException e) {
-            throw new SQLException("响应解析失败: " + e.getMessage(), e);
-        }
-    }
-
     public <T> T getObjectResponse(String sql, Class<T> type) {
         String response = getStringResponse(sql);
         if (response != null) {
@@ -113,6 +101,24 @@ public class ConnectToServer {
             } catch (Exception e) {
                 logger.error("对象转换失败: {}", e.getMessage());
                 e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public <T> T getObjectResponse(String sql, TypeReference<T> typeReference) {
+        String response = getStringResponse(sql);
+        if (response != null) {
+            if (response.startsWith("ERROR:")) {
+                logger.error("服务器返回错误: {}", response);
+                return null;
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            try {
+                return mapper.readValue(response, typeReference);
+            } catch (Exception e) {
+                logger.error("对象转换失败: {}", e.getMessage());
             }
         }
         return null;
