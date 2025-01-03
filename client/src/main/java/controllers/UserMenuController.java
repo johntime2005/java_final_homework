@@ -111,4 +111,35 @@ public class UserMenuController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    @FXML
+    private void delete(ActionEvent event) {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "错误", "用户未登录");
+            return;
+        }
+
+        try {
+            // 弹出确认框
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("确认");
+            alert.setHeaderText("确定要删除用户吗?");
+            alert.setContentText("删除后将无法恢复");
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        userService.deleteUser(currentUser.getId());
+                        SessionManager.getInstance().logout();
+                        loadFXML("/views/user_login.fxml", "用户登录", event);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        showAlert(Alert.AlertType.ERROR, "错误", "删除用户失败: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "错误", "操作失败: " + e.getMessage());
+        }
+    }
 }
