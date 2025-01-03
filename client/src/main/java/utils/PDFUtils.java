@@ -36,7 +36,12 @@ public class PDFUtils {
             table.addCell(new Cell().add(new Paragraph(String.valueOf(userBook.getUserId()))));
             table.addCell(new Cell().add(new Paragraph(String.valueOf(userBook.getBookId()))));
             table.addCell(new Cell().add(new Paragraph(userBook.getBorrowDate())));
-            table.addCell(new Cell().add(new Paragraph(userBook.getReturnDate())));
+            // 检查 returnDate 是否为 null
+            String returnDate = userBook.getReturnDate();
+            if (returnDate == null) {
+                returnDate = "null"; // 或者使用 "未还书" 等默认值
+            }
+            table.addCell(new Cell().add(new Paragraph(returnDate)));
         }
 
         // 将表格添加到文档中
