@@ -63,7 +63,11 @@ public class UserReturnController {
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "错误", "请输入有效的图书ID");
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "错误", e.getMessage());
+            if (e.getMessage().contains("只有借书人")) {
+                showAlert(Alert.AlertType.ERROR, "错误", "只有借书人才能还书");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "错误", e.getMessage());
+            }
         }
     }
 
